@@ -30,7 +30,7 @@ _tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 _VOCAB = _tokenizer.vocab_size
 
 def _load_sentences(n=100):
-    raw = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
+    raw = load_dataset("Salesforce/wikitext", "wikitext-2-raw-v1", split="train")
     out = []
     for item in raw:
         t = item["text"].strip()

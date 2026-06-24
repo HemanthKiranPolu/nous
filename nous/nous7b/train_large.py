@@ -51,10 +51,10 @@ def get_device():
 def sentence_stream(dataset_name: str, tokenizer, min_len=4, max_len=64):
     """Infinite stream of tokenized sentences."""
     if dataset_name == "wikitext2":
-        ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
+        ds = load_dataset("Salesforce/wikitext", "wikitext-2-raw-v1", split="train")
         texts = (item["text"] for item in ds)
     elif dataset_name == "wikitext103":
-        ds = load_dataset("wikitext", "wikitext-103-raw-v1", split="train")
+        ds = load_dataset("Salesforce/wikitext", "wikitext-103-raw-v1", split="train")
         texts = (item["text"] for item in ds)
     elif dataset_name == "c4":
         ds = load_dataset("allenai/c4", "en", split="train", streaming=True)
