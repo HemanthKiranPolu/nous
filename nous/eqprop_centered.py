@@ -78,9 +78,23 @@ class CenteredEqProp:
                 for n, p in self.E.named_parameters()}
 
     def step(self, x: torch.Tensor, target: torch.Tensor,
-             q0_override: torch.Tensor = None):
+             q0_override: torch.Tensor = None,
+             x_with_grad: torch.Tensor = None):
         """
         One C-EP step on example (x, target).
+
+        x            — detached input embedding (for ODE, no grad tracking needed)
+        x_with_grad  — same embedding WITH gradient tape open, for backpropping
+                       C-EP signal through the projector. Pass projector(img)
+                       before detaching.
+
+        Nudge phases start from q_free (not q0): they're already near equilibrium
+        so they need far fewer ODE steps to converge.
+
+        Projector gradient via EqProp: coupling = −xᵀ W_in q, so ∂E/∂x = −W_in^T q.
+        C-EP signal on x: Δx = (∂E(q_pos)/∂x − ∂E(q_neg)/∂x) / 2β
+                               = W_in^T (q_neg − q_pos) / 2β
+
         Returns: (loss, q_free, q_pos, q_neg)
         """
         q0 = q0_override if q0_override is not None else torch.zeros(self.E.state_dim)
@@ -88,15 +102,15 @@ class CenteredEqProp:
         # ── Free phase ────────────────────────────────────────────────────────
         q_free = self._solve(x, q0, cost_sign=0.0)
         with torch.no_grad():
-            logits = self.decoder(q_free)
-        loss = F.cross_entropy(logits.unsqueeze(0), target.unsqueeze(0)).item()
+            loss = F.cross_entropy(
+                self.decoder(q_free).unsqueeze(0), target.unsqueeze(0)
+            ).item()
 
-        # ── Positive nudge (+β): pulls toward correct class ───────────────────
-        q_pos = self._solve(x, q0, cost_sign=+1.0, target=target)
+        # ── Nudge phases start from q_free (already near equilibrium) ─────────
+        q_pos = self._solve(x, q_free, cost_sign=+1.0, target=target)
         grads_pos = self._param_grads(x, q_pos)
 
-        # ── Negative nudge (-β): pushes away from correct class ──────────────
-        q_neg = self._solve(x, q0, cost_sign=-1.0, target=target)
+        q_neg = self._solve(x, q_free, cost_sign=-1.0, target=target)
         grads_neg = self._param_grads(x, q_neg)
 
         # ── C-EP update: symmetric difference cancels O(β) bias ──────────────
@@ -107,8 +121,17 @@ class CenteredEqProp:
                     grads_pos[name] - grads_neg[name]
                 )
 
-        # Decoder: standard CE at positive equilibrium
-        logits_pos = self.decoder(q_pos)
+        # ── Projector gradient via C-EP signal on x ───────────────────────────
+        # coupling = −xᵀ W_in q  →  ∂coupling/∂x = −W_in q
+        # ∂E(q_pos)/∂x − ∂E(q_neg)/∂x = W_in^T(q_neg − q_pos) / 2β
+        if x_with_grad is not None and x_with_grad.requires_grad:
+            with torch.no_grad():
+                W = self.E.W_in.weight   # (state_dim, input_dim)
+                dx = W.t() @ (q_neg - q_pos) / (2.0 * self.beta)
+            x_with_grad.backward(dx.detach())
+
+        # ── Decoder: standard CE at positive equilibrium ──────────────────────
+        logits_pos = self.decoder(q_pos.detach())
         ce = F.cross_entropy(logits_pos.unsqueeze(0), target.unsqueeze(0))
         ce.backward()
 

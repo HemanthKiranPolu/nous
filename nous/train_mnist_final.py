@@ -60,7 +60,9 @@ EPOCHS    = args.epochs
 EMBED_DIM = 64
 STATE_DIM = 64
 N_CLASSES = 10
-BETA      = 0.5          # EqProp nudge amplitude (same for +β and -β)
+# β = 0.1: literature-validated sweet spot for C-EP Taylor expansion accuracy.
+# β=0.5 breaks the O(β²) approximation — nudge states diverge to different basins.
+BETA      = 0.1
 SIGMA_TAU = 0.5          # log-Normal spread of time constants (Kubo et al.)
 OUT_DIR   = "nous_output_final"
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -227,7 +229,12 @@ for epoch in range(EPOCHS):
 
     for img, label in loader:
         img, label = img.squeeze(0), label.squeeze(0)
-        x   = projector(img).detach()
+
+        # x_proj WITH gradient tape (for projector C-EP update).
+        # x used for ODE must be detached (we don't differentiate through ODE).
+        x_proj = projector(img)          # keep grad for backward
+        x      = x_proj.detach()        # ODE input
+
         lbl = label.item()
 
         # Warm-start: Hopfield retrieval or zeros
@@ -236,21 +243,15 @@ for epoch in range(EPOCHS):
         else:
             q0 = torch.zeros(STATE_DIM)
 
-        # C-EP step
-        loss, q_free, q_pos, q_neg = ceqprop.step(x, label, q0_override=q0)
+        # C-EP step — pass x_proj so C-EP signal propagates to projector
+        loss, q_free, q_pos, q_neg = ceqprop.step(
+            x, label, q0_override=q0, x_with_grad=x_proj
+        )
         losses.append(loss)
 
         # Update Hopfield memory with new equilibrium
         if USE_HOPFIELD:
             memory.store(x, q_free)
-
-        # NoProp auxiliary loss on free-phase equilibrium
-        if USE_NOPROP_AUX:
-            aux = noprop_aux_loss(q_free)
-            if aux.item() > 0:
-                optimizer.zero_grad()
-                aux.backward()
-                optimizer.step()
 
     annealer.tick()
     avg_loss = np.mean(losses)
