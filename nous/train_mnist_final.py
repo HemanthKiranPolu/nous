@@ -63,7 +63,10 @@ N_CLASSES = 10
 # β = 0.1: literature-validated sweet spot for C-EP Taylor expansion accuracy.
 # β=0.5 breaks the O(β²) approximation — nudge states diverge to different basins.
 BETA      = 0.1
-SIGMA_TAU = 0.5          # log-Normal spread of time constants (Kubo et al.)
+GRAD_CLIP = 1.0          # prevents catastrophic C-EP updates on small datasets
+ACCUMULATE = 4           # mini-batch accumulation: step every 4 samples → √4 variance reduction
+EMA_DECAY  = 0.995       # exponential moving average of model weights (Polyak averaging)
+SIGMA_TAU = 0.5
 OUT_DIR   = "nous_output_final"
 os.makedirs(OUT_DIR, exist_ok=True)
 
@@ -110,7 +113,7 @@ nn.init.xavier_uniform_(projector.weight, gain=0.5)
 nn.init.zeros_(projector.bias)
 
 E = EnergyNet(input_dim=EMBED_DIM, state_dim=STATE_DIM,
-              hidden=128, depth=3, n_rbf=16)
+              hidden=128, depth=3, n_rbf=32)
 
 decoder = nn.Linear(STATE_DIM, N_CLASSES)
 nn.init.xavier_uniform_(decoder.weight, gain=0.3)
@@ -139,6 +142,11 @@ if USE_NOPROP_AUX:
 
 optimizer = torch.optim.Adam(optimizer_params, lr=1e-3)
 annealer  = AnnealingScheduler(beta_0=0.5, lambda_=0.0003, beta_max=8.0, alpha_0=1e-3)
+
+# EMA shadow copy for Polyak averaging — reduces epoch-to-epoch variance
+ema_params = {n: p.clone().detach() for n, p in
+              list(E.named_parameters()) + list(decoder.named_parameters()) +
+              list(projector.named_parameters())}
 
 # ODE solver with heterogeneous time constants via dt scaling
 # Neurons with larger τ take smaller effective steps (slower to relax)
@@ -177,7 +185,8 @@ if USE_HOPFIELD:
                                 beta_hop=4.0)
 
 # C-EP
-ceqprop = CenteredEqProp(E, solver, decoder, optimizer, beta=BETA)
+ceqprop = CenteredEqProp(E, solver, decoder, optimizer, beta=BETA,
+                         grad_clip=GRAD_CLIP, accumulate=ACCUMULATE)
 
 # ── NoProp auxiliary loss ─────────────────────────────────────────────────────
 NOISE_LEVEL = 0.2
@@ -195,21 +204,31 @@ def noprop_aux_loss(q_star: torch.Tensor) -> torch.Tensor:
     return F.mse_loss(q_hat, q_star.detach())
 
 # ── Eval ──────────────────────────────────────────────────────────────────────
-def evaluate(dataset):
+def evaluate(dataset, use_ema=True):
+    # Swap in EMA weights for evaluation, swap back after
+    if use_ema:
+        live = {n: p.data.clone() for n, p in
+                list(E.named_parameters()) + list(decoder.named_parameters()) +
+                list(projector.named_parameters())}
+        all_named = (list(E.named_parameters()) + list(decoder.named_parameters()) +
+                     list(projector.named_parameters()))
+        for n, p in all_named:
+            p.data.copy_(ema_params[n])
+
     correct, total = 0, 0
     for img, lbl in dataset:
-        x      = projector(img).detach()
-        lbl_i  = lbl.item() if hasattr(lbl, 'item') else lbl
-
-        if USE_HOPFIELD:
-            q0 = memory.retrieve_topk(x, k=10)
-        else:
-            q0 = torch.zeros(STATE_DIM)
-
+        x     = projector(img).detach()
+        lbl_i = lbl.item() if hasattr(lbl, 'item') else lbl
+        q0    = memory.retrieve_topk(x, k=10) if USE_HOPFIELD else torch.zeros(STATE_DIM)
         q_star = solver.solve(x, q0)
         pred   = decoder(q_star).argmax().item()
         correct += (pred == lbl_i)
         total   += 1
+
+    if use_ema:
+        for n, p in all_named:
+            p.data.copy_(live[n])
+
     return correct / total * 100
 
 # ── Training ──────────────────────────────────────────────────────────────────
@@ -252,6 +271,13 @@ for epoch in range(EPOCHS):
         # Update Hopfield memory with new equilibrium
         if USE_HOPFIELD:
             memory.store(x, q_free)
+
+    # EMA update after each epoch
+    all_named = (list(E.named_parameters()) + list(decoder.named_parameters()) +
+                 list(projector.named_parameters()))
+    with torch.no_grad():
+        for n, p in all_named:
+            ema_params[n].mul_(EMA_DECAY).add_(p.data, alpha=1.0 - EMA_DECAY)
 
     annealer.tick()
     avg_loss = np.mean(losses)

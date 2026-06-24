@@ -30,10 +30,12 @@ import torch.nn.functional as F
 
 class CenteredEqProp:
     """
-    C-EP with optional heterogeneous time constants (Kubo et al. 2026).
+    C-EP with gradient clipping and mini-batch accumulation.
 
-    tau: per-neuron time constants drawn from log-Normal distribution.
-         Prevents resonance and collective oscillations that destabilize free phase.
+    grad_clip: max L2 norm of accumulated gradient before optimizer.step().
+               Prevents catastrophic updates from noisy C-EP estimates on small datasets.
+    accumulate: number of samples to accumulate before stepping (mini-batch C-EP).
+                Reduces gradient variance by √accumulate without changing memory.
     """
 
     def __init__(
@@ -42,7 +44,9 @@ class CenteredEqProp:
         solver,
         decoder: nn.Module,
         optimizer: torch.optim.Optimizer,
-        beta: float = 0.5,
+        beta: float = 0.1,
+        grad_clip: float = 1.0,
+        accumulate: int = 1,
         tau: torch.Tensor = None,
     ):
         self.E = energy_net
@@ -50,7 +54,10 @@ class CenteredEqProp:
         self.decoder = decoder
         self.optimizer = optimizer
         self.beta = beta
-        self.tau = tau  # (state_dim,) time constants, or None for uniform
+        self.grad_clip = grad_clip
+        self.accumulate = accumulate
+        self.tau = tau
+        self._accum_count = 0
 
     def _solve(self, x, q0, cost_sign=0.0, target=None):
         """
@@ -113,28 +120,40 @@ class CenteredEqProp:
         q_neg = self._solve(x, q_free, cost_sign=-1.0, target=target)
         grads_neg = self._param_grads(x, q_neg)
 
-        # ── C-EP update: symmetric difference cancels O(β) bias ──────────────
-        self.optimizer.zero_grad()
+        scale = 1.0 / (2.0 * self.beta * self.accumulate)
+
+        # ── Accumulate C-EP gradients (mini-batch variance reduction) ─────────
+        if self._accum_count == 0:
+            self.optimizer.zero_grad()
+
         for name, param in self.E.named_parameters():
             if param.requires_grad:
-                param.grad = (1.0 / (2.0 * self.beta)) * (
-                    grads_pos[name] - grads_neg[name]
-                )
+                delta = scale * (grads_pos[name] - grads_neg[name])
+                if param.grad is None:
+                    param.grad = delta
+                else:
+                    param.grad += delta
 
-        # ── Projector gradient via C-EP signal on x ───────────────────────────
-        # coupling = −xᵀ W_in q  →  ∂coupling/∂x = −W_in q
-        # ∂E(q_pos)/∂x − ∂E(q_neg)/∂x = W_in^T(q_neg − q_pos) / 2β
+        # ── Projector: C-EP signal via ∂E/∂x = −W_in^T q ────────────────────
         if x_with_grad is not None and x_with_grad.requires_grad:
             with torch.no_grad():
-                W = self.E.W_in.weight   # (state_dim, input_dim)
-                dx = W.t() @ (q_neg - q_pos) / (2.0 * self.beta)
+                W = self.E.W_in.weight  # (state_dim, input_dim)
+                dx = scale * (W.t() @ (q_neg - q_pos))
             x_with_grad.backward(dx.detach())
 
-        # ── Decoder: standard CE at positive equilibrium ──────────────────────
+        # ── Decoder: CE at positive equilibrium ───────────────────────────────
         logits_pos = self.decoder(q_pos.detach())
         ce = F.cross_entropy(logits_pos.unsqueeze(0), target.unsqueeze(0))
-        ce.backward()
+        (ce / self.accumulate).backward()
 
-        self.optimizer.step()
+        self._accum_count += 1
+        if self._accum_count >= self.accumulate:
+            # Clip then step
+            nn.utils.clip_grad_norm_(
+                list(self.E.parameters()) + list(self.decoder.parameters()),
+                self.grad_clip
+            )
+            self.optimizer.step()
+            self._accum_count = 0
 
         return loss, q_free.detach(), q_pos.detach(), q_neg.detach()
