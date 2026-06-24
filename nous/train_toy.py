@@ -63,8 +63,8 @@ optimizer = torch.optim.Adam(
 
 solver = EulerLagrangeSolver(E, dt=0.05, n_steps=300, delta=5e-4)
 eqprop = EquilibriumProp(E, solver, decoder, optimizer, eps=0.5,
-                          phi_distance=0.3, phi_curvature=0.05)
-annealer = AnnealingScheduler(beta_0=1.0, lambda_=0.002, beta_max=20.0, alpha_0=3e-3)
+                          phi_distance=0.8, phi_curvature=0.05)
+annealer = AnnealingScheduler(beta_0=1.0, lambda_=0.0003, beta_max=20.0, alpha_0=3e-3)
 
 
 def get_equilibria():
