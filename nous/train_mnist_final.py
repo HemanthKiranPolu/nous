@@ -143,10 +143,11 @@ if USE_NOPROP_AUX:
 optimizer = torch.optim.Adam(optimizer_params, lr=1e-3)
 annealer  = AnnealingScheduler(beta_0=0.5, lambda_=0.0003, beta_max=8.0, alpha_0=1e-3)
 
-# EMA shadow copy for Polyak averaging — reduces epoch-to-epoch variance
-ema_params = {n: p.clone().detach() for n, p in
-              list(E.named_parameters()) + list(decoder.named_parameters()) +
-              list(projector.named_parameters())}
+# EMA shadow copy — prefix module names to avoid key collisions
+ema_params = {}
+for n, p in E.named_parameters():         ema_params[f"E.{n}"]    = p.clone().detach()
+for n, p in decoder.named_parameters():   ema_params[f"dec.{n}"]  = p.clone().detach()
+for n, p in projector.named_parameters(): ema_params[f"proj.{n}"] = p.clone().detach()
 
 # ODE solver with heterogeneous time constants via dt scaling
 # Neurons with larger τ take smaller effective steps (slower to relax)
@@ -207,13 +208,10 @@ def noprop_aux_loss(q_star: torch.Tensor) -> torch.Tensor:
 def evaluate(dataset, use_ema=True):
     # Swap in EMA weights for evaluation, swap back after
     if use_ema:
-        live = {n: p.data.clone() for n, p in
-                list(E.named_parameters()) + list(decoder.named_parameters()) +
-                list(projector.named_parameters())}
-        all_named = (list(E.named_parameters()) + list(decoder.named_parameters()) +
-                     list(projector.named_parameters()))
-        for n, p in all_named:
-            p.data.copy_(ema_params[n])
+        live = {}
+        for n, p in E.named_parameters():         live[f"E.{n}"]    = p.data.clone(); p.data.copy_(ema_params[f"E.{n}"])
+        for n, p in decoder.named_parameters():   live[f"dec.{n}"]  = p.data.clone(); p.data.copy_(ema_params[f"dec.{n}"])
+        for n, p in projector.named_parameters(): live[f"proj.{n}"] = p.data.clone(); p.data.copy_(ema_params[f"proj.{n}"])
 
     correct, total = 0, 0
     for img, lbl in dataset:
@@ -226,8 +224,9 @@ def evaluate(dataset, use_ema=True):
         total   += 1
 
     if use_ema:
-        for n, p in all_named:
-            p.data.copy_(live[n])
+        for n, p in E.named_parameters():         p.data.copy_(live[f"E.{n}"])
+        for n, p in decoder.named_parameters():   p.data.copy_(live[f"dec.{n}"])
+        for n, p in projector.named_parameters(): p.data.copy_(live[f"proj.{n}"])
 
     return correct / total * 100
 
@@ -273,11 +272,10 @@ for epoch in range(EPOCHS):
             memory.store(x, q_free)
 
     # EMA update after each epoch
-    all_named = (list(E.named_parameters()) + list(decoder.named_parameters()) +
-                 list(projector.named_parameters()))
     with torch.no_grad():
-        for n, p in all_named:
-            ema_params[n].mul_(EMA_DECAY).add_(p.data, alpha=1.0 - EMA_DECAY)
+        for n, p in E.named_parameters():         ema_params[f"E.{n}"].mul_(EMA_DECAY).add_(p.data, alpha=1-EMA_DECAY)
+        for n, p in decoder.named_parameters():   ema_params[f"dec.{n}"].mul_(EMA_DECAY).add_(p.data, alpha=1-EMA_DECAY)
+        for n, p in projector.named_parameters(): ema_params[f"proj.{n}"].mul_(EMA_DECAY).add_(p.data, alpha=1-EMA_DECAY)
 
     annealer.tick()
     avg_loss = np.mean(losses)
