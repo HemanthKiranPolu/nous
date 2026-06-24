@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+nous_output/
+nous_output_lang/
+*.egg-info/
+dist/
+build/
+.env
