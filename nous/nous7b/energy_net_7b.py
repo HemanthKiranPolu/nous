@@ -10,14 +10,18 @@ V(q) = ½‖q‖²                                    ← global bowl (no params
 Force:  f(x,q) = −∂E/∂q  (computed by autograd; never backprop through ODE)
 Update: ∂E/∂θ at two fixed points (EqProp)
 
+NOUS-7B matches the LLaMA-7B width and SwiGLU hidden-dimension profile —
+4096 state dimension and 11008 intermediate dimension — but uses 48
+energy-relaxation blocks instead of LLaMA-style attention/Transformer layers.
+
 Parameter count (7B config):
-  48 blocks × 135,274,496   = 6,493,175,808
-  W_in: embed_dim×state_dim =    16,777,216
-  Embedding: vocab×embed    =   131,072,000
-  RBF mu: n_rbf×state_dim   =    33,554,432
-  RBF amp/sigma: 2×n_rbf    =        16,384
+  per block: gate 45.09M + up 45.09M + down 45.09M + scalar head ≈ 135.30M
+  48 blocks × 135.30M             = 6,494B
+  W_in: embed_dim×state_dim       =  0.017B
+  Embedding: vocab×embed (tied)   =  0.131B
+  RBF mu+amp+sigma                =  0.034B
   ─────────────────────────────────────────
-  Total                     ≈ 6,674,595,840  (~6.67B)
+  Total                           ≈ 6.675B
 """
 import torch
 import torch.nn as nn
