@@ -163,14 +163,17 @@ The silence gap is not an artifact of threshold choice. It represents the transi
 ### 4.1 XOR (2D, proof of concept)
 
 - Input: 2D binary vectors; state: 2D; decoder: Linear(2, 2)
-- EqProp without any backprop through the ODE
-- 4/4 accuracy achieved on seeds {3, 5, 13, 16} out of 20 tested
-- Best: seed 5, loss = 0.022
-- Basin formation confirmed visually via V(q) landscape plots
+- EqProp without any backprop through the ODE; 3,000 training steps
+- 4/4 accuracy achieved on seeds {11, 22} out of 25 tested (8%)
+- Best: seed 11, loss = 0.0254 at step 2,999; 10 morphogenesis events
+- Basin formation confirmed visually: V(q) force field shows two clean attractors,
+  with (0,0)/(1,1) converging left and (0,1)/(1,0) converging right
 
-The ~20% success rate on random seeds reflects a geometric constraint: with a linear
-decoder in 2D, the 4 equilibria must land in a linearly separable arrangement. This
-constraint disappears at higher state dimension.
+The ~8% success rate on random seeds reflects a geometric constraint: with a linear
+decoder in 2D, the 4 equilibria must land in a linearly separable arrangement — the
+equilibrium for (1,1) must lie on the opposite side of the decision boundary from those
+for (0,1) and (1,0). This constraint disappears at higher state dimension, as confirmed
+by the 512D experiments.
 
 ### 4.2 Single-sentence language modeling (512D)
 
@@ -189,14 +192,29 @@ This is verified by PCA projection of the 512D states.
 "on" and "near" clustering together (both prepositions in similar syntactic slots)
 without any part-of-speech labels, attention mechanism, or positional encoding.
 
-### 4.3 Corpus scaling — attractor consistency [IN PROGRESS]
+### 4.3 Corpus scaling — attractor consistency
 
-- Dataset: WikiText-2, 200 sentences (5-12 tokens each)
-- Tracking 12 recurring tokens across all sentences and epochs
-- Key metric: intra-word attractor variance (low → same word always lands near same
-  basin regardless of sentence context)
+- Dataset: WikiText-2, 60 sentences (5–9 tokens); GPT-2 tokenizer (50,257 vocab)
+- State: 512D; embed: 64D; RBF: 32 centers; 20 epochs; 0 BPTT steps
+- Perplexity: 9,477 → 12.5 (758× reduction, 20 epochs)
+- 370 morphogenesis events per epoch — continuous basin reorganization across diverse contexts
 
-[Results to be filled after training completes]
+**Attractor consistency** (intra-word equilibrium std across all occurrences per epoch):
+
+| Token | Occurrences | Intra-std | Interpretation |
+|-------|-------------|-----------|----------------|
+| `3`   | 140 | 0.399 | Digit tokens in numeric contexts → tightest cluster |
+| `ie`  | 100 | 0.463 | Subword suffix with consistent grammatical role |
+| `F`   | 60  | 0.467 | Consistent letter prefix in proper nouns |
+| `2`   | 80  | 0.499 | Digit, similar to `3` |
+| `Black` | 100 | 0.504 | Proper noun in consistent nominal position |
+| `S`   | 280 | 0.795 | Generic letter prefix — highest variance, appearing in many word contexts |
+
+PCA of 512D equilibria separates digit tokens (`3`, `2`) from letter tokens into
+distinct regions (61.9% variance on PC1), without any part-of-speech labels.
+The constant morphogenesis rate (vs. the silence gap in single-sentence training)
+reflects the diversity of sentence contexts: no single basin configuration is
+globally optimal, so the topology continuously adapts.
 
 ---
 

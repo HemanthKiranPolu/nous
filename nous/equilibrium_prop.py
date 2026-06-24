@@ -69,10 +69,6 @@ class EquilibriumProp:
         ce_nudge = nn.functional.cross_entropy(pred_nudge.unsqueeze(0), target.unsqueeze(0))
         ce_nudge.backward()
 
-        nn.utils.clip_grad_norm_(
-            list(self.E.parameters()) + list(self.decoder.parameters()), max_norm=1.0
-        )
-
         self.optimizer.step()
 
         # -- DUAL MORPHOGENESIS TRIGGER --
