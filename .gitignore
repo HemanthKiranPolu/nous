@@ -8,3 +8,4 @@ nous_output_lang/
 dist/
 build/
 .env
+data/scan_cache/

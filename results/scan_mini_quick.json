@@ -1,0 +1,243 @@
+{
+  "config": {
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "epochs": 120,
+    "state_dim": 32,
+    "n_rbf": 8,
+    "dt": 0.1,
+    "n_steps": 60,
+    "eps": 0.3,
+    "lr": 0.02,
+    "dec_hidden": 32,
+    "mlp_hidden": 64,
+    "train_fit_gate": 0.99,
+    "ci_gate": 0.0,
+    "out": "results/scan_mini_quick.json"
+  },
+  "task": {
+    "actions": [
+      "WALK",
+      "LOOK",
+      "RUN",
+      "JUMP",
+      "TURN",
+      "STAY"
+    ],
+    "train_verbs": [
+      0,
+      1,
+      2
+    ],
+    "heldout_verbs": [
+      3,
+      4,
+      5
+    ],
+    "multi_counts": [
+      1,
+      2
+    ],
+    "heldout_pairs": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        2
+      ]
+    ],
+    "note": "held-out = known symbol emitted in a novel position"
+  },
+  "gating": {
+    "gate": 0.99,
+    "kept_seeds": [
+      0
+    ],
+    "n_kept": 1,
+    "n_total": 3
+  },
+  "delta_pp": {
+    "mlp": 33.33333333333333,
+    "transformer": 66.66666666666666
+  },
+  "nous": {
+    "gated": {
+      "per_seed_mean": 0.6666666666666666,
+      "per_seed_std": 0.0,
+      "pooled_n": 6,
+      "pooled_acc": 0.6666666666666666,
+      "wilson95": [
+        0.29998832134152864,
+        0.9032306674407831
+      ],
+      "per_seed": [
+        0.6666666666666666
+      ]
+    },
+    "per_seed_raw": [
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.6666666666666666,
+        "heldout_hits": [
+          1,
+          0,
+          1,
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 1.0,
+        "heldout_hits": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 1.0,
+        "heldout_hits": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    ]
+  },
+  "mlp": {
+    "gated": {
+      "per_seed_mean": 0.3333333333333333,
+      "per_seed_std": 0.0,
+      "pooled_n": 6,
+      "pooled_acc": 0.3333333333333333,
+      "wilson95": [
+        0.09676933255921683,
+        0.7000116786584712
+      ],
+      "per_seed": [
+        0.3333333333333333
+      ]
+    },
+    "per_seed_raw": [
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.3333333333333333,
+        "heldout_hits": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 0.9166666666666666,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 0.4166666666666667,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "transformer": {
+    "gated": {
+      "per_seed_mean": 0.0,
+      "per_seed_std": 0.0,
+      "pooled_n": 6,
+      "pooled_acc": 0.0,
+      "wilson95": [
+        0.0,
+        0.3903430336530645
+      ],
+      "per_seed": [
+        0.0
+      ]
+    },
+    "per_seed_raw": [
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  }
+}
