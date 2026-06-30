@@ -1,0 +1,829 @@
+{
+  "config": {
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "epochs": 150,
+    "state_dim": 32,
+    "n_rbf": 8,
+    "dt": 0.1,
+    "n_steps": 60,
+    "eps": 0.3,
+    "lr": 0.02,
+    "mlp_hidden": 32,
+    "out": "results/compgen_toy.json"
+  },
+  "task": {
+    "verbs": 4,
+    "counts": 2,
+    "heldout": [
+      3,
+      1
+    ],
+    "train_pairs": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        0
+      ]
+    ]
+  },
+  "nous": {
+    "train_both_acc": 0.9821428571428571,
+    "heldout_both_rate": 0.875,
+    "heldout_both_per_seed": [
+      1,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "per_seed": [
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 0,
+            "both_ok": 0
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 0,
+            "both_ok": 0
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      }
+    ]
+  },
+  "mlp": {
+    "train_both_acc": 1.0,
+    "heldout_both_rate": 1.0,
+    "heldout_both_per_seed": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "per_seed": [
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      },
+      {
+        "train": {
+          "v0_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v0_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v1_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v2_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          },
+          "v3_c0": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        },
+        "heldout": {
+          "v3_c1": {
+            "verb_ok": 1,
+            "count_ok": 1,
+            "both_ok": 1
+          }
+        }
+      }
+    ]
+  }
+}
