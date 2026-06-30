@@ -44,7 +44,7 @@
     "dec_hidden": 32,
     "mlp_hidden": 64,
     "train_fit_gate": 0.99,
-    "out": "results/scan_mini_32s.json"
+    "out": "/tmp/b0.json"
   },
   "task": {
     "actions": [
@@ -100,13 +100,12 @@
   "gating": {
     "gate": 0.99,
     "kept_seeds": [
+      0,
       3,
       4,
       5,
       6,
-      7,
       8,
-      9,
       10,
       11,
       12,
@@ -119,31 +118,33 @@
       25,
       27,
       28,
-      29,
       30,
       31
     ],
-    "n_kept": 22,
+    "n_kept": 20,
     "n_total": 32
+  },
+  "delta_pp": {
+    "mlp": 44.99999999999999,
+    "transformer": 48.33333333333333
   },
   "nous": {
     "gated": {
-      "per_seed_mean": 0.5757575757575757,
-      "per_seed_std": 0.30454168548851185,
-      "pooled_n": 132,
-      "pooled_acc": 0.5757575757575758,
+      "per_seed_mean": 0.575,
+      "per_seed_std": 0.2909515041682682,
+      "pooled_n": 120,
+      "pooled_acc": 0.575,
       "wilson95": [
-        0.4904750031714826,
-        0.6567553003585112
+        0.4855758824815893,
+        0.6597710768600213
       ],
       "per_seed": [
+        0.5,
         0.8333333333333334,
         0.5,
         0.0,
         0.16666666666666666,
-        0.16666666666666666,
         0.3333333333333333,
-        0.5,
         0.16666666666666666,
         0.5,
         1.0,
@@ -156,7 +157,6 @@
         0.8333333333333334,
         0.6666666666666666,
         0.6666666666666666,
-        1.0,
         0.8333333333333334,
         0.8333333333333334
       ]
@@ -550,41 +550,51 @@
   },
   "mlp": {
     "gated": {
-      "per_seed_mean": 0.1212121212121212,
-      "per_seed_std": 0.15227084274425592,
-      "pooled_n": 132,
-      "pooled_acc": 0.12121212121212122,
+      "per_seed_mean": 0.125,
+      "per_seed_std": 0.12774758097296576,
+      "pooled_n": 120,
+      "pooled_acc": 0.125,
       "wilson95": [
-        0.07600351611226552,
-        0.18784496623776564
+        0.07723428880969682,
+        0.19603091448225032
       ],
       "per_seed": [
-        0.16666666666666666,
-        0.0,
         0.3333333333333333,
         0.16666666666666666,
-        0.0,
-        0.0,
-        0.0,
         0.0,
         0.3333333333333333,
         0.3333333333333333,
         0.0,
-        0.5,
+        0.0,
         0.3333333333333333,
+        0.16666666666666666,
+        0.16666666666666666,
+        0.16666666666666666,
+        0.16666666666666666,
+        0.0,
+        0.0,
         0.0,
         0.0,
         0.16666666666666666,
         0.0,
-        0.16666666666666666,
         0.0,
-        0.16666666666666666,
-        0.0,
-        0.0
+        0.16666666666666666
       ]
     },
     "per_seed_raw": [
       {
+        "train_exact": 1.0,
+        "heldout_exact": 0.3333333333333333,
+        "heldout_hits": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
         "train_exact": 0.9166666666666666,
         "heldout_exact": 0.0,
         "heldout_hits": [
@@ -597,19 +607,7 @@
         ]
       },
       {
-        "train_exact": 0.8333333333333334,
-        "heldout_exact": 0.0,
-        "heldout_hits": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      {
-        "train_exact": 0.75,
+        "train_exact": 0.4166666666666667,
         "heldout_exact": 0.0,
         "heldout_hits": [
           0,
@@ -658,85 +656,85 @@
       },
       {
         "train_exact": 1.0,
+        "heldout_exact": 0.3333333333333333,
+        "heldout_hits": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.3333333333333333,
+        "heldout_hits": [
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
         "heldout_exact": 0.16666666666666666,
         "heldout_hits": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      {
-        "train_exact": 1.0,
-        "heldout_exact": 0.0,
-        "heldout_hits": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      {
-        "train_exact": 1.0,
-        "heldout_exact": 0.0,
-        "heldout_hits": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      {
-        "train_exact": 1.0,
-        "heldout_exact": 0.0,
-        "heldout_hits": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      {
-        "train_exact": 1.0,
-        "heldout_exact": 0.0,
-        "heldout_hits": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      {
-        "train_exact": 1.0,
-        "heldout_exact": 0.3333333333333333,
-        "heldout_hits": [
-          0,
-          1,
-          0,
-          1,
-          0,
-          0
-        ]
-      },
-      {
-        "train_exact": 1.0,
-        "heldout_exact": 0.3333333333333333,
-        "heldout_hits": [
           0,
           1,
           0,
           0,
-          1,
+          0,
           0
         ]
       },
@@ -778,10 +776,10 @@
       },
       {
         "train_exact": 1.0,
-        "heldout_exact": 0.0,
+        "heldout_exact": 0.16666666666666666,
         "heldout_hits": [
           0,
-          0,
+          1,
           0,
           0,
           0,
@@ -790,23 +788,23 @@
       },
       {
         "train_exact": 1.0,
-        "heldout_exact": 0.5,
+        "heldout_exact": 0.16666666666666666,
         "heldout_hits": [
-          1,
-          1,
           0,
           0,
           1,
+          0,
+          0,
           0
         ]
       },
       {
         "train_exact": 1.0,
-        "heldout_exact": 0.3333333333333333,
+        "heldout_exact": 0.16666666666666666,
         "heldout_hits": [
           0,
           0,
-          1,
+          0,
           1,
           0,
           0
@@ -862,10 +860,10 @@
       },
       {
         "train_exact": 1.0,
-        "heldout_exact": 0.16666666666666666,
+        "heldout_exact": 0.0,
         "heldout_hits": [
           0,
-          1,
+          0,
           0,
           0,
           0,
@@ -873,7 +871,7 @@
         ]
       },
       {
-        "train_exact": 0.9166666666666666,
+        "train_exact": 0.8333333333333334,
         "heldout_exact": 0.0,
         "heldout_hits": [
           0,
@@ -897,36 +895,12 @@
         ]
       },
       {
-        "train_exact": 0.75,
-        "heldout_exact": 0.0,
-        "heldout_hits": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      {
-        "train_exact": 1.0,
+        "train_exact": 0.8333333333333334,
         "heldout_exact": 0.16666666666666666,
         "heldout_hits": [
           0,
           0,
-          0,
           1,
-          0,
-          0
-        ]
-      },
-      {
-        "train_exact": 1.0,
-        "heldout_exact": 0.0,
-        "heldout_hits": [
-          0,
-          0,
-          0,
           0,
           0,
           0
@@ -937,7 +911,451 @@
         "heldout_exact": 0.16666666666666666,
         "heldout_hits": [
           0,
+          0,
+          0,
           1,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.16666666666666666,
+        "heldout_hits": [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "transformer": {
+    "gated": {
+      "per_seed_mean": 0.09166666666666666,
+      "per_seed_std": 0.20052015692526606,
+      "pooled_n": 120,
+      "pooled_acc": 0.09166666666666666,
+      "wilson95": [
+        0.0519566467894248,
+        0.15670990790625097
+      ],
+      "per_seed": [
+        0.0,
+        0.0,
+        0.16666666666666666,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        0.5,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6666666666666666,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "per_seed_raw": [
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.16666666666666666,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 0.4166666666666667,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 0.5,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.5,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.5,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "train_exact": 0.25,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.3333333333333333,
+        "heldout_hits": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.16666666666666666,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.16666666666666666,
+        "heldout_hits": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 0.4166666666666667,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.6666666666666666,
+        "heldout_hits": [
+          1,
+          1,
+          1,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 1.0,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "train_exact": 0.3333333333333333,
+        "heldout_exact": 0.0,
+        "heldout_hits": [
+          0,
+          0,
           0,
           0,
           0,
@@ -969,6 +1387,5 @@
         ]
       }
     ]
-  },
-  "delta_pp": 45.45454545454546
+  }
 }

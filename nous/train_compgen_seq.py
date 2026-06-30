@@ -163,23 +163,73 @@ class MLPBody(nn.Module):
         return self.net(x)
 
 
+# Generic backprop trainer for the baselines. `rep(v, c)` returns the body's
+# representation of the input (differentiable). Trains until the train set is
+# perfectly fit (early stop) or `cap` epochs elapse — every baseline gets its
+# best shot at fitting train, so the train-fit gate isolates generalization.
+def _fit_backprop(modules, rep, dec, lr, cap):
+    params = [p for m in modules for p in m.parameters()] + list(dec.parameters())
+    opt = torch.optim.Adam(params, lr=lr)
+    for ep in range(cap):
+        for i in torch.randperm(len(TRAIN_PAIRS)):
+            v, c = TRAIN_PAIRS[i]
+            loss = seq_loss(dec, rep(v, c), v, c)
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+        if ep % 25 == 24:
+            with torch.no_grad():
+                if all(decode_correct(dec, rep(v, c), v, c) for (v, c) in TRAIN_PAIRS):
+                    break
+
+
 def run_mlp(seed, rep_dim, hidden, epochs, lr, dec_hidden):
     torch.manual_seed(seed)
     body = MLPBody(hidden, rep_dim)
     dec = SeqDecoder(rep_dim, hidden=dec_hidden)
-    opt = torch.optim.Adam(list(body.parameters()) + list(dec.parameters()), lr=lr)
-
-    for _ in range(epochs):
-        for i in torch.randperm(len(TRAIN_PAIRS)):
-            v, c = TRAIN_PAIRS[i]
-            loss = seq_loss(dec, body(encode(v, c)), v, c)
-            opt.zero_grad()
-            loss.backward()
-            opt.step()
+    _fit_backprop([body], lambda v, c: body(encode(v, c)), dec, lr, cap=max(epochs, 600))
 
     def correct(v, c):
         with torch.no_grad():
             r = body(encode(v, c))
+        return decode_correct(dec, r, v, c)
+
+    return _report(correct)
+
+
+# ── Baseline: small Transformer encoder feeding the IDENTICAL decoder ─────────
+# Input is the natural 2-token sequence [verb, count] with learned embeddings
+# (not one-hot) — the encoding that gives a transformer its best shot. Self-
+# attention pools the two tokens; the shared SeqDecoder reads the pooled rep.
+class TransformerBody(nn.Module):
+    def __init__(self, rep_dim, d_model=32, nhead=4, layers=2, ff=64):
+        super().__init__()
+        self.verb_emb  = nn.Embedding(N_VERB, d_model)
+        self.count_emb = nn.Embedding(N_COUNT, d_model)
+        self.pos = nn.Parameter(torch.randn(2, d_model) * 0.1)
+        enc = nn.TransformerEncoderLayer(d_model, nhead, ff, dropout=0.0,
+                                         batch_first=True, activation="gelu")
+        self.tr = nn.TransformerEncoder(enc, layers)
+        self.proj = nn.Linear(d_model, rep_dim)
+
+    def forward(self, v, c):
+        toks = torch.stack([self.verb_emb(torch.tensor(v)),
+                            self.count_emb(torch.tensor(c))]) + self.pos   # (2, d)
+        h = self.tr(toks.unsqueeze(0)).squeeze(0)                          # (2, d)
+        return torch.tanh(self.proj(h.mean(0)))
+
+
+def run_transformer(seed, rep_dim, epochs, lr, dec_hidden):
+    torch.manual_seed(seed)
+    body = TransformerBody(rep_dim)
+    dec = SeqDecoder(rep_dim, hidden=dec_hidden)
+    # transformers favour a smaller step on tiny data; give them the same
+    # train-until-fit budget as the MLP so the gate is the only filter.
+    _fit_backprop([body], lambda v, c: body(v, c), dec, lr=5e-3, cap=max(epochs, 600))
+
+    def correct(v, c):
+        with torch.no_grad():
+            r = body(v, c)
         return decode_correct(dec, r, v, c)
 
     return _report(correct)
@@ -240,34 +290,35 @@ def main():
           f"gate≥{args.train_fit_gate}")
     print("─" * 64)
 
-    nous_runs, mlp_runs = [], []
+    runs = {"nous": [], "mlp": [], "transformer": []}
     for s in args.seeds:
-        nr = run_nous(s, args.state_dim, args.n_rbf, args.dt, args.n_steps,
-                      args.eps, args.epochs, args.lr, args.dec_hidden)
-        mr = run_mlp(s, args.state_dim, args.mlp_hidden, args.epochs, args.lr, args.dec_hidden)
-        nous_runs.append(nr)
-        mlp_runs.append(mr)
-        print(f"seed {s:>2}: NOUS train={nr['train_exact']:.2f} heldout={nr['heldout_exact']:.2f}"
-              f"  |  MLP train={mr['train_exact']:.2f} heldout={mr['heldout_exact']:.2f}")
+        runs["nous"].append(run_nous(s, args.state_dim, args.n_rbf, args.dt, args.n_steps,
+                                     args.eps, args.epochs, args.lr, args.dec_hidden))
+        runs["mlp"].append(run_mlp(s, args.state_dim, args.mlp_hidden, args.epochs,
+                                   args.lr, args.dec_hidden))
+        runs["transformer"].append(run_transformer(s, args.state_dim, args.epochs,
+                                                    args.lr, args.dec_hidden))
+        print(f"seed {s:>2}: " + "  ".join(
+            f"{k.upper()[:4]} tr={runs[k][-1]['train_exact']:.2f} "
+            f"ho={runs[k][-1]['heldout_exact']:.2f}" for k in runs))
 
-    # -- train-fit-gated headline comparison --
+    # -- train-fit-gated comparison: keep seeds where ALL models fit train --
     gate = args.train_fit_gate
     kept = [i for i in range(len(args.seeds))
-            if nous_runs[i]["train_exact"] >= gate and mlp_runs[i]["train_exact"] >= gate]
+            if all(runs[k][i]["train_exact"] >= gate for k in runs)]
     kept_seeds = [args.seeds[i] for i in kept]
 
-    def gated_stats(runs):
-        per_seed = [runs[i]["heldout_exact"] for i in kept]
+    def gated_stats(model_runs):
+        per_seed = [model_runs[i]["heldout_exact"] for i in kept]
         m, sd = mean_std(per_seed)
-        pooled_hits = [h for i in kept for h in runs[i]["heldout_hits"]]
-        lo, hi = wilson_ci(sum(pooled_hits), len(pooled_hits))
+        pooled = [h for i in kept for h in model_runs[i]["heldout_hits"]]
+        lo, hi = wilson_ci(sum(pooled), len(pooled))
         return {"per_seed_mean": m, "per_seed_std": sd,
-                "pooled_n": len(pooled_hits), "pooled_acc": (sum(pooled_hits) / len(pooled_hits)) if pooled_hits else 0.0,
+                "pooled_n": len(pooled),
+                "pooled_acc": (sum(pooled) / len(pooled)) if pooled else 0.0,
                 "wilson95": [lo, hi], "per_seed": per_seed}
 
-    nous_g = gated_stats(nous_runs)
-    mlp_g  = gated_stats(mlp_runs)
-    delta_pp = (nous_g["pooled_acc"] - mlp_g["pooled_acc"]) * 100
+    gated = {k: gated_stats(v) for k, v in runs.items()}
 
     summary = {
         "config": vars(args),
@@ -277,10 +328,11 @@ def main():
                  "note": "held-out = known symbol emitted in a novel position"},
         "gating": {"gate": gate, "kept_seeds": kept_seeds, "n_kept": len(kept),
                    "n_total": len(args.seeds)},
-        "nous": {"gated": nous_g, "per_seed_raw": nous_runs},
-        "mlp":  {"gated": mlp_g,  "per_seed_raw": mlp_runs},
-        "delta_pp": delta_pp,
+        "delta_pp": {k: (gated["nous"]["pooled_acc"] - gated[k]["pooled_acc"]) * 100
+                     for k in ("mlp", "transformer")},
     }
+    for k in runs:
+        summary[k] = {"gated": gated[k], "per_seed_raw": runs[k]}
 
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
     with open(args.out, "w") as f:
@@ -288,13 +340,13 @@ def main():
 
     print("─" * 64)
     print(f"Train-fit gate ≥{gate}: kept {len(kept)}/{len(args.seeds)} seeds {kept_seeds}")
-    print(f"NOUS heldout: {nous_g['per_seed_mean']*100:.1f} ± {nous_g['per_seed_std']*100:.1f} %"
-          f"  (pooled {nous_g['pooled_acc']*100:.1f}%, 95%CI "
-          f"[{nous_g['wilson95'][0]*100:.1f},{nous_g['wilson95'][1]*100:.1f}], n={nous_g['pooled_n']})")
-    print(f"MLP  heldout: {mlp_g['per_seed_mean']*100:.1f} ± {mlp_g['per_seed_std']*100:.1f} %"
-          f"  (pooled {mlp_g['pooled_acc']*100:.1f}%, 95%CI "
-          f"[{mlp_g['wilson95'][0]*100:.1f},{mlp_g['wilson95'][1]*100:.1f}], n={mlp_g['pooled_n']})")
-    print(f"Δ = {delta_pp:+.1f} pp   (CI gate for a real effect: Δ ≥ 25 pp)")
+    for k in ("nous", "mlp", "transformer"):
+        g = gated[k]
+        print(f"{k.upper():>11} heldout: {g['per_seed_mean']*100:5.1f} ± {g['per_seed_std']*100:4.1f} %"
+              f"  (pooled {g['pooled_acc']*100:.1f}%, 95%CI "
+              f"[{g['wilson95'][0]*100:.1f},{g['wilson95'][1]*100:.1f}], n={g['pooled_n']})")
+    print(f"Δ  NOUS−MLP = {summary['delta_pp']['mlp']:+.1f} pp   "
+          f"NOUS−Transformer = {summary['delta_pp']['transformer']:+.1f} pp")
     print(f"Wrote {args.out}")
 
 
