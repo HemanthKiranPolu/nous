@@ -38,6 +38,7 @@ import argparse
 import json
 import math
 import os
+import sys
 
 import torch
 import torch.nn as nn
@@ -279,6 +280,8 @@ def main():
     ap.add_argument("--dec-hidden", type=int, default=32)
     ap.add_argument("--mlp-hidden", type=int, default=64)
     ap.add_argument("--train-fit-gate", type=float, default=0.99)
+    ap.add_argument("--ci-gate", type=float, default=None,
+                    help="exit non-zero if NOUS pooled − best baseline < this many pp")
     ap.add_argument("--out", type=str, default="results/scan_mini_32s.json")
     args = ap.parse_args()
 
@@ -348,6 +351,18 @@ def main():
     print(f"Δ  NOUS−MLP = {summary['delta_pp']['mlp']:+.1f} pp   "
           f"NOUS−Transformer = {summary['delta_pp']['transformer']:+.1f} pp")
     print(f"Wrote {args.out}")
+
+    # -- optional CI tripwire: NOUS must beat the best baseline by --ci-gate pp --
+    if args.ci_gate is not None:
+        if gated["nous"]["pooled_n"] == 0:
+            print(f"CI FAIL: no seed passed the train-fit gate (≥{gate})")
+            sys.exit(1)
+        margin = min(summary["delta_pp"]["mlp"], summary["delta_pp"]["transformer"])
+        verdict = "PASS" if margin >= args.ci_gate else "FAIL"
+        print(f"CI {verdict}: NOUS − best baseline = {margin:+.1f} pp "
+              f"(gate ≥ {args.ci_gate:+.0f} pp)")
+        if verdict == "FAIL":
+            sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,18 @@
+name: nous-ci
+on: [push, pull_request]
+
+jobs:
+  scan-mini:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      # Regression tripwire (NOT the headline claim). The Δ≥45pp result is
+      # owned by the full 32-seed sweep; on a 3-seed smoke that statistic
+      # swings too much to gate on. Here we only assert the pipeline runs and
+      # NOUS still beats the best baseline (--ci-gate 0).
+      - run: bash scripts/run_compgen_seq.sh --quick --ci-gate 0
