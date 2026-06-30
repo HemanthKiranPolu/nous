@@ -46,8 +46,31 @@ structured sub-problem it generalizes on.
 - The win is scoped to structured/compositional sub-queries, not general
   language. NOUS = constraint/compositional generator, LLM = everything else.
 
+## 3. Real-LLM reality check — the controller has no niche yet
+
+`nous/router.py` routes structured queries to NOUS. But the premise requires the
+LLM to actually *fail* where NOUS succeeds. Tested directly: a real instruct LLM
+(**Qwen2.5-1.5B-Instruct**, Colab A100) few-shot on the **same** held-out
+compositions:
+
+| model | held-out compositions |
+| ----- | --------------------- |
+| Qwen2.5-1.5B-Instruct (real LLM) | **6/6 = 100 %** |
+| NOUS (from scratch) | 57.5 % |
+| transformer (from scratch) | 9.2 % |
+| MLP (from scratch) | 12.5 % |
+
+The toy "compositional gap" exists **only for tiny from-scratch models**. A real
+pretrained LLM solves it perfectly — so the router would hand NOUS queries the
+LLM already aces, and NOUS (57 %) would *lower* accuracy. There is currently **no
+task with (real-LLM-fails ∩ NOUS-competent)**: the toy is trivial for LLMs, and
+the tasks where LLMs fail (real SCAN splits, hard reasoning) are exactly where
+NOUS is not competent.
+
 ## Takeaway
 
-NOUS's controller value is **generative** (build the valid structured output),
-not **discriminative** (score accept/reject). Build the repair/completion path,
-not the verifier path.
+NOUS's controller value is **generative**, not discriminative — but that value
+is unrealized in practice because the only domain NOUS handles is one real LLMs
+already solve. **The blocker is NOUS competence on hard tasks (open research),
+not system engineering.** Do not ship an LLM+NOUS controller yet; it would route
+work to NOUS that LLMs do better.
