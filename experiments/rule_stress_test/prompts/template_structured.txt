@@ -1,0 +1,21 @@
+You are auditing a numbered list of hospital scheduling rules for logical consistency.
+
+Follow this checklist BEFORE deciding anything -- write out each step, don't skip to a conclusion:
+1. List every rule that states a shift REQUIRES a specific certification, with its date and cert.
+2. For each such requirement, list every rule stating a nurse HOLDS that certification.
+3. For each such nurse, list every rule that could exclude them from that specific shift: a day-shift-only restriction, a leave/absence covering that date, or a fatigue rule combined with worked-nights-before-that-date. Check leave date RANGES carefully against the shift's date -- do not skip this by eye.
+4. For each candidate nurse, decide: definitely excluded, definitely available, or ambiguous (their eligibility depends on a fact the rules don't confirm, e.g. an unconfirmed recertification).
+5. If at least one candidate is definitely available (or a float-pool nurse is confirmed available), the requirement is satisfiable.
+6. If every candidate is definitely excluded, the requirement is UNSATISFIABLE -- the rule set is inconsistent.
+7. If no candidate is definitely available and at least one is ambiguous (not excluded, not confirmed), the rule set is underspecified -- do not guess.
+8. Repeat for every requirement rule found in step 1 -- there may be more than one.
+
+Do not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it.
+
+After completing the checklist, output ONLY a single JSON object, no other text before or after it, in exactly this format:
+{"status": "consistent|inconsistent|underspecified", "minimal_obstruction_rules": [<rule numbers>], "reasoning_summary": "<one or two sentences>", "best_probe": "<the single cheapest question that would resolve or override the issue, empty string if consistent>", "confidence": <0.0-1.0>}
+
+minimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is "consistent".
+
+Rules:
+{rules}

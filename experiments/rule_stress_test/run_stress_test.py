@@ -7,9 +7,14 @@ increasing rule-set sizes, scores strictly against the programmatic answer
 key, and reports whether accuracy degrades with scale -- the decision rule
 from the NOUS-S proposal.
 
-Run (pilot, ~1 min/trial on a 12B local model):
-  python run_stress_test.py --sizes 60 100 150 --seeds 2 --shuffles 2 \
-      --model "hf.co/unsloth/gemma-4-12b-it-GGUF:Q4_K_M"
+Three variants (--variant): "direct" (LLM judges from the raw rules), "structured"
+(LLM judges, but forced through an explicit checklist first), "extract" (LLM only
+extracts structured facts; checker.py decides -- no LLM judgment in the decision).
+
+Run (pilot, ~1 min/trial on a 9B local model):
+  python run_stress_test.py --sizes 60 100 --seeds 2 --shuffles 2 --variant direct
+  python run_stress_test.py --sizes 60 100 --seeds 2 --shuffles 2 --variant structured
+  python run_stress_test.py --sizes 60 100 --seeds 2 --shuffles 2 --variant extract
 
 Decision rule (from the proposal, not invented here):
   Only build NOUS-S if accuracy drops below ~85% at 60 rules, or the model
@@ -20,19 +25,24 @@ Decision rule (from the proposal, not invented here):
 
 import argparse
 import json
-import re
 import statistics
 import time
 import urllib.request
 
+import checker as checker_mod
 from generate_rules import generate_case
 
-TEMPLATE = open("prompts/template.txt").read()
+TEMPLATES = {
+    "direct": "prompts/template.txt",              # A: LLM judges directly
+    "structured": "prompts/template_structured.txt",  # B: LLM judges, forced checklist first
+    "extract": "prompts/template_extract.txt",      # C: LLM extracts facts, checker.py decides
+}
 
 
-def build_prompt(case):
+def build_prompt(case, variant):
+    template = open(TEMPLATES[variant]).read()
     rule_lines = "\n".join(f"{rid}. {text}" for rid, text in case["rules"])
-    return TEMPLATE.replace("{rules}", rule_lines)
+    return template.replace("{rules}", rule_lines)
 
 
 def extract_json(text):
@@ -95,16 +105,24 @@ def score(case, parsed):
     return out
 
 
-def run_trial(case_type, size, seed, shuffle, model, host):
+def run_trial(case_type, size, seed, shuffle, model, host, variant):
     case = generate_case(case_type, size, seed, shuffle)
-    prompt = build_prompt(case)
+    prompt = build_prompt(case, variant)
     t0 = time.time()
     raw = call_ollama(prompt, model, host)
     dt = time.time() - t0
-    parsed = extract_json(raw)
-    s = score(case, parsed)
+    extracted = extract_json(raw)
+    if variant == "extract":
+        try:
+            decision = checker_mod.check(extracted) if extracted is not None else None
+        except (KeyError, TypeError, IndexError):
+            decision = None                                   # malformed extraction -> counts as a miss
+    else:
+        decision = extracted
+    s = score(case, decision)
     s.update({"case_type": case_type, "size": size, "seed": seed, "shuffle": shuffle,
-              "seconds": round(dt, 1), "raw_response": raw, "parsed": parsed,
+              "seconds": round(dt, 1), "raw_response": raw, "parsed": decision,
+              "extracted_facts": extracted if variant == "extract" else None,
               "true_status": case["status"]})
     return s
 
@@ -149,6 +167,7 @@ def main():
     ap.add_argument("--case-types", default="ABCD")
     ap.add_argument("--model", default="hf.co/deepreinforce-ai/Ornith-1.0-9B-GGUF:latest")
     ap.add_argument("--host", default="http://localhost:11434")
+    ap.add_argument("--variant", choices=list(TEMPLATES), default="direct")
     ap.add_argument("--out", default="results/raw_trials.json")
     args = ap.parse_args()
 
@@ -159,7 +178,7 @@ def main():
         for size in args.sizes:
             for seed in range(args.seeds):
                 for sh in range(args.shuffles):
-                    r = run_trial(ct, size, seed, sh, args.model, args.host)
+                    r = run_trial(ct, size, seed, sh, args.model, args.host, args.variant)
                     rows.append(r)
                     done += 1
                     print(f"[{done}/{total}] {ct} size={size} seed={seed} sh={sh} "
