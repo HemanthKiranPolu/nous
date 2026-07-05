@@ -163,3 +163,49 @@ hand-assembled, to eliminate the copy/paste risk) at the full grid the original
 proposal specified, and see whether it beats variant B's 83% rather than just
 matching direct's ceiling. If it doesn't clear B by a meaningful margin, the
 honest conclusion is "prompt engineering solved this," not "NOUS-S-0 is needed."
+
+---
+
+## Clean scripted B-vs-C rerun (2026-07-04, local model, no hand-paste)
+
+Ran `run_stress_test.py --variant structured` then `--variant extract` back to
+back, fully scripted (`run_stress_test.py`'s existing CLI, `checker.py` deciding
+for C), against the local `Ornith-1.0-9B` model -- the exact process fix the
+copy/paste incident called for. Scope: sizes 60/100, 1 seed, 1 shuffle, all 4
+case types (8 cases x 2 variants = 16 calls, single-threaded local server).
+
+| variant | overall | size 60 | size 100 | A | B | C | D |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| B (structured checklist) | 75.0% (6/8) | 75% | 75% | 100% | 0% | 100% | 100% |
+| C (extract + checker.py) | 62.5% (5/8) | 100% | 25% | 100% | 50% | 50%* | 50% |
+
+*C's one size-100 "consistent" case hit a JSON parse failure (extraction
+malformed, not a checker bug) -- counted as wrong, not excluded.
+
+**On this model, at this scale, B beats C by 12.5 points -- the opposite of what
+would justify NOUS-S.** All of C's size-100 losses trace to bad extraction (a
+missed fact, a malformed JSON, a misread field), not bad checker logic --
+`checker.py` never got a chance to reason wrong because it never got the right
+inputs. That's the actual architectural risk in an extract-then-decide
+pipeline: **the checker has zero error-correction capacity.** A direct-reasoning
+model with a checklist can notice its own inconsistency mid-reasoning and
+self-correct (that's most of why B > direct-variant A was such a large jump);
+a deterministic checker downstream of a lossy extraction step cannot recover
+from an extraction mistake at all -- garbage in is silently garbage out, with
+high apparent confidence.
+
+Caveats: n=8, 1 seed, 1 shuffle, one local 9B model -- not the full grid, and
+a stronger model's extraction fidelity could differ (the earlier Sonnet-tier
+spot check, contamination aside, had 5/5 correct on its clean extract trials).
+But this is now two independent signals (Sonnet-tier hand-dispatch, contested;
+local scripted, clean) and neither shows C clearly beating B.
+
+### Final verdict on this branch
+**Do not build NOUS-S-0.** The decision rule was "only build if C clearly beats
+B"; on the one clean run available, C is worse, and the reason it's worse is a
+structural property of the extract-then-decide design (no error correction),
+not a fixable prompt-wording issue. The honest conclusion: structured prompting
+(variant B) is the answer this stress test converged on. The harness
+(`generate_rules.py`, `test_generator.py`, `checker.py`, `run_stress_test.py`,
+three prompt templates) remains a real asset for testing this class of question
+again if a harder, more production-realistic rule set ever revives it.
