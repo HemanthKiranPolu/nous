@@ -1,0 +1,78 @@
+You are extracting structured facts from a numbered list of hospital scheduling rules. Do NOT judge whether the rules are consistent -- only extract. A separate program will decide consistency from what you extract.
+
+For every rule below that matches one of these categories, add ONE entry to the matching list, always including "rule" = the rule's number. Skip rules that don't match any category (most rules are irrelevant filler -- that's expected). If a rule doesn't clearly and unambiguously match a category, leave it out rather than guessing.
+
+Categories:
+- "requirements": a shift on a specific date requires a specific certification. Fields: rule, cert_required, date (copy the date string exactly as written, e.g. "Thu Mar 5").
+- "certifications": a named nurse holds a specific certification, stated plainly with no restriction or doubt. Fields: rule, nurse, cert.
+- "day_shift_only_restrictions": a named nurse's certification is restricted to day shifts only. Fields: rule, nurse, cert.
+- "leaves": a named nurse is on leave/absence covering a date range. Fields: rule, nurse, start, end (copy date strings exactly, e.g. "Mar 1", "Mar 9").
+- "consecutive_nights": a named nurse worked three consecutive night shifts before a specific date. Fields: rule, nurse, before_date.
+- "fatigue_rule_present": a general rule stating nurses must rest after three consecutive night shifts (not about a specific nurse). Fields: rule.
+- "float_pool": a named nurse is a float-pool nurse certified in something, available any day/shift. Fields: rule, nurse, cert.
+- "ambiguous_certifications": a named nurse's certification status is left uncertain (e.g. a recertification test result not confirmed). Fields: rule, nurse, cert.
+
+Output ONLY a single JSON object with exactly these 8 keys, each an array (empty array if nothing matched), no other text before or after it:
+{"requirements": [], "certifications": [], "day_shift_only_restrictions": [], "leaves": [], "consecutive_nights": [], "fatigue_rule_present": [], "float_pool": [], "ambiguous_certifications": []}
+
+Rules:
+1. Nurse V1 requested Tue Mar 3 off and has no shift assigned that day.
+2. Thu Mar 5 is a weekday.
+3. Nurse R4 is certified in OR.
+4. Nurse R3 prefers day shifts but has no restriction on record.
+5. Nurse U3 prefers day shifts but has no restriction on record.
+6. Nurse Q6 requested Mon Mar 2 off and has no shift assigned that day.
+7. Nurse S7 prefers day shifts but has no restriction on record.
+8. Nurse P5 is certified in OR.
+9. Nurse Q9 requested Tue Mar 3 off and has no shift assigned that day.
+10. Nurse R6 is not certified in any specialty unit.
+11. Nurse T4 requested Thu Mar 5 off and has no shift assigned that day.
+12. Nurse U4 is not certified in any specialty unit.
+13. Nurse R8 is not certified in any specialty unit.
+14. Nurse Q7 requested Sat Mar 7 off and has no shift assigned that day.
+15. Nurse T2 is not certified in any specialty unit.
+16. Nurse T8 requested Mon Mar 2 off and has no shift assigned that day.
+17. Nurse P7 is certified in ICU.
+18. Nurse S6 is certified in OR.
+19. Nurse S4 prefers day shifts but has no restriction on record.
+20. Nurse Q4 is not certified in any specialty unit.
+21. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.
+22. Nurse T5 completed annual safety training on Mon Mar 2.
+23. Nurse R1 is certified in OR.
+24. Nurse U5 is certified in ICU.
+25. Nurse U2 is certified in OR.
+26. Nurse T6 is not certified in any specialty unit.
+27. Nurse P6 requested Fri Mar 6 off and has no shift assigned that day.
+28. Nurse S8 is certified in ICU.
+29. Nurse S2 is not certified in any specialty unit.
+30. Nurse P3 is not certified in any specialty unit.
+31. Nurse T9 requested Mon Mar 2 off and has no shift assigned that day.
+32. Nurse V3 is certified in ICU.
+33. Nurse T7 prefers day shifts but has no restriction on record.
+34. Nurse Q2 requested Fri Mar 6 off and has no shift assigned that day.
+35. Nurse P8 requested Sun Mar 8 off and has no shift assigned that day.
+36. Nurse S1 is certified in OR.
+37. Nurse U1 prefers day shifts but has no restriction on record.
+38. Nurse U7 is certified in ICU.
+39. Nurse Q1 is scheduled for the ICU day shift on Wed Mar 4.
+40. Nurse R5 is scheduled for the Operating Room day shift on Fri Mar 6.
+41. Nurse U9 is certified in ICU.
+42. Nurse S9 requested Sun Mar 8 off and has no shift assigned that day.
+43. Nurse A's NICU certification requires re-testing every 2 years; Nurse A's last test was two years ago and the retest has not been confirmed.
+44. Nurse R9 is not certified in any specialty unit.
+45. Nurse S3 prefers day shifts but has no restriction on record.
+46. Nurse P1 is scheduled for the Operating Room day shift on Fri Mar 6.
+47. Nurse P9 is not certified in any specialty unit.
+48. Nurse V2 prefers day shifts but has no restriction on record.
+49. Nurse R2 prefers day shifts but has no restriction on record.
+50. Nurse Q8 is scheduled for the ICU day shift on Fri Mar 6.
+51. Nurse T3 completed annual safety training on Fri Mar 6.
+52. Nurse U8 is certified in OR.
+53. Nurse Q3 is scheduled for the ICU day shift on Fri Mar 6.
+54. Nurse P2 completed annual safety training on Sun Mar 8.
+55. Nurse Q5 is not certified in any specialty unit.
+56. Nurse U6 is not certified in any specialty unit.
+57. Nurse P4 prefers day shifts but has no restriction on record.
+58. Nurse T1 prefers day shifts but has no restriction on record.
+59. Nurse R7 is certified in OR.
+60. Nurse S5 requested Fri Mar 6 off and has no shift assigned that day.

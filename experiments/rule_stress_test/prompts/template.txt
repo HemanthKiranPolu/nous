@@ -1,0 +1,18 @@
+You are auditing a numbered list of hospital scheduling rules for logical consistency.
+
+Determine whether the rules, taken together, are:
+- "consistent": a valid schedule assignment satisfying every rule exists.
+- "inconsistent": no valid assignment can satisfy every rule -- a genuine, provable contradiction.
+- "underspecified": you cannot determine consistency because some fact needed to decide is not stated below. Do not guess -- if guessing either way would change your answer, say underspecified.
+
+Do not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it. "Underspecified" means a STATED entity's status is left ambiguous by the rules themselves (e.g. a certification whose renewal outcome isn't given) -- it does NOT mean "an unlisted nurse might exist." If no assignment using only the listed people/resources satisfies all rules, and the only way to satisfy it would require an unlisted exception, mark it "inconsistent", not "underspecified".
+
+Keep any reasoning brief (a few sentences). Then output the JSON object.
+
+Respond with ONLY a single JSON object, no other text before or after it, in exactly this format:
+{"status": "consistent|inconsistent|underspecified", "minimal_obstruction_rules": [<rule numbers>], "reasoning_summary": "<one or two sentences>", "best_probe": "<the single cheapest question that would resolve or override the issue, empty string if consistent>", "confidence": <0.0-1.0>}
+
+minimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is "consistent".
+
+Rules:
+{rules}

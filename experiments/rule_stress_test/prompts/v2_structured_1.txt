@@ -1,0 +1,80 @@
+You are auditing a numbered list of hospital scheduling rules for logical consistency.
+
+Follow this checklist BEFORE deciding anything -- write out each step, don't skip to a conclusion:
+1. List every rule that states a shift REQUIRES a specific certification, with its date and cert.
+2. For each such requirement, list every rule stating a nurse HOLDS that certification.
+3. For each such nurse, list every rule that could exclude them from that specific shift: a day-shift-only restriction, a leave/absence covering that date, or a fatigue rule combined with worked-nights-before-that-date. Check leave date RANGES carefully against the shift's date -- do not skip this by eye.
+4. For each candidate nurse, decide: definitely excluded, definitely available, or ambiguous (their eligibility depends on a fact the rules don't confirm, e.g. an unconfirmed recertification).
+5. If at least one candidate is definitely available (or a float-pool nurse is confirmed available), the requirement is satisfiable.
+6. If every candidate is definitely excluded, the requirement is UNSATISFIABLE -- the rule set is inconsistent.
+7. If no candidate is definitely available and at least one is ambiguous (not excluded, not confirmed), the rule set is underspecified -- do not guess.
+8. Repeat for every requirement rule found in step 1 -- there may be more than one.
+
+Do not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it.
+
+After completing the checklist, output ONLY a single JSON object, no other text before or after it, in exactly this format:
+{"status": "consistent|inconsistent|underspecified", "minimal_obstruction_rules": [<rule numbers>], "reasoning_summary": "<one or two sentences>", "best_probe": "<the single cheapest question that would resolve or override the issue, empty string if consistent>", "confidence": <0.0-1.0>}
+
+minimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is "consistent".
+
+Rules:
+1. Nurse V1 requested Tue Mar 3 off and has no shift assigned that day.
+2. Thu Mar 5 is a weekday.
+3. Nurse R4 is certified in OR.
+4. Nurse R3 prefers day shifts but has no restriction on record.
+5. Nurse U3 prefers day shifts but has no restriction on record.
+6. Nurse Q6 requested Mon Mar 2 off and has no shift assigned that day.
+7. Nurse S7 prefers day shifts but has no restriction on record.
+8. Nurse P5 is certified in OR.
+9. Nurse Q9 requested Tue Mar 3 off and has no shift assigned that day.
+10. Nurse R6 is not certified in any specialty unit.
+11. Nurse T4 requested Thu Mar 5 off and has no shift assigned that day.
+12. Nurse U4 is not certified in any specialty unit.
+13. Nurse R8 is not certified in any specialty unit.
+14. Nurse Q7 requested Sat Mar 7 off and has no shift assigned that day.
+15. Nurse T2 is not certified in any specialty unit.
+16. Nurse T8 requested Mon Mar 2 off and has no shift assigned that day.
+17. Nurse P7 is certified in ICU.
+18. Nurse S6 is certified in OR.
+19. Nurse S4 prefers day shifts but has no restriction on record.
+20. Nurse Q4 is not certified in any specialty unit.
+21. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.
+22. Nurse T5 completed annual safety training on Mon Mar 2.
+23. Nurse R1 is certified in OR.
+24. Nurse U5 is certified in ICU.
+25. Nurse U2 is certified in OR.
+26. Nurse T6 is not certified in any specialty unit.
+27. Nurse P6 requested Fri Mar 6 off and has no shift assigned that day.
+28. Nurse S8 is certified in ICU.
+29. Nurse S2 is not certified in any specialty unit.
+30. Nurse P3 is not certified in any specialty unit.
+31. Nurse T9 requested Mon Mar 2 off and has no shift assigned that day.
+32. Nurse V3 is certified in ICU.
+33. Nurse T7 prefers day shifts but has no restriction on record.
+34. Nurse Q2 requested Fri Mar 6 off and has no shift assigned that day.
+35. Nurse P8 requested Sun Mar 8 off and has no shift assigned that day.
+36. Nurse S1 is certified in OR.
+37. Nurse U1 prefers day shifts but has no restriction on record.
+38. Nurse U7 is certified in ICU.
+39. Nurse Q1 is scheduled for the ICU day shift on Wed Mar 4.
+40. Nurse R5 is scheduled for the Operating Room day shift on Fri Mar 6.
+41. Nurse U9 is certified in ICU.
+42. Nurse S9 requested Sun Mar 8 off and has no shift assigned that day.
+43. Nurse A's NICU certification requires re-testing every 2 years; Nurse A's last test was two years ago and the retest has not been confirmed.
+44. Nurse R9 is not certified in any specialty unit.
+45. Nurse S3 prefers day shifts but has no restriction on record.
+46. Nurse P1 is scheduled for the Operating Room day shift on Fri Mar 6.
+47. Nurse P9 is not certified in any specialty unit.
+48. Nurse V2 prefers day shifts but has no restriction on record.
+49. Nurse R2 prefers day shifts but has no restriction on record.
+50. Nurse Q8 is scheduled for the ICU day shift on Fri Mar 6.
+51. Nurse T3 completed annual safety training on Fri Mar 6.
+52. Nurse U8 is certified in OR.
+53. Nurse Q3 is scheduled for the ICU day shift on Fri Mar 6.
+54. Nurse P2 completed annual safety training on Sun Mar 8.
+55. Nurse Q5 is not certified in any specialty unit.
+56. Nurse U6 is not certified in any specialty unit.
+57. Nurse P4 prefers day shifts but has no restriction on record.
+58. Nurse T1 prefers day shifts but has no restriction on record.
+59. Nurse R7 is certified in OR.
+60. Nurse S5 requested Fri Mar 6 off and has no shift assigned that day.

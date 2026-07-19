@@ -1,0 +1,784 @@
+[
+  {
+    "status_correct": true,
+    "precision": 1.0,
+    "recall": 0.5,
+    "hallucination": false,
+    "parse_ok": true,
+    "case_type": "A",
+    "size": 60,
+    "seed": 0,
+    "shuffle": 0,
+    "seconds": 94.8,
+    "raw_response": "Let me go through each rule and determine which category it matches, if any.\n\n1. \"Nurse U7 is certified in OR.\" - This states a named nurse holds a specific certification plainly with no restriction or doubt. \u2192 certifications: {rule: 1, nurse: \"U7\", cert: \"OR\"}\n\n2. \"Nurse S6 prefers day shifts but has no restriction on record.\" - Preference, not a certification. Doesn't match any category. Skip.\n\n3. \"Nurse T4 completed annual safety training on Mon Mar 2.\" - Training completion, not a certification requirement or nurse certification. Skip.\n\n4. \"Nurse S1 is not certified in any specialty unit.\" - This says they are NOT certified. The certifications category requires \"a named nurse holds a specific certification, stated plainly with no restriction or doubt.\" This is the opposite. Skip.\n\n5. \"Nurse U8 is certified in ICU.\" \u2192 certifications: {rule: 5, nurse: \"U8\", cert: \"ICU\"}\n\n6. \"Nurse S8 requested Sun Mar 8 off and has no shift assigned that day.\" - Requesting time off, not a leave/absence covering a date range. Skip.\n\n7. \"Nurse T3 requested Thu Mar 5 off and has no shift assigned that day.\" - Same as above. Skip.\n\n8. \"Nurse S4 requested Fri Mar 6 off and has no shift assigned that day.\" - Same. Skip.\n\n9. \"Nurse S5 is certified in OR.\" \u2192 certifications: {rule: 9, nurse: \"S5\", cert: \"OR\"}\n\n10. \"The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\" - This is a requirement for a specific date/shift. \u2192 requirements: {rule: 10, cert_required: \"NICU\", date: \"Thu Mar 5\"}\n\n11. \"Nurse S3 prefers day shifts but has no restriction on record.\" - Skip.\n\n12. \"Nurse Q3 is not certified in any specialty unit.\" - Not a certification held. Skip.\n\n13. \"Nurse U9 requested Tue Mar 3 off and has no shift assigned that day.\" - Skip.\n\n14. \"Nurse P4 is certified in OR.\" \u2192 certifications: {rule: 14, nurse: \"P4\", cert: \"OR\"}\n\n15. \"Nurse Q6 requested Sat Mar 7 off and has no shift assigned that day.\" - Skip.\n\n16. \"Nurse P3 prefers day shifts but has no restriction on record.\" - Skip.\n\n17. \"Nurse R8 is not certified in any specialty unit.\" - Skip.\n\n18. \"Nurse P5 requested Fri Mar 6 off and has no shift assigned that day.\" - Skip.\n\n19. \"Nurse T1 is not certified in any specialty unit.\" - Skip.\n\n20. \"Nurse R1 prefers day shifts but has no restriction on record.\" - Skip.\n\n21. \"Nurse U2 prefers day shifts but has no restriction on record.\" - Skip.\n\n22. \"Nurse U5 is not certified in any specialty unit.\" - Skip.\n\n23. \"Nurse Q7 is scheduled for the ICU day shift on Fri Mar 6.\" - This is a scheduling assignment, not a certification statement. Skip.\n\n24. \"Nurse U3 is not certified in any specialty unit.\" - Skip.\n\n25. \"Nurse E is on approved leave from Mar 1 to Mar 9.\" \u2192 leaves: {rule: 25, nurse: \"E\", start: \"Mar 1\", end: \"Mar 9\"}\n\n26. \"Nurse Q4 is not certified in any specialty unit.\" - Skip.\n\n27. \"Nurse R3 is certified in OR.\" \u2192 certifications: {rule: 27, nurse: \"R3\", cert: \"OR\"}\n\n28. \"Nurse Q1 requested Fri Mar 6 off and has no shift assigned that day.\" - Skip.\n\n29. \"Nurse Q9 is certified in OR.\" \u2192 certifications: {rule: 29, nurse: \"Q9\", cert: \"OR\"}\n\n30. \"Nurse R5 is not certified in any specialty unit.\" - Skip.\n\n31. \"Nurse T8 requested Mon Mar 2 off and has no shift assigned that day.\" - Skip.\n\n32. \"Nurse T6 prefers day shifts but has no restriction on record.\" - Skip.\n\n33. \"Nurse P7 requested Sun Mar 8 off and has no shift assigned that day.\" - Skip.\n\n34. \"Nurse R2 prefers day shifts but has no restriction on record.\" - Skip.\n\n35. \"Nurse T7 requested Mon Mar 2 off and has no shift assigned that day.\" - Skip.\n\n36. \"Nurse A is certified in NICU.\" \u2192 certifications: {rule: 36, nurse: \"A\", cert: \"NICU\"}\n\n37. \"Nurse R6 is certified in OR.\" \u2192 certifications: {rule: 37, nurse: \"R6\", cert: \"OR\"}\n\n38. \"Nurse R9 is certified in OR.\" \u2192 certifications: {rule: 38, nurse: \"R9\", cert: \"OR\"}\n\n39. \"Nurse U4 is certified in ICU.\" \u2192 certifications: {rule: 39, nurse: \"U4\", cert: \"ICU\"}\n\n40. \"Nurse P6 is certified in ICU.\" \u2192 certifications: {rule: 40, nurse: \"P6\", cert: \"ICU\"}\n\n41. \"Nurse T9 prefers day shifts but has no restriction on record.\" - Skip.\n\n42. \"Nurse Q8 requested Tue Mar 3 off and has no shift assigned that day.\" - Skip.\n\n43. \"Nurse Q5 requested Mon Mar 2 off and has no shift assigned that day.\" - Skip.\n\n44. \"Nurse S9 prefers day shifts but has no restriction on record.\" - Skip.\n\n45. \"Nurse U6 is certified in ICU.\" \u2192 certifications: {rule: 45, nurse: \"U6\", cert: \"ICU\"}\n\n46. \"Nurse P9 is scheduled for the ICU day shift on Wed Mar 4.\" - Scheduling assignment. Skip.\n\n47. \"Nurse E is certified in NICU.\" \u2192 certifications: {rule: 47, nurse: \"E\", cert: \"NICU\"}\n\n48. \"Nurse Q2 is scheduled for the ICU day shift on Fri Mar 6.\" - Scheduling assignment. Skip.\n\n49. \"Nurse P1 completed annual safety training on Thu Mar 5.\" - Training completion. Skip.\n\n50. \"Nurse S7 is certified in ICU.\" \u2192 certifications: {rule: 50, nurse: \"S7\", cert: \"ICU\"}\n\n51. \"Nurse R4 is scheduled for the Operating Room day shift on Fri Mar 6.\" - Scheduling assignment. Skip.\n\n52. \"Nurse S2 prefers day shifts but has no restriction on record.\" - Skip.\n\n53. \"Thu Mar 5 is a weekday.\" - General fact, not matching any category. Skip.\n\n54. \"Nurse T2 completed annual safety training on Fri Mar 6.\" - Training completion. Skip.\n\n55. \"Nurse A is certified in NICU only for day shifts, per bylaw 4.2.\" \u2192 This is a named nurse's certification restricted to day shifts only. \u2192 day_shift_only_restrictions: {rule: 55, nurse: \"A\", cert: \"NICU\"}\n\n56. \"Nurse U1 is certified in OR.\" \u2192 certifications: {rule: 56, nurse: \"U1\", cert: \"OR\"}\n\n57. \"Nurse T5 is not certified in any specialty unit.\" - Skip.\n\n58. \"Nurse P8 is not certified in any specialty unit.\" - Skip.\n\n59. \"Nurse R7 is not certified in any specialty unit.\" - Skip.\n\n60. \"Nurse P2 is not certified in any specialty unit.\" - Skip.\n\nNow let me compile the final JSON:\n\nrequirements:\n- Rule 10: cert_required = \"NICU\", date = \"Thu Mar 5\"\n\ncertifications:\n- Rule 1: nurse = \"U7\", cert = \"OR\"\n- Rule 5: nurse = \"U8\", cert = \"ICU\"\n- Rule 9: nurse = \"S5\", cert = \"OR\"\n- Rule 14: nurse = \"P4\", cert = \"OR\"\n- Rule 27: nurse = \"R3\", cert = \"OR\"\n- Rule 29: nurse = \"Q9\", cert = \"OR\"\n- Rule 36: nurse = \"A\", cert = \"NICU\"\n- Rule 37: nurse = \"R6\", cert = \"OR\"\n- Rule 38: nurse = \"R9\", cert = \"OR\"\n- Rule 39: nurse = \"U4\", cert = \"ICU\"\n- Rule 40: nurse = \"P6\", cert = \"ICU\"\n- Rule 45: nurse = \"U6\", cert = \"ICU\"\n- Rule 50: nurse = \"S7\", cert = \"ICU\"\n- Rule 56: nurse = \"U1\", cert = \"OR\"\n\nday_shift_only_restrictions:\n- Rule 55: nurse = \"A\", cert = \"NICU\"\n\nleaves:\n- Rule 25: nurse = \"E\", start = \"Mar 1\", end = \"Mar 9\"\n\nconsecutive_nights: [] (no rules about a specific nurse working three consecutive night shifts)\n\nfatigue_rule_present: [] (no general rule about nurses needing rest after three consecutive night shifts)\n\nfloat_pool: [] (no float pool mentions)\n\nambiguous_certifications: [] (no uncertain certification status mentioned)\n</think>\n\n```json\n{\n  \"requirements\": [\n    {\"rule\": 10, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"}\n  ],\n  \"certifications\": [\n    {\"rule\": 1, \"nurse\": \"U7\", \"cert\": \"OR\"},\n    {\"rule\": 5, \"nurse\": \"U8\", \"cert\": \"ICU\"},\n    {\"rule\": 9, \"nurse\": \"S5\", \"cert\": \"OR\"},\n    {\"rule\": 14, \"nurse\": \"P4\", \"cert\": \"OR\"},\n    {\"rule\": 27, \"nurse\": \"R3\", \"cert\": \"OR\"},\n    {\"rule\": 29, \"nurse\": \"Q9\", \"cert\": \"OR\"},\n    {\"rule\": 36, \"nurse\": \"A\", \"cert\": \"NICU\"},\n    {\"rule\": 37, \"nurse\": \"R6\", \"cert\": \"OR\"},\n    {\"rule\": 38, \"nurse\": \"R9\", \"cert\": \"OR\"},\n    {\"rule\": 39, \"nurse\": \"U4\", \"cert\": \"ICU\"},\n    {\"rule\": 40, \"nurse\": \"P6\", \"cert\": \"ICU\"},\n    {\"rule\": 45, \"nurse\": \"U6\", \"cert\": \"ICU\"},\n    {\"rule\": 50, \"nurse\": \"S7\", \"cert\": \"ICU\"},\n    {\"rule\": 56, \"nurse\": \"U1\", \"cert\": \"OR\"}\n  ],\n  \"day_shift_only_restrictions\": [\n    {\"rule\": 55, \"nurse\": \"A\", \"cert\": \"NICU\"}\n  ],\n  \"leaves\": [\n    {\"rule\": 25, \"nurse\": \"E\", \"start\": \"Mar 1\", \"end\": \"Mar 9\"}\n  ],\n  \"consecutive_nights\": [],\n  \"fatigue_rule_present\": [],\n  \"float_pool\": [],\n  \"ambiguous_certifications\": []\n}\n```",
+    "parsed": {
+      "status": "inconsistent",
+      "minimal_obstruction_rules": [
+        10,
+        36,
+        55
+      ],
+      "best_probe": "Is any other NICU-certified nurse or override available for Thu Mar 5?",
+      "confidence": 0.9
+    },
+    "extracted_facts": {
+      "requirements": [
+        {
+          "rule": 10,
+          "cert_required": "NICU",
+          "date": "Thu Mar 5"
+        }
+      ],
+      "certifications": [
+        {
+          "rule": 1,
+          "nurse": "U7",
+          "cert": "OR"
+        },
+        {
+          "rule": 5,
+          "nurse": "U8",
+          "cert": "ICU"
+        },
+        {
+          "rule": 9,
+          "nurse": "S5",
+          "cert": "OR"
+        },
+        {
+          "rule": 14,
+          "nurse": "P4",
+          "cert": "OR"
+        },
+        {
+          "rule": 27,
+          "nurse": "R3",
+          "cert": "OR"
+        },
+        {
+          "rule": 29,
+          "nurse": "Q9",
+          "cert": "OR"
+        },
+        {
+          "rule": 36,
+          "nurse": "A",
+          "cert": "NICU"
+        },
+        {
+          "rule": 37,
+          "nurse": "R6",
+          "cert": "OR"
+        },
+        {
+          "rule": 38,
+          "nurse": "R9",
+          "cert": "OR"
+        },
+        {
+          "rule": 39,
+          "nurse": "U4",
+          "cert": "ICU"
+        },
+        {
+          "rule": 40,
+          "nurse": "P6",
+          "cert": "ICU"
+        },
+        {
+          "rule": 45,
+          "nurse": "U6",
+          "cert": "ICU"
+        },
+        {
+          "rule": 50,
+          "nurse": "S7",
+          "cert": "ICU"
+        },
+        {
+          "rule": 56,
+          "nurse": "U1",
+          "cert": "OR"
+        }
+      ],
+      "day_shift_only_restrictions": [
+        {
+          "rule": 55,
+          "nurse": "A",
+          "cert": "NICU"
+        }
+      ],
+      "leaves": [
+        {
+          "rule": 25,
+          "nurse": "E",
+          "start": "Mar 1",
+          "end": "Mar 9"
+        }
+      ],
+      "consecutive_nights": [],
+      "fatigue_rule_present": [],
+      "float_pool": [],
+      "ambiguous_certifications": []
+    },
+    "true_status": "inconsistent"
+  },
+  {
+    "status_correct": true,
+    "precision": 1.0,
+    "recall": 0.8,
+    "hallucination": false,
+    "parse_ok": true,
+    "case_type": "A",
+    "size": 100,
+    "seed": 0,
+    "shuffle": 0,
+    "seconds": 132.6,
+    "raw_response": "Let me go through each rule and categorize them:\n\n**requirements**: A shift on a specific date requires a specific certification.\n- Rule 94: \"The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\" \u2192 cert_required = \"NICU\", date = \"Thu Mar 5\"\n\n**certifications**: A named nurse holds a specific certification, stated plainly with no restriction or doubt.\n- Rule 9: Nurse R3 is certified in OR. \u2192 nurse = \"R3\", cert = \"OR\"\n- Rule 13: Nurse U1 is certified in OR. \u2192 nurse = \"U1\", cert = \"OR\"\n- Rule 22: Nurse S7 is certified in ICU. \u2192 nurse = \"S7\", cert = \"ICU\"\n- Rule 26: Nurse U4 is certified in ICU. \u2192 nurse = \"U4\", cert = \"ICU\"\n- Rule 28: Nurse W3 is certified in ICU. \u2192 nurse = \"W3\", cert = \"ICU\"\n- Rule 31: Nurse R9 is certified in OR. \u2192 nurse = \"R9\", cert = \"OR\"\n- Rule 35: Nurse V2 is certified in ICU. \u2192 nurse = \"V2\", cert = \"ICU\"\n- Rule 37: Nurse V3 is certified in OR. \u2192 nurse = \"V3\", cert = \"OR\"\n- Rule 39: Nurse P4 is certified in OR. \u2192 nurse = \"P4\", cert = \"OR\"\n- Rule 40: Nurse U7 is certified in OR. \u2192 nurse = \"U7\", cert = \"OR\"\n- Rule 41: Nurse A is certified in NICU. \u2192 nurse = \"A\", cert = \"NICU\"\n- Rule 49: Nurse R6 is certified in OR. \u2192 nurse = \"R6\", cert = \"OR\"\n- Rule 50: Wait, rule 50 says \"Nurse X9 completed annual safety training on Sat Mar 7.\" - that's not a certification. Skip.\n- Rule 51: Nurse I worked night shifts... - consecutive_nights\n- Rule 64: Nurse U6 is certified in ICU. \u2192 nurse = \"U6\", cert = \"ICU\"\n- Rule 70: Nurse P6 is certified in ICU. \u2192 nurse = \"P6\", cert = \"ICU\"\n- Rule 76: Nurse Q9 is certified in OR. \u2192 nurse = \"Q9\", cert = \"OR\"\n- Rule 88: Nurse I is certified in NICU. \u2192 nurse = \"I\", cert = \"NICU\"\n- Rule 91: Nurse S5 is certified in OR. \u2192 nurse = \"S5\", cert = \"OR\"\n- Rule 93: Nurse E is certified in NICU. \u2192 nurse = \"E\", cert = \"NICU\"\n- Rule 96: Nurse V8 is certified in ICU. \u2192 nurse = \"V8\", cert = \"ICU\"\n- Rule 97: Nurse U8 is certified in ICU. \u2192 nurse = \"U8\", cert = \"ICU\"\n\n**day_shift_only_restrictions**: A named nurse's certification is restricted to day shifts only.\n- Rule 2: Nurse A is certified in NICU only for day shifts, per bylaw 4.2. \u2192 nurse = \"A\", cert = \"NICU\"\n- Rule 10: Nurse Q3 is not certified in any specialty unit. - This says NOT certified, so it's a negative statement about certification status. Not really a day_shift_only restriction. Skip.\n- Rule 11: Nurse R5 is not certified... Skip (negative)\n- Rule 12: Nurse T1 is not certified... Skip\n- Rule 15: Nurse R7 is not certified... Skip\n- Rule 16: Nurse S1 is not certified... Skip\n- Rule 20: Nurse Y2 is not certified... Skip\n- Rule 24: Nurse V1 prefers day shifts but has no restriction on record. - \"no restriction\" means it's NOT a restriction. Skip.\n- Rule 27: Nurse S6 prefers day shifts but has no restriction on record. - Same, skip.\n- Rule 29: Nurse P2 is not certified... Skip\n- Rule 30: Training completion. Skip.\n- Rule 32: Nurse R2 prefers day shifts but has no restriction on record. - Skip.\n- Rule 43: Nurse U2 prefers day shifts but has no restriction on record. - Skip.\n- Rule 46: Nurse Q4 is not certified... Skip\n- Rule 52: Nurse X2 is not certified... Skip\n- Rule 54: Nurse T5 is not certified... Skip\n- Rule 56: Nurse R1 prefers day shifts but has no restriction on record. - Skip.\n- Rule 57: Nurse P8 is not certified... Skip\n- Rule 60: Nurse Y4 prefers day shifts but has no restriction on record. - Skip.\n- Rule 63: Nurse T9 prefers day shifts but has no restriction on record. - Skip.\n- Rule 67: Nurse R8 is not certified... Skip\n- Rule 68: Nurse S2 prefers day shifts but has no restriction on record. - Skip.\n- Rule 72: Nurse P3 prefers day shifts but has no restriction on record. - Skip.\n- Rule 74: Nurse W4 prefers day shifts but has no restriction on record. - Skip.\n- Rule 75: Nurse W8 is not certified... Skip\n- Rule 78: Nurse S4 requested off. Skip (not a certification rule)\n- Rule 80: Nurse T6 prefers day shifts but has no restriction on record. - Skip.\n- Rule 89: Nurse U5 is not certified... Skip\n- Rule 90: Nurse S3 prefers day shifts but has no restriction on record. - Skip.\n- Rule 94: Already in requirements.\n- Rule 98: Nurse V4 prefers day shifts but has no restriction on record. - Skip.\n- Rule 99: Nurse U3 is not certified... Skip\n\n**leaves**: A named nurse is on leave/absence covering a date range.\n- Rule 59: Nurse E is on approved leave from Mar 1 to Mar 9. \u2192 nurse = \"E\", start = \"Mar 1\", end = \"Mar 9\"\n\n**consecutive_nights**: A named nurse worked three consecutive night shifts before a specific date.\n- Rule 51: Nurse I worked night shifts on the three consecutive nights before Thu Mar 5. \u2192 nurse = \"I\", before_date = \"Thu Mar 5\"\n\n**fatigue_rule_present**: A general rule stating nurses must rest after three consecutive night shifts (not about a specific nurse).\n- Rule 44: Any nurse who works three consecutive night shifts must be off the following night shift. \u2192 This is a fatigue rule.\n\n**float_pool**: A named nurse is a float-pool nurse certified in something, available any day/shift.\n- None of the rules mention \"float pool\" or similar language. Skip all.\n\n**ambiguous_certifications**: A named nurse's certification status is left uncertain (e.g. a recertification test result not confirmed).\n- Rule 10: Nurse Q3 is not certified in any specialty unit. - This is a clear negative statement, not ambiguous. Skip.\n- Rules saying \"not certified\" are clear negatives, not ambiguous. Skip all of them.\n\nLet me also check rules about scheduling (e.g., \"Nurse Y1 is scheduled for the Operating Room day shift on Sat Mar 7\") - these don't match any category. They're just schedule assignments, not requirements/certifications/etc.\n\nNow let me compile:\n\n**requirements**:\n- Rule 94: cert_required = \"NICU\", date = \"Thu Mar 5\"\n\n**certifications**:\n- Rule 9: nurse = \"R3\", cert = \"OR\"\n- Rule 13: nurse = \"U1\", cert = \"OR\"\n- Rule 22: nurse = \"S7\", cert = \"ICU\"\n- Rule 26: nurse = \"U4\", cert = \"ICU\"\n- Rule 28: nurse = \"W3\", cert = \"ICU\"\n- Rule 31: nurse = \"R9\", cert = \"OR\"\n- Rule 35: nurse = \"V2\", cert = \"ICU\"\n- Rule 37: nurse = \"V3\", cert = \"OR\"\n- Rule 39: nurse = \"P4\", cert = \"OR\"\n- Rule 40: nurse = \"U7\", cert = \"OR\"\n- Rule 41: nurse = \"A\", cert = \"NICU\"\n- Rule 49: nurse = \"R6\", cert = \"OR\"\n- Rule 64: nurse = \"U6\", cert = \"ICU\"\n- Rule 70: nurse = \"P6\", cert = \"ICU\"\n- Rule 76: nurse = \"Q9\", cert = \"OR\"\n- Rule 88: nurse = \"I\", cert = \"NICU\"\n- Rule 91: nurse = \"S5\", cert = \"OR\"\n- Rule 93: nurse = \"E\", cert = \"NICU\"\n- Rule 96: nurse = \"V8\", cert = \"ICU\"\n- Rule 97: nurse = \"U8\", cert = \"ICU\"\n\n**day_shift_only_restrictions**:\n- Rule 2: nurse = \"A\", cert = \"NICU\"\n\n**leaves**:\n- Rule 59: nurse = \"E\", start = \"Mar 1\", end = \"Mar 9\"\n\n**consecutive_nights**:\n- Rule 51: nurse = \"I\", before_date = \"Thu Mar 5\"\n\n**fatigue_rule_present**:\n- Rule 44\n\n**float_pool**: []\n\n**ambiguous_certifications**: []\n\nLet me double-check rule 2 - \"Nurse A is certified in NICU only for day shifts, per bylaw 4.2.\" This clearly says the certification is restricted to day shifts only. So it goes in day_shift_only_restrictions with nurse = \"A\", cert = \"NICU\".\n\nAlso check: Rule 10 says \"Nurse Q3 is not certified in any specialty unit.\" - this is a clear negative, not ambiguous. Skip.\n\nRule 41: \"Nurse A is certified in NICU.\" This is a plain certification statement (no restriction mentioned). Goes in certifications with nurse = \"A\", cert = \"NICU\".\n\nWait, but Rule 2 also mentions Nurse A and NICU - it says \"certified in NICU only for day shifts\". So Rule 41 says \"Nurse A is certified in NICU\" without the restriction. These are two separate rules about the same nurse/cert combo but with different conditions. Both should be extracted as they appear.\n\nLet me finalize the JSON.\n</think>\n\n```json\n{\n  \"requirements\": [\n    {\n      \"rule\": 94,\n      \"cert_required\": \"NICU\",\n      \"date\": \"Thu Mar 5\"\n    }\n  ],\n  \"certifications\": [\n    {\n      \"rule\": 9,\n      \"nurse\": \"R3\",\n      \"cert\": \"OR\"\n    },\n    {\n      \"rule\": 13,\n      \"nurse\": \"U1\",\n      \"cert\": \"OR\"\n    },\n    {\n      \"rule\": 22,\n      \"nurse\": \"S7\",\n      \"cert\": \"ICU\"\n    },\n    {\n      \"rule\": 26,\n      \"nurse\": \"U4\",\n      \"cert\": \"ICU\"\n    },\n    {\n      \"rule\": 28,\n      \"nurse\": \"W3\",\n      \"cert\": \"ICU\"\n    },\n    {\n      \"rule\": 31,\n      \"nurse\": \"R9\",\n      \"cert\": \"OR\"\n    },\n    {\n      \"rule\": 35,\n      \"nurse\": \"V2\",\n      \"cert\": \"ICU\"\n    },\n    {\n      \"rule\": 37,\n      \"nurse\": \"V3\",\n      \"cert\": \"OR\"\n    },\n    {\n      \"rule\": 39,\n      \"nurse\": \"P4\",\n      \"cert\": \"OR\"\n    },\n    {\n      \"rule\": 40,\n      \"nurse\": \"U7\",\n      \"cert\": \"OR\"\n    },\n    {\n      \"rule\": 41,\n      \"nurse\": \"A\",\n      \"cert\": \"NICU\"\n    },\n    {\n      \"rule\": 49,\n      \"nurse\": \"R6\",\n      \"cert\": \"OR\"\n    },\n    {\n      \"rule\": 64,\n      \"nurse\": \"U6\",\n      \"cert\": \"ICU\"\n    },\n    {\n      \"rule\": 70,\n      \"nurse\": \"P6\",\n      \"cert\": \"ICU\"\n    },\n    {\n      \"rule\": 76,\n      \"nurse\": \"Q9\",\n      \"cert\": \"OR\"\n    },\n    {\n      \"rule\": 88,\n      \"nurse\": \"I\",\n      \"cert\": \"NICU\"\n    },\n    {\n      \"rule\": 91,\n      \"nurse\": \"S5\",\n      \"cert\": \"OR\"\n    },\n    {\n      \"rule\": 93,\n      \"nurse\": \"E\",\n      \"cert\": \"NICU\"\n    },\n    {\n      \"rule\": 96,\n      \"nurse\": \"V8\",\n      \"cert\": \"ICU\"\n    },\n    {\n      \"rule\": 97,\n      \"nurse\": \"U8\",\n      \"cert\": \"ICU\"\n    }\n  ],\n  \"day_shift_only_restrictions\": [\n    {\n      \"rule\": 2,\n      \"nurse\": \"A\",\n      \"cert\": \"NICU\"\n    }\n  ],\n  \"leaves\": [\n    {\n      \"rule\": 59,\n      \"nurse\": \"E\",\n      \"start\": \"Mar 1\",\n      \"end\": \"Mar 9\"\n    }\n  ],\n  \"consecutive_nights\": [\n    {\n      \"rule\": 51,\n      \"nurse\": \"I\",\n      \"before_date\": \"Thu Mar 5\"\n    }\n  ],\n  \"fatigue_rule_present\": [\n    {\n      \"rule\": 44\n    }\n  ],\n  \"float_pool\": [],\n  \"ambiguous_certifications\": []\n}\n```",
+    "parsed": {
+      "status": "inconsistent",
+      "minimal_obstruction_rules": [
+        2,
+        41,
+        44,
+        51,
+        59,
+        88,
+        93,
+        94
+      ],
+      "best_probe": "Is any other NICU-certified nurse or override available for Thu Mar 5?",
+      "confidence": 0.9
+    },
+    "extracted_facts": {
+      "requirements": [
+        {
+          "rule": 94,
+          "cert_required": "NICU",
+          "date": "Thu Mar 5"
+        }
+      ],
+      "certifications": [
+        {
+          "rule": 9,
+          "nurse": "R3",
+          "cert": "OR"
+        },
+        {
+          "rule": 13,
+          "nurse": "U1",
+          "cert": "OR"
+        },
+        {
+          "rule": 22,
+          "nurse": "S7",
+          "cert": "ICU"
+        },
+        {
+          "rule": 26,
+          "nurse": "U4",
+          "cert": "ICU"
+        },
+        {
+          "rule": 28,
+          "nurse": "W3",
+          "cert": "ICU"
+        },
+        {
+          "rule": 31,
+          "nurse": "R9",
+          "cert": "OR"
+        },
+        {
+          "rule": 35,
+          "nurse": "V2",
+          "cert": "ICU"
+        },
+        {
+          "rule": 37,
+          "nurse": "V3",
+          "cert": "OR"
+        },
+        {
+          "rule": 39,
+          "nurse": "P4",
+          "cert": "OR"
+        },
+        {
+          "rule": 40,
+          "nurse": "U7",
+          "cert": "OR"
+        },
+        {
+          "rule": 41,
+          "nurse": "A",
+          "cert": "NICU"
+        },
+        {
+          "rule": 49,
+          "nurse": "R6",
+          "cert": "OR"
+        },
+        {
+          "rule": 64,
+          "nurse": "U6",
+          "cert": "ICU"
+        },
+        {
+          "rule": 70,
+          "nurse": "P6",
+          "cert": "ICU"
+        },
+        {
+          "rule": 76,
+          "nurse": "Q9",
+          "cert": "OR"
+        },
+        {
+          "rule": 88,
+          "nurse": "I",
+          "cert": "NICU"
+        },
+        {
+          "rule": 91,
+          "nurse": "S5",
+          "cert": "OR"
+        },
+        {
+          "rule": 93,
+          "nurse": "E",
+          "cert": "NICU"
+        },
+        {
+          "rule": 96,
+          "nurse": "V8",
+          "cert": "ICU"
+        },
+        {
+          "rule": 97,
+          "nurse": "U8",
+          "cert": "ICU"
+        }
+      ],
+      "day_shift_only_restrictions": [
+        {
+          "rule": 2,
+          "nurse": "A",
+          "cert": "NICU"
+        }
+      ],
+      "leaves": [
+        {
+          "rule": 59,
+          "nurse": "E",
+          "start": "Mar 1",
+          "end": "Mar 9"
+        }
+      ],
+      "consecutive_nights": [
+        {
+          "rule": 51,
+          "nurse": "I",
+          "before_date": "Thu Mar 5"
+        }
+      ],
+      "fatigue_rule_present": [
+        {
+          "rule": 44
+        }
+      ],
+      "float_pool": [],
+      "ambiguous_certifications": []
+    },
+    "true_status": "inconsistent"
+  },
+  {
+    "status_correct": true,
+    "precision": 1.0,
+    "recall": 0.6666666666666666,
+    "hallucination": false,
+    "parse_ok": true,
+    "case_type": "B",
+    "size": 60,
+    "seed": 0,
+    "shuffle": 0,
+    "seconds": 77.5,
+    "raw_response": "The user wants me to extract structured facts from a numbered list of hospital scheduling rules into specific categories. I need to be careful not to judge consistency, just extract what matches the defined categories.\n\nLet me go through each rule one by one:\n\n**Requirements**: A shift on a specific date requires a specific certification.\n- Rule 21: \"The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\" \u2192 cert_required = \"NICU\", date = \"Thu Mar 5\"\n\n**Certifications**: A named nurse holds a specific certification, stated plainly with no restriction or doubt.\n- Rule 3: Nurse R4 is certified in OR. \u2192 nurse = \"R4\", cert = \"OR\"\n- Rule 8: Nurse P5 is certified in OR. \u2192 nurse = \"P5\", cert = \"OR\"\n- Rule 17: Nurse P7 is certified in ICU. \u2192 nurse = \"P7\", cert = \"ICU\"\n- Rule 18: Nurse S6 is certified in OR. \u2192 nurse = \"S6\", cert = \"OR\"\n- Rule 23: Nurse R1 is certified in OR. \u2192 nurse = \"R1\", cert = \"OR\"\n- Rule 24: Nurse U5 is certified in ICU. \u2192 nurse = \"U5\", cert = \"ICU\"\n- Rule 25: Nurse U2 is certified in OR. \u2192 nurse = \"U2\", cert = \"OR\"\n- Rule 28: Nurse S8 is certified in ICU. \u2192 nurse = \"S8\", cert = \"ICU\"\n- Rule 32: Nurse V3 is certified in ICU. \u2192 nurse = \"V3\", cert = \"ICU\"\n- Rule 36: Nurse S1 is certified in OR. \u2192 nurse = \"S1\", cert = \"OR\"\n- Rule 38: Nurse U7 is certified in ICU. \u2192 nurse = \"U7\", cert = \"ICU\"\n- Rule 41: Nurse U9 is certified in ICU. \u2192 nurse = \"U9\", cert = \"ICU\"\n- Rule 52: Nurse U8 is certified in OR. \u2192 nurse = \"U8\", cert = \"OR\"\n- Rule 59: Nurse R7 is certified in OR. \u2192 nurse = \"R7\", cert = \"OR\"\n\n**Day shift only restrictions**: A named nurse's certification is restricted to day shifts only.\n- None of the rules explicitly state this restriction. Rules about preferring day shifts (4, 5, 7, 19, 33, 37, 45, 48, 49, 57, 58) say \"no restriction on record\" - so they don't have a restriction.\n\n**Leaves**: A named nurse is on leave/absence covering a date range.\n- None of the rules state nurses are on leave or absence. Rules about requesting off (1, 6, 9, 11, 14, 16, 27, 31, 34, 35, 42, 55... wait let me check) - these say \"requested X off and has no shift assigned that day\" which is about requesting time off for a specific day, not leave/absence covering a date range.\n\n**Consecutive nights**: A named nurse worked three consecutive night shifts before a specific date.\n- None of the rules mention this.\n\n**Fatigue rule present**: A general rule stating nurses must rest after three consecutive night shifts (not about a specific nurse).\n- None of the rules state this general fatigue policy.\n\n**Float pool**: A named nurse is a float-pool nurse certified in something, available any day/shift.\n- None of the rules mention float pool.\n\n**Ambiguous certifications**: A named nurse's certification status is left uncertain (e.g., a recertification test result not confirmed).\n- Rule 43: \"Nurse A's NICU certification requires re-testing every 2 years; Nurse A's last test was two years ago and the retest has not been confirmed.\" \u2192 nurse = \"A\", cert = \"NICU\"\n\nLet me double-check some rules I might have missed:\n- Rule 10, 12, 13, 15, 20, 26, 29, 30, 44, 47, 55, 56: These say nurses are NOT certified in any specialty unit. This is a negative statement about certification status - it's not an ambiguous certification (which requires uncertainty), and it doesn't fit \"certifications\" which requires a positive plain statement of holding a certification.\n- Rules about preferring day shifts with no restriction: These don't match \"day_shift_only_restrictions\" because they explicitly say there IS no restriction.\n\nSo my final extraction should be:\n\nrequirements: [rule 21]\ncertifications: rules 3, 8, 17, 18, 23, 24, 25, 28, 32, 36, 38, 41, 52, 59\nday_shift_only_restrictions: []\nleaves: []\nconsecutive_nights: []\nfatigue_rule_present: []\nfloat_pool: []\nambiguous_certifications: [rule 43]\n\nLet me format this as JSON.\n</think>\n\n```json\n{\n  \"requirements\": [{\"rule\": 21, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"}],\n  \"certifications\": [\n    {\"rule\": 3, \"nurse\": \"R4\", \"cert\": \"OR\"},\n    {\"rule\": 8, \"nurse\": \"P5\", \"cert\": \"OR\"},\n    {\"rule\": 17, \"nurse\": \"P7\", \"cert\": \"ICU\"},\n    {\"rule\": 18, \"nurse\": \"S6\", \"cert\": \"OR\"},\n    {\"rule\": 23, \"nurse\": \"R1\", \"cert\": \"OR\"},\n    {\"rule\": 24, \"nurse\": \"U5\", \"cert\": \"ICU\"},\n    {\"rule\": 25, \"nurse\": \"U2\", \"cert\": \"OR\"},\n    {\"rule\": 28, \"nurse\": \"S8\", \"cert\": \"ICU\"},\n    {\"rule\": 32, \"nurse\": \"V3\", \"cert\": \"ICU\"},\n    {\"rule\": 36, \"nurse\": \"S1\", \"cert\": \"OR\"},\n    {\"rule\": 38, \"nurse\": \"U7\", \"cert\": \"ICU\"},\n    {\"rule\": 41, \"nurse\": \"U9\", \"cert\": \"ICU\"},\n    {\"rule\": 52, \"nurse\": \"U8\", \"cert\": \"OR\"},\n    {\"rule\": 59, \"nurse\": \"R7\", \"cert\": \"OR\"}\n  ],\n  \"day_shift_only_restrictions\": [],\n  \"leaves\": [],\n  \"consecutive_nights\": [],\n  \"fatigue_rule_present\": [],\n  \"float_pool\": [],\n  \"ambiguous_certifications\": [{\"rule\": 43, \"nurse\": \"A\", \"cert\": \"NICU\"}]\n}\n```",
+    "parsed": {
+      "status": "underspecified",
+      "minimal_obstruction_rules": [
+        21,
+        43
+      ],
+      "best_probe": "Is the ambiguous certification for one of the candidates for NICU on Thu Mar 5 confirmed?",
+      "confidence": 0.9
+    },
+    "extracted_facts": {
+      "requirements": [
+        {
+          "rule": 21,
+          "cert_required": "NICU",
+          "date": "Thu Mar 5"
+        }
+      ],
+      "certifications": [
+        {
+          "rule": 3,
+          "nurse": "R4",
+          "cert": "OR"
+        },
+        {
+          "rule": 8,
+          "nurse": "P5",
+          "cert": "OR"
+        },
+        {
+          "rule": 17,
+          "nurse": "P7",
+          "cert": "ICU"
+        },
+        {
+          "rule": 18,
+          "nurse": "S6",
+          "cert": "OR"
+        },
+        {
+          "rule": 23,
+          "nurse": "R1",
+          "cert": "OR"
+        },
+        {
+          "rule": 24,
+          "nurse": "U5",
+          "cert": "ICU"
+        },
+        {
+          "rule": 25,
+          "nurse": "U2",
+          "cert": "OR"
+        },
+        {
+          "rule": 28,
+          "nurse": "S8",
+          "cert": "ICU"
+        },
+        {
+          "rule": 32,
+          "nurse": "V3",
+          "cert": "ICU"
+        },
+        {
+          "rule": 36,
+          "nurse": "S1",
+          "cert": "OR"
+        },
+        {
+          "rule": 38,
+          "nurse": "U7",
+          "cert": "ICU"
+        },
+        {
+          "rule": 41,
+          "nurse": "U9",
+          "cert": "ICU"
+        },
+        {
+          "rule": 52,
+          "nurse": "U8",
+          "cert": "OR"
+        },
+        {
+          "rule": 59,
+          "nurse": "R7",
+          "cert": "OR"
+        }
+      ],
+      "day_shift_only_restrictions": [],
+      "leaves": [],
+      "consecutive_nights": [],
+      "fatigue_rule_present": [],
+      "float_pool": [],
+      "ambiguous_certifications": [
+        {
+          "rule": 43,
+          "nurse": "A",
+          "cert": "NICU"
+        }
+      ]
+    },
+    "true_status": "underspecified"
+  },
+  {
+    "status_correct": false,
+    "precision": 0.0,
+    "recall": 0.0,
+    "hallucination": false,
+    "parse_ok": true,
+    "case_type": "B",
+    "size": 100,
+    "seed": 0,
+    "shuffle": 0,
+    "seconds": 74.6,
+    "raw_response": "The user wants me to extract structured facts from a numbered list of hospital scheduling rules into specific categories. I need to be careful not to judge consistency, just extract what matches the defined categories.\n\nLet's go through each rule one by one and check against the 8 categories:\n\n1. \"requirements\": shift on specific date requires certification\n2. \"certifications\": named nurse holds specific certification (plainly stated)\n3. \"day_shift_only_restrictions\": named nurse's cert restricted to day shifts only\n4. \"leaves\": named nurse on leave/absence covering a date range\n5. \"consecutive_nights\": named nurse worked 3 consecutive night shifts before specific date\n6. \"fatigue_rule_present\": general rule about nurses resting after 3 consecutive night shifts\n7. \"float_pool\": named nurse is float-pool certified, available any day/shift\n8. \"ambiguous_certifications\": named nurse's cert status uncertain\n\nLet's scan the rules:\n\nRule 1: Nurse T4 requested Thu Mar 5 off - this is a leave request but not stated as being on leave covering a date range. It says \"requested off and has no shift assigned that day.\" This doesn't clearly match \"leaves\" which requires a named nurse is on leave/absence covering a date range. Actually, looking more carefully at the category definition: \"a named nurse is on leave/absence covering a date range.\" Rule 1 just says they requested off for one day and have no shift assigned. This doesn't clearly match as being \"on leave\" - it's a request that hasn't been confirmed/approved yet. I'll skip this.\n\nRule 2: Nurse T7 prefers day shifts but has no restriction on record. This is about preference, not a certification or restriction. Skip.\n\nRule 3: Same pattern as rule 2. Skip.\n\nRule 4: \"Nurse S8 is certified in ICU.\" - This matches \"certifications\": a named nurse holds a specific certification, stated plainly with no restriction or doubt. Fields: rule=4, nurse=S8, cert=ICU.\n\nRule 5: Nurse V8 is scheduled for the ICU day shift on Fri Mar 6. This is about scheduling, not matching any category directly. Skip.\n\nRule 6: \"Nurse Z3 is not certified in any specialty unit.\" - This states a nurse does NOT have certification. The categories don't include \"no_certification\" or similar. This doesn't match any of the defined categories. Skip.\n\nRule 7: Nurse U8 is certified in OR. Matches \"certifications\". rule=7, nurse=U8, cert=OR.\n\nRule 8: Nurse X8 completed annual safety training on Fri Mar 6. This is about training completion, not matching any category. Skip.\n\nRules 9-14: Similar patterns - preferences or scheduling. Skip.\n\nRule 15: Nurse Z1 requested Wed Mar 4 off and has no shift assigned that day. Same as rule 1 - request for one day off, not clearly \"on leave covering a date range.\" Skip.\n\nRule 16-20: Similar patterns. Skip.\n\nRule 21-30: Similar patterns. Skip.\n\nRule 31: Nurse W8 is scheduled for the ICU day shift on Mon Mar 2. Scheduling, not matching categories. Skip.\n\nRules 32-40: Similar patterns. Skip.\n\nRule 41: Nurse U5 is certified in ICU. Matches \"certifications\". rule=41, nurse=U5, cert=ICU.\n\nRules 42-50: Similar patterns. Skip.\n\nRule 51-60: Similar patterns. Skip.\n\nRule 61: Nurse Y6 requested Thu Mar 5 off and has no shift assigned that day. Same pattern as rule 1. Skip.\n\nRule 62: Nurse U7 is certified in ICU. Matches \"certifications\". rule=62, nurse=U7, cert=ICU.\n\nRules 63-70: Similar patterns. Skip.\n\nRule 71-80: Similar patterns. Skip.\n\nRule 81: Nurse R5 is scheduled for the Operating Room day shift on Fri Mar 6. Scheduling. Skip.\n\nRules 82-90: Similar patterns (not certified, requested off). Skip.\n\nRule 91: Nurse R7 is certified in OR. Matches \"certifications\". rule=91, nurse=R7, cert=OR.\n\nRule 92: \"The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\" - This matches \"requirements\": a shift on a specific date requires a specific certification. Fields: rule=92, cert_required=NICU, date=\"Thu Mar 5\".\n\nRules 93-100: Similar patterns (not certified, requested off). Skip.\n\nNow let me compile the results:\n\n\"certifications\": [\n  {\"rule\": 4, \"nurse\": \"S8\", \"cert\": \"ICU\"},\n  {\"rule\": 7, \"nurse\": \"U8\", \"cert\": \"OR\"},\n  {\"rule\": 41, \"nurse\": \"U5\", \"cert\": \"ICU\"},\n  {\"rule\": 62, \"nurse\": \"U7\", \"cert\": \"ICU\"},\n  {\"rule\": 91, \"nurse\": \"R7\", \"cert\": \"OR\"}\n]\n\n\"requirements\": [\n  {\"rule\": 92, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"}\n]\n\nAll other categories are empty.\n\nWait, let me double-check rule 1 and similar rules about nurses requesting off. The category is \"leaves\": a named nurse is on leave/absence covering a date range. These rules say \"requested off\" which implies they want to be off but it's not stated as being confirmed on leave. I think these don't match the \"leaves\" category clearly enough.\n\nAlso, let me check if there are any fatigue_rule_present or consecutive_nights rules. Looking through all 100 rules... no, none of them mention nurses working three consecutive night shifts or a general rule about resting after such shifts.\n\nLet me also check for float_pool - none of the rules mention float-pool nurses.\n\nAnd ambiguous_certifications - rule 73 mentions Nurse A's NICU certification requires re-testing every 2 years and the retest has not been confirmed. This matches \"ambiguous_certifications\": a named nurse's certification status is left uncertain (e.g. a recertification test result not confirmed). Fields: rule=73, nurse=A, cert=NICU.\n\nSo I need to add that one too.\n\nLet me finalize:\n\n\"certifications\": [\n  {\"rule\": 4, \"nurse\": \"S8\", \"cert\": \"ICU\"},\n  {\"rule\": 7, \"nurse\": \"U8\", \"cert\": \"OR\"},\n  {\"rule\": 41, \"nurse\": \"U5\", \"cert\": \"ICU\"},\n  {\"rule\": 62, \"nurse\": \"U7\", \"cert\": \"ICU\"},\n  {\"rule\": 91, \"nurse\": \"R7\", \"cert\": \"OR\"}\n]\n\n\"requirements\": [\n  {\"rule\": 92, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"}\n]\n\n\"ambiguous_certifications\": [\n  {\"rule\": 73, \"nurse\": \"A\", \"cert\": \"NICU\"}\n]\n\nAll other categories: empty arrays.\n\nLet me verify once more... Rule 73 says \"Nurse A's NICU certification requires re-testing every 2 years; Nurse A's last test was two years ago and the retest has not been confirmed.\" This clearly matches ambiguous_certifications as it states the certification status is uncertain (retest not confirmed).\n\nI think this is complete. Let me format the JSON output.\n</think>\n\n```json\n{\n  \"requirements\": [\n    {\"rule\": 92, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"}\n  ],\n  \"certifications\": [\n    {\"rule\": 4, \"nurse\": \"S8\", \"cert\": \"ICU\"},\n    {\"rule\": 7, \"nurse\": \"U8\", \"cert\": \"OR\"},\n    {\"rule\": 41, \"nurse\": \"U5\", \"cert\": \"ICU\"},\n    {\"rule\": 62, \"nurse\": \"U7\", \"cert\": \"ICU\"},\n    {\"rule\": 91, \"nurse\": \"R7\", \"cert\": \"OR\"}\n  ],\n  \"day_shift_only_restrictions\": [],\n  \"leaves\": [],\n  \"consecutive_nights\": [],\n  \"fatigue_rule_present\": [],\n  \"float_pool\": [],\n  \"ambiguous_certifications\": [\n    {\"rule\": 73, \"nurse\": \"A\", \"cert\": \"NICU\"}\n  ]\n}\n```",
+    "parsed": {
+      "status": "consistent",
+      "minimal_obstruction_rules": [],
+      "best_probe": "",
+      "confidence": 0.9
+    },
+    "extracted_facts": {
+      "rule": 4,
+      "nurse": "S8",
+      "cert": "ICU"
+    },
+    "true_status": "underspecified"
+  },
+  {
+    "status_correct": true,
+    "precision": 1.0,
+    "recall": 1.0,
+    "hallucination": false,
+    "parse_ok": true,
+    "case_type": "C",
+    "size": 60,
+    "seed": 0,
+    "shuffle": 0,
+    "seconds": 75.1,
+    "raw_response": "The user wants me to extract structured facts from a numbered list of hospital scheduling rules into specific categories. I need to be careful and precise, only extracting what matches the defined categories exactly.\n\nLet me go through each rule one by one:\n\n**Requirements**: A shift on a specific date requires a specific certification.\n- Rule 10: \"The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\" \u2192 cert_required = \"NICU\", date = \"Thu Mar 5\"\n\n**Certifications**: A named nurse holds a specific certification, stated plainly with no restriction or doubt.\n- Rule 1: Nurse U7 is certified in OR. \u2192 nurse = \"U7\", cert = \"OR\"\n- Rule 5: Nurse U8 is certified in ICU. \u2192 nurse = \"U8\", cert = \"ICU\"\n- Rule 9: Nurse S5 is certified in OR. \u2192 nurse = \"S5\", cert = \"OR\"\n- Rule 14: Nurse P4 is certified in OR. \u2192 nurse = \"P4\", cert = \"OR\"\n- Rule 27: Nurse R3 is certified in OR. \u2192 nurse = \"R3\", cert = \"OR\"\n- Rule 29: Nurse Q9 is certified in OR. \u2192 nurse = \"Q9\", cert = \"OR\"\n- Rule 36: Nurse A is certified in NICU. \u2192 nurse = \"A\", cert = \"NICU\"\n- Rule 37: Nurse R6 is certified in OR. \u2192 nurse = \"R6\", cert = \"OR\"\n- Rule 38: Nurse R9 is certified in OR. \u2192 nurse = \"R9\", cert = \"OR\"\n- Rule 39: Nurse U4 is certified in ICU. \u2192 nurse = \"U4\", cert = \"ICU\"\n- Rule 40: Nurse P6 is certified in ICU. \u2192 nurse = \"P6\", cert = \"ICU\"\n- Rule 45: Nurse U6 is certified in ICU. \u2192 nurse = \"U6\", cert = \"ICU\"\n- Rule 47: Nurse E is certified in NICU. \u2192 nurse = \"E\", cert = \"NICU\"\n- Rule 50: Nurse S7 is certified in ICU. \u2192 nurse = \"S7\", cert = \"ICU\"\n- Rule 56: Nurse U1 is certified in OR. \u2192 nurse = \"U1\", cert = \"OR\"\n\n**Day shift only restrictions**: A named nurse's certification is restricted to day shifts only.\n- None of the rules explicitly state this restriction.\n\n**Leaves**: A named nurse is on leave/absence covering a date range.\n- Rule 55: Nurse A is on approved leave from Mar 10 to Mar 14. \u2192 nurse = \"A\", start = \"Mar 10\", end = \"Mar 14\"\n\n**Consecutive nights**: A named nurse worked three consecutive night shifts before a specific date.\n- None of the rules mention this.\n\n**Fatigue rule present**: A general rule stating nurses must rest after three consecutive night shifts (not about a specific nurse).\n- None of the rules state this.\n\n**Float pool**: A named nurse is a float-pool nurse certified in something, available any day/shift.\n- Rule 25: Nurse E is a float-pool nurse certified in NICU, available any day, any shift... \u2192 nurse = \"E\", cert = \"NICU\"\n\n**Ambiguous certifications**: A named nurse's certification status is left uncertain (e.g., recertification test result not confirmed).\n- None of the rules indicate uncertainty about certification.\n\nNow let me compile this into JSON format:\n\n```json\n{\n  \"requirements\": [\n    {\"rule\": 10, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"}\n  ],\n  \"certifications\": [\n    {\"rule\": 1, \"nurse\": \"U7\", \"cert\": \"OR\"},\n    {\"rule\": 5, \"nurse\": \"U8\", \"cert\": \"ICU\"},\n    {\"rule\": 9, \"nurse\": \"S5\", \"cert\": \"OR\"},\n    {\"rule\": 14, \"nurse\": \"P4\", \"cert\": \"OR\"},\n    {\"rule\": 27, \"nurse\": \"R3\", \"cert\": \"OR\"},\n    {\"rule\": 29, \"nurse\": \"Q9\", \"cert\": \"OR\"},\n    {\"rule\": 36, \"nurse\": \"A\", \"cert\": \"NICU\"},\n    {\"rule\": 37, \"nurse\": \"R6\", \"cert\": \"OR\"},\n    {\"rule\": 38, \"nurse\": \"R9\", \"cert\": \"OR\"},\n    {\"rule\": 39, \"nurse\": \"U4\", \"cert\": \"ICU\"},\n    {\"rule\": 40, \"nurse\": \"P6\", \"cert\": \"ICU\"},\n    {\"rule\": 45, \"nurse\": \"U6\", \"cert\": \"ICU\"},\n    {\"rule\": 47, \"nurse\": \"E\", \"cert\": \"NICU\"},\n    {\"rule\": 50, \"nurse\": \"S7\", \"cert\": \"ICU\"},\n    {\"rule\": 56, \"nurse\": \"U1\", \"cert\": \"OR\"}\n  ],\n  \"day_shift_only_restrictions\": [],\n  \"leaves\": [\n    {\"rule\": 55, \"nurse\": \"A\", \"start\": \"Mar 10\", \"end\": \"Mar 14\"}\n  ],\n  \"consecutive_nights\": [],\n  \"fatigue_rule_present\": [],\n  \"float_pool\": [\n    {\"rule\": 25, \"nurse\": \"E\", \"cert\": \"NICU\"}\n  ],\n  \"ambiguous_certifications\": []\n}\n```\n\nLet me double-check each rule:\n\nRule 10 - Yes, this is a requirement for certification on a specific date. \u2713\nRules 1, 5, 9, 14, 27, 29, 36, 37, 38, 39, 40, 45, 47, 50, 56 - All state nurses are certified in something plainly. \u2713\nRule 25 - Float pool nurse with certification. \u2713\nRule 55 - Leave from Mar 10 to Mar 14. \u2713\n\nRules that don't match:\n- Rules about preferences (day shift preference) - not a category\n- Rules about requested off days - not a category  \n- Rules about \"not certified in any specialty unit\" - this is negative certification, doesn't fit \"certifications\" which requires positive statement of holding a cert. Actually wait... let me reconsider. The category says \"a named nurse holds a specific certification, stated plainly with no restriction or doubt.\" Rule 4 says \"Nurse S1 is not certified in any specialty unit\" - this is the opposite. It doesn't state they hold a certification. So it shouldn't be included.\n- Rules about scheduled shifts (Q3 on ICU day shift Fri Mar 6, etc.) - these are assignments, not certifications or requirements. They don't match any category.\n- Rule 53 \"Thu Mar 5 is a weekday\" - irrelevant filler.\n\nI think my extraction is correct. Let me finalize the JSON.\n</think>\n\n```json\n{\n  \"requirements\": [\n    {\"rule\": 10, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"}\n  ],\n  \"certifications\": [\n    {\"rule\": 1, \"nurse\": \"U7\", \"cert\": \"OR\"},\n    {\"rule\": 5, \"nurse\": \"U8\", \"cert\": \"ICU\"},\n    {\"rule\": 9, \"nurse\": \"S5\", \"cert\": \"OR\"},\n    {\"rule\": 14, \"nurse\": \"P4\", \"cert\": \"OR\"},\n    {\"rule\": 27, \"nurse\": \"R3\", \"cert\": \"OR\"},\n    {\"rule\": 29, \"nurse\": \"Q9\", \"cert\": \"OR\"},\n    {\"rule\": 36, \"nurse\": \"A\", \"cert\": \"NICU\"},\n    {\"rule\": 37, \"nurse\": \"R6\", \"cert\": \"OR\"},\n    {\"rule\": 38, \"nurse\": \"R9\", \"cert\": \"OR\"},\n    {\"rule\": 39, \"nurse\": \"U4\", \"cert\": \"ICU\"},\n    {\"rule\": 40, \"nurse\": \"P6\", \"cert\": \"ICU\"},\n    {\"rule\": 45, \"nurse\": \"U6\", \"cert\": \"ICU\"},\n    {\"rule\": 47, \"nurse\": \"E\", \"cert\": \"NICU\"},\n    {\"rule\": 50, \"nurse\": \"S7\", \"cert\": \"ICU\"},\n    {\"rule\": 56, \"nurse\": \"U1\", \"cert\": \"OR\"}\n  ],\n  \"day_shift_only_restrictions\": [],\n  \"leaves\": [\n    {\"rule\": 55, \"nurse\": \"A\", \"start\": \"Mar 10\", \"end\": \"Mar 14\"}\n  ],\n  \"consecutive_nights\": [],\n  \"fatigue_rule_present\": [],\n  \"float_pool\": [\n    {\"rule\": 25, \"nurse\": \"E\", \"cert\": \"NICU\"}\n  ],\n  \"ambiguous_certifications\": []\n}\n```",
+    "parsed": {
+      "status": "consistent",
+      "minimal_obstruction_rules": [],
+      "best_probe": "",
+      "confidence": 0.9
+    },
+    "extracted_facts": {
+      "requirements": [
+        {
+          "rule": 10,
+          "cert_required": "NICU",
+          "date": "Thu Mar 5"
+        }
+      ],
+      "certifications": [
+        {
+          "rule": 1,
+          "nurse": "U7",
+          "cert": "OR"
+        },
+        {
+          "rule": 5,
+          "nurse": "U8",
+          "cert": "ICU"
+        },
+        {
+          "rule": 9,
+          "nurse": "S5",
+          "cert": "OR"
+        },
+        {
+          "rule": 14,
+          "nurse": "P4",
+          "cert": "OR"
+        },
+        {
+          "rule": 27,
+          "nurse": "R3",
+          "cert": "OR"
+        },
+        {
+          "rule": 29,
+          "nurse": "Q9",
+          "cert": "OR"
+        },
+        {
+          "rule": 36,
+          "nurse": "A",
+          "cert": "NICU"
+        },
+        {
+          "rule": 37,
+          "nurse": "R6",
+          "cert": "OR"
+        },
+        {
+          "rule": 38,
+          "nurse": "R9",
+          "cert": "OR"
+        },
+        {
+          "rule": 39,
+          "nurse": "U4",
+          "cert": "ICU"
+        },
+        {
+          "rule": 40,
+          "nurse": "P6",
+          "cert": "ICU"
+        },
+        {
+          "rule": 45,
+          "nurse": "U6",
+          "cert": "ICU"
+        },
+        {
+          "rule": 47,
+          "nurse": "E",
+          "cert": "NICU"
+        },
+        {
+          "rule": 50,
+          "nurse": "S7",
+          "cert": "ICU"
+        },
+        {
+          "rule": 56,
+          "nurse": "U1",
+          "cert": "OR"
+        }
+      ],
+      "day_shift_only_restrictions": [],
+      "leaves": [
+        {
+          "rule": 55,
+          "nurse": "A",
+          "start": "Mar 10",
+          "end": "Mar 14"
+        }
+      ],
+      "consecutive_nights": [],
+      "fatigue_rule_present": [],
+      "float_pool": [
+        {
+          "rule": 25,
+          "nurse": "E",
+          "cert": "NICU"
+        }
+      ],
+      "ambiguous_certifications": []
+    },
+    "true_status": "consistent"
+  },
+  {
+    "status_correct": false,
+    "precision": null,
+    "recall": null,
+    "hallucination": false,
+    "parse_ok": false,
+    "case_type": "C",
+    "size": 100,
+    "seed": 0,
+    "shuffle": 0,
+    "seconds": 57.8,
+    "raw_response": "The user wants me to extract structured facts from a numbered list of hospital scheduling rules into specific categories. I need to be careful and precise, only extracting what matches the defined categories exactly.\n\nLet me go through each rule one by one:\n\n**Requirements**: A shift on a specific date requires a specific certification. Fields: rule, cert_required, date\n- Rule 87: \"The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\" \u2192 requirements with cert_required=\"NICU\", date=\"Thu Mar 5\"\n\n**Certifications**: A named nurse holds a specific certification, stated plainly with no restriction or doubt. Fields: rule, nurse, cert\n- Rule 2: Nurse V2 is certified in ICU \u2192 certifications, nurse=\"V2\", cert=\"ICU\"\n- Rule 5: Nurse U6 is certified in ICU \u2192 certifications, nurse=\"U6\", cert=\"ICU\"\n- Rule 10: Nurse S5 is certified in OR \u2192 certifications, nurse=\"S5\", cert=\"OR\"\n- Rule 15: Nurse U4 is certified in ICU \u2192 certifications, nurse=\"U4\", cert=\"ICU\"\n- Rule 16: Nurse S7 is certified in ICU \u2192 certifications, nurse=\"S7\", cert=\"ICU\"\n- Rule 20: Nurse W3 is certified in ICU \u2192 certifications, nurse=\"W3\", cert=\"ICU\"\n- Rule 22: Nurse R3 is certified in OR \u2192 certifications, nurse=\"R3\", cert=\"OR\"\n- Rule 27: Nurse U8 is certified in ICU \u2192 certifications, nurse=\"U8\", cert=\"ICU\"\n- Rule 31: Nurse E is certified in NICU \u2192 certifications, nurse=\"E\", cert=\"NICU\"\n- Rule 36: Nurse P6 is certified in ICU \u2192 certifications, nurse=\"P6\", cert=\"ICU\"\n- Rule 40: Nurse R6 is certified in OR \u2192 certifications, nurse=\"R6\", cert=\"OR\"\n- Rule 50: Nurse P8 is not certified \u2192 doesn't match (negative)\n- Rule 55: Nurse P4 is certified in OR \u2192 certifications, nurse=\"P4\", cert=\"OR\"\n- Rule 60: Nurse V3 is certified in OR \u2192 certifications, nurse=\"V3\", cert=\"OR\"\n- Rule 65: Nurse R9 is certified in OR \u2192 certifications, nurse=\"R9\", cert=\"OR\"\n- Rule 67: Nurse U7 is certified in OR \u2192 certifications, nurse=\"U7\", cert=\"OR\"\n- Rule 69: Nurse A is certified in NICU \u2192 certifications, nurse=\"A\", cert=\"NICU\"\n- Rule 74: Nurse Q9 is certified in OR \u2192 certifications, nurse=\"Q9\", cert=\"OR\"\n- Rule 83: Nurse V8 is certified in ICU \u2192 certifications, nurse=\"V8\", cert=\"ICU\"\n- Rule 91: Nurse U1 is certified in OR \u2192 certifications, nurse=\"U1\", cert=\"OR\"\n\n**Day shift only restrictions**: A named nurse's certification is restricted to day shifts only. Fields: rule, nurse, cert\n- None of the rules explicitly state this restriction. Rules like \"Nurse V6 prefers day shifts but has no restriction on record\" don't indicate a day-shift-only restriction on their certification.\n\n**Leaves**: A named nurse is on leave/absence covering a date range. Fields: rule, nurse, start, end\n- Rule 7: Nurse A is on approved leave from Mar 10 to Mar 14 \u2192 leaves, nurse=\"A\", start=\"Mar 10\", end=\"Mar 14\"\n\n**Consecutive nights**: A named nurse worked three consecutive night shifts before a specific date. Fields: rule, nurse, before_date\n- None of the rules mention this.\n\n**Fatigue rule present**: A general rule stating nurses must rest after three consecutive night shifts (not about a specific nurse). Fields: rule\n- None of the rules state this general fatigue policy.\n\n**Float pool**: A named nurse is a float-pool nurse certified in something, available any day/shift. Fields: rule, nurse, cert\n- Rule 17: Nurse E is a float-pool nurse certified in NICU \u2192 float_pool, nurse=\"E\", cert=\"NICU\"\n\n**Ambiguous certifications**: A named nurse's certification status is left uncertain (e.g., recertification test result not confirmed). Fields: rule, nurse, cert\n- Rule 11: Nurse Y2 is not certified in any specialty unit \u2192 This is a negative statement about certification. Does this count as \"ambiguous\"? The category says \"certification status is left uncertain\" - being explicitly NOT certified isn't really ambiguous/uncertain, it's definitive. I'll skip this.\n- Rule 18: Nurse R5 is not certified in any specialty unit \u2192 Same reasoning, skip.\n- Rules 23, 25, 26, 30, 33, 34, 41, 43, 50, 56, 57, 62, 64, 80, 99: All \"not certified in any specialty unit\" - these are definitive negatives, not ambiguous. Skip all.\n\nLet me also check if there are any other rules I might have missed...\n\nRule 1: Nurse V6 prefers day shifts but has no restriction on record \u2192 This is about preference, not a certification requirement or restriction. Doesn't match any category.\nRule 3-4, 12-14, etc.: Scheduling assignments (nurse scheduled for shift) - these don't match any of the defined categories. The categories are specifically about certifications, requirements, leaves, consecutive nights, fatigue rules, float pool, and ambiguous certifications.\n\nLet me compile my final answer:\n\nrequirements: [87]\ncertifications: [2, 5, 10, 15, 16, 20, 22, 27, 31, 36, 40, 55, 60, 65, 67, 69, 74, 83, 91]\nday_shift_only_restrictions: []\nleaves: [7]\nconsecutive_nights: []\nfatigue_rule_present: []\nfloat_pool: [17]\nambiguous_certifications: []\n\nWait, let me double-check rule 69. \"Nurse A is certified in NICU.\" - Yes, this matches certifications. And rule 7 says Nurse A is on leave. Both can coexist.\n\nLet me also check if any rules about scheduling assignments could be interpreted as requirements... No, the requirements category specifically says \"a shift on a specific date requires a specific certification\" - it's about what's needed for a shift, not who is assigned to a shift.\n\nI'm confident in my extraction. Let me format the JSON.\n</think>\n\n```json\n{\n  \"requirements\": [87],\n  \"certifications\": [2, 5, 10, 15, 16, 20, 22, 27, 31, 36, 40, 55, 60, 65, 67, 69, 74, 83, 91],\n  \"day_shift_only_restrictions\": [],\n  \"leaves\": [7],\n  \"consecutive_nights\": [],\n  \"fatigue_rule_present\": [],\n  \"float_pool\": [17],\n  \"ambiguous_certifications\": []\n}\n```",
+    "parsed": null,
+    "extracted_facts": {
+      "requirements": [
+        87
+      ],
+      "certifications": [
+        2,
+        5,
+        10,
+        15,
+        16,
+        20,
+        22,
+        27,
+        31,
+        36,
+        40,
+        55,
+        60,
+        65,
+        67,
+        69,
+        74,
+        83,
+        91
+      ],
+      "day_shift_only_restrictions": [],
+      "leaves": [
+        7
+      ],
+      "consecutive_nights": [],
+      "fatigue_rule_present": [],
+      "float_pool": [
+        17
+      ],
+      "ambiguous_certifications": []
+    },
+    "true_status": "consistent"
+  },
+  {
+    "status_correct": true,
+    "precision": 1.0,
+    "recall": 0.8333333333333334,
+    "hallucination": false,
+    "parse_ok": true,
+    "case_type": "D",
+    "size": 60,
+    "seed": 0,
+    "shuffle": 0,
+    "seconds": 122.7,
+    "raw_response": "Let me go through each rule and determine which category it matches, if any.\n\nRule 1: \"YNurse G is certified in OR only for day shifts, per bylaw 4.2.\" - This says YNurse G's certification (OR) is restricted to day shifts only. Matches \"day_shift_only_restrictions\". Fields: rule=1, nurse=\"YNurse G\", cert=\"OR\"\n\nRule 2: \"Nurse Q4 requested Mon Mar 2 off and has no shift assigned that day.\" - This is about a request for time off, not matching any category. Skip.\n\nRule 3: \"Nurse P6 requested Sun Mar 8 off...\" - Same as above. Skip.\n\nRule 4: \"Nurse T9 is certified in ICU.\" - Plain certification statement. Matches \"certifications\". Fields: rule=4, nurse=\"T9\", cert=\"ICU\"\n\nRule 5: \"Nurse T4 is not certified in any specialty unit.\" - This says NOT certified. Doesn't match \"certifications\" (which requires a positive statement). Skip.\n\nRule 6: \"Nurse S6 is certified in ICU.\" - Matches \"certifications\". Fields: rule=6, nurse=\"S6\", cert=\"ICU\"\n\nRule 7: \"Nurse S5 prefers day shifts but has no restriction on record.\" - Preference, not a certification or restriction. Skip.\n\nRule 8: \"Nurse R4 is not certified in any specialty unit.\" - Negative statement. Skip.\n\nRule 9: \"Nurse T1 completed annual safety training on Fri Mar 6.\" - Training completion, doesn't match any category. Skip.\n\nRule 10: \"Nurse P7 is not certified in any specialty unit.\" - Negative. Skip.\n\nRule 11: \"Nurse T2 requested Thu Mar 5 off...\" - Request for time off. Skip.\n\nRule 12: \"YNurse E is certified in OR.\" - Plain certification. Matches \"certifications\". Fields: rule=12, nurse=\"YNurse E\", cert=\"OR\"\n\nRule 13: \"Nurse Q6 is scheduled for the ICU day shift on Fri Mar 6.\" - Scheduling assignment, not a certification or requirement. Skip.\n\nRule 14: \"The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\" - This is a requirement that a specific date/shift requires a specific certification. Matches \"requirements\". Fields: rule=14, cert_required=\"NICU\", date=\"Thu Mar 5\"\n\nRule 15: \"Nurse Q1 is scheduled for the ICU day shift on Fri Mar 6.\" - Scheduling assignment. Skip.\n\nRule 16: \"Nurse P9 requested Fri Mar 6 off...\" - Request for time off. Skip.\n\nRule 17: \"Nurse Q9 prefers day shifts but has no restriction on record.\" - Preference. Skip.\n\nRule 18: \"Nurse P4 requested Fri Mar 6 off...\" - Request for time off. Skip.\n\nRule 19: \"Nurse S7 requested Sun Mar 8 off...\" - Request for time off. Skip.\n\nRule 20: \"YNurse G is certified in OR.\" - Plain certification. Matches \"certifications\". Fields: rule=20, nurse=\"YNurse G\", cert=\"OR\"\n\nRule 21: \"Nurse R8 is certified in ICU.\" - Matches \"certifications\". Fields: rule=21, nurse=\"R8\", cert=\"ICU\"\n\nRule 22: \"Nurse S8 prefers day shifts but has no restriction on record.\" - Preference. Skip.\n\nRule 23: \"Nurse R2 is certified in ICU.\" - Matches \"certifications\". Fields: rule=23, nurse=\"R2\", cert=\"ICU\"\n\nRule 24: \"Nurse S3 requested Fri Mar 6 off...\" - Request for time off. Skip.\n\nRule 25: \"Nurse R3 is scheduled for the ICU day shift on Fri Mar 6.\" - Scheduling assignment. Skip.\n\nRule 26: \"Nurse Q8 is certified in ICU.\" - Matches \"certifications\". Fields: rule=26, nurse=\"Q8\", cert=\"ICU\"\n\nRule 27: \"Nurse S1 prefers day shifts but has no restriction on record.\" - Preference. Skip.\n\nRule 28: \"Nurse T8 prefers day shifts but has no restriction on record.\" - Preference. Skip.\n\nRule 29: \"Nurse U3 is certified in ICU.\" - Matches \"certifications\". Fields: rule=29, nurse=\"U3\", cert=\"ICU\"\n\nRule 30: \"Nurse T5 prefers day shifts but has no restriction on record.\" - Preference. Skip.\n\nRule 31: \"Nurse S4 is certified in ICU.\" - Matches \"certifications\". Fields: rule=31, nurse=\"S4\", cert=\"ICU\"\n\nRule 32: \"Nurse Q2 is not certified in any specialty unit.\" - Negative. Skip.\n\nRule 33: \"Nurse P8 is scheduled for the ICU day shift on Wed Mar 4.\" - Scheduling assignment. Skip.\n\nRule 34: \"Nurse R6 is not certified in any specialty unit.\" - Negative. Skip.\n\nRule 35: \"Nurse P3 is certified in ICU.\" - Matches \"certifications\". Fields: rule=35, nurse=\"P3\", cert=\"ICU\"\n\nRule 36: \"XNurse E is certified in NICU.\" - Plain certification. Matches \"certifications\". Fields: rule=36, nurse=\"XNurse E\", cert=\"NICU\"\n\nRule 37: \"Nurse P5 is certified in ICU.\" - Matches \"certifications\". Fields: rule=37, nurse=\"P5\", cert=\"ICU\"\n\nRule 38: \"The Operating Room night shift on Thu Mar 5 requires a nurse certified in OR.\" - Requirement for certification on specific date. Matches \"requirements\". Fields: rule=38, cert_required=\"OR\", date=\"Thu Mar 5\"\n\nRule 39: \"Nurse Q7 requested Tue Mar 3 off...\" - Request for time off. Skip.\n\nRule 40: \"Nurse R5 is certified in ICU.\" - Matches \"certifications\". Fields: rule=40, nurse=\"R5\", cert=\"ICU\"\n\nRule 41: \"Nurse S9 is not certified in any specialty unit.\" - Negative. Skip.\n\nRule 42: \"XNurse A is certified in NICU only for day shifts, per bylaw 4.2.\" - Day shift restriction on certification. Matches \"day_shift_only_restrictions\". Fields: rule=42, nurse=\"XNurse A\", cert=\"NICU\"\n\nRule 43: \"Nurse P2 prefers day shifts but has no restriction on record.\" - Preference. Skip.\n\nRule 44: \"Nurse R1 prefers day shifts but has no restriction on record.\" - Preference. Skip.\n\nRule 45: \"Nurse T3 completed annual safety training on Mon Mar 2.\" - Training completion. Skip.\n\nRule 46: \"YNurse E is on approved leave from Mar 1 to Mar 9.\" - Leave/absence. Matches \"leaves\". Fields: rule=46, nurse=\"YNurse E\", start=\"Mar 1\", end=\"Mar 9\"\n\nRule 47: \"Nurse U2 is not certified in any specialty unit.\" - Negative. Skip.\n\nRule 48: \"Thu Mar 5 is a weekday.\" - General fact, doesn't match any category. Skip.\n\nRule 49: \"Nurse U1 prefers day shifts but has no restriction on record.\" - Preference. Skip.\n\nRule 50: \"XNurse A is certified in NICU.\" - Plain certification. Matches \"certifications\". Fields: rule=50, nurse=\"XNurse A\", cert=\"NICU\"\n\nRule 51: \"Nurse T7 requested Mon Mar 2 off...\" - Request for time off. Skip.\n\nRule 52: \"Nurse Q3 is not certified in any specialty unit.\" - Negative. Skip.\n\nRule 53: \"XNurse E is on approved leave from Mar 1 to Mar 9.\" - Leave/absence. Matches \"leaves\". Fields: rule=53, nurse=\"XNurse E\", start=\"Mar 1\", end=\"Mar 9\"\n\nRule 54: \"Nurse Q5 requested Sat Mar 7 off...\" - Request for time off. Skip.\n\nRule 55: \"Thu Mar 5 is a weekday.\" - General fact. Skip.\n\nRule 56: \"Nurse R7 is not certified in any specialty unit.\" - Negative. Skip.\n\nRule 57: \"Nurse T6 requested Mon Mar 2 off...\" - Request for time off. Skip.\n\nRule 58: \"Nurse R9 is not certified in any specialty unit.\" - Negative. Skip.\n\nRule 59: \"Nurse P1 is not certified in any specialty unit.\" - Negative. Skip.\n\nRule 60: \"Nurse S2 prefers day shifts but has no restriction on record.\" - Preference. Skip.\n\nNow let me compile the results:\n\nrequirements:\n- Rule 14: cert_required=\"NICU\", date=\"Thu Mar 5\"\n- Rule 38: cert_required=\"OR\", date=\"Thu Mar 5\"\n\ncertifications:\n- Rule 4: nurse=\"T9\", cert=\"ICU\"\n- Rule 6: nurse=\"S6\", cert=\"ICU\"\n- Rule 12: nurse=\"YNurse E\", cert=\"OR\"\n- Rule 20: nurse=\"YNurse G\", cert=\"OR\"\n- Rule 21: nurse=\"R8\", cert=\"ICU\"\n- Rule 23: nurse=\"R2\", cert=\"ICU\"\n- Rule 26: nurse=\"Q8\", cert=\"ICU\"\n- Rule 29: nurse=\"U3\", cert=\"ICU\"\n- Rule 31: nurse=\"S4\", cert=\"ICU\"\n- Rule 35: nurse=\"P3\", cert=\"ICU\"\n- Rule 36: nurse=\"XNurse E\", cert=\"NICU\"\n- Rule 37: nurse=\"P5\", cert=\"ICU\"\n- Rule 40: nurse=\"R5\", cert=\"ICU\"\n- Rule 50: nurse=\"XNurse A\", cert=\"NICU\"\n\nday_shift_only_restrictions:\n- Rule 1: nurse=\"YNurse G\", cert=\"OR\"\n- Rule 42: nurse=\"XNurse A\", cert=\"NICU\"\n\nleaves:\n- Rule 46: nurse=\"YNurse E\", start=\"Mar 1\", end=\"Mar 9\"\n- Rule 53: nurse=\"XNurse E\", start=\"Mar 1\", end=\"Mar 9\"\n\nconsecutive_nights: (none)\n\nfatigue_rule_present: (none)\n\nfloat_pool: (none)\n\nambiguous_certifications: (none)\n\nLet me double-check rule 1: \"YNurse G is certified in OR only for day shifts, per bylaw 4.2.\" - This says the certification IS restricted to day shifts. So it's a day_shift_only_restrictions entry. But wait, does it also count as a certifications entry? The instruction says \"a named nurse holds a specific certification, stated plainly with no restriction or doubt\" for certifications. Rule 1 has a restriction (\"only for day shifts\"), so it doesn't match certifications. It matches day_shift_only_restrictions.\n\nRule 42: \"XNurse A is certified in NICU only for day shifts, per bylaw 4.2.\" - Same pattern. Matches day_shift_only_restrictions.\n\nLet me also check if rule 1 and rule 20 are both about YNurse G. Rule 1 says \"YNurse G is certified in OR only for day shifts\" (day shift restriction), Rule 20 says \"YNurse G is certified in OR\" (plain certification). These are different entries, which makes sense since one has a restriction and one doesn't.\n\nSimilarly rule 36 and rule 50: both about XNurse A being certified in NICU. Rule 42 adds the day shift restriction.\n\nI think my extraction is correct. Let me format it as JSON.\n</think>\n\n```json\n{\n  \"requirements\": [\n    {\"rule\": 14, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"},\n    {\"rule\": 38, \"cert_required\": \"OR\", \"date\": \"Thu Mar 5\"}\n  ],\n  \"certifications\": [\n    {\"rule\": 4, \"nurse\": \"T9\", \"cert\": \"ICU\"},\n    {\"rule\": 6, \"nurse\": \"S6\", \"cert\": \"ICU\"},\n    {\"rule\": 12, \"nurse\": \"YNurse E\", \"cert\": \"OR\"},\n    {\"rule\": 20, \"nurse\": \"YNurse G\", \"cert\": \"OR\"},\n    {\"rule\": 21, \"nurse\": \"R8\", \"cert\": \"ICU\"},\n    {\"rule\": 23, \"nurse\": \"R2\", \"cert\": \"ICU\"},\n    {\"rule\": 26, \"nurse\": \"Q8\", \"cert\": \"ICU\"},\n    {\"rule\": 29, \"nurse\": \"U3\", \"cert\": \"ICU\"},\n    {\"rule\": 31, \"nurse\": \"S4\", \"cert\": \"ICU\"},\n    {\"rule\": 35, \"nurse\": \"P3\", \"cert\": \"ICU\"},\n    {\"rule\": 36, \"nurse\": \"XNurse E\", \"cert\": \"NICU\"},\n    {\"rule\": 37, \"nurse\": \"P5\", \"cert\": \"ICU\"},\n    {\"rule\": 40, \"nurse\": \"R5\", \"cert\": \"ICU\"},\n    {\"rule\": 50, \"nurse\": \"XNurse A\", \"cert\": \"NICU\"}\n  ],\n  \"day_shift_only_restrictions\": [\n    {\"rule\": 1, \"nurse\": \"YNurse G\", \"cert\": \"OR\"},\n    {\"rule\": 42, \"nurse\": \"XNurse A\", \"cert\": \"NICU\"}\n  ],\n  \"leaves\": [\n    {\"rule\": 46, \"nurse\": \"YNurse E\", \"start\": \"Mar 1\", \"end\": \"Mar 9\"},\n    {\"rule\": 53, \"nurse\": \"XNurse E\", \"start\": \"Mar 1\", \"end\": \"Mar 9\"}\n  ],\n  \"consecutive_nights\": [],\n  \"fatigue_rule_present\": [],\n  \"float_pool\": [],\n  \"ambiguous_certifications\": []\n}\n```",
+    "parsed": {
+      "status": "inconsistent",
+      "minimal_obstruction_rules": [
+        1,
+        12,
+        14,
+        20,
+        36,
+        38,
+        42,
+        46,
+        50,
+        53
+      ],
+      "best_probe": "Is any other NICU-certified nurse or override available for Thu Mar 5?",
+      "confidence": 0.9
+    },
+    "extracted_facts": {
+      "requirements": [
+        {
+          "rule": 14,
+          "cert_required": "NICU",
+          "date": "Thu Mar 5"
+        },
+        {
+          "rule": 38,
+          "cert_required": "OR",
+          "date": "Thu Mar 5"
+        }
+      ],
+      "certifications": [
+        {
+          "rule": 4,
+          "nurse": "T9",
+          "cert": "ICU"
+        },
+        {
+          "rule": 6,
+          "nurse": "S6",
+          "cert": "ICU"
+        },
+        {
+          "rule": 12,
+          "nurse": "YNurse E",
+          "cert": "OR"
+        },
+        {
+          "rule": 20,
+          "nurse": "YNurse G",
+          "cert": "OR"
+        },
+        {
+          "rule": 21,
+          "nurse": "R8",
+          "cert": "ICU"
+        },
+        {
+          "rule": 23,
+          "nurse": "R2",
+          "cert": "ICU"
+        },
+        {
+          "rule": 26,
+          "nurse": "Q8",
+          "cert": "ICU"
+        },
+        {
+          "rule": 29,
+          "nurse": "U3",
+          "cert": "ICU"
+        },
+        {
+          "rule": 31,
+          "nurse": "S4",
+          "cert": "ICU"
+        },
+        {
+          "rule": 35,
+          "nurse": "P3",
+          "cert": "ICU"
+        },
+        {
+          "rule": 36,
+          "nurse": "XNurse E",
+          "cert": "NICU"
+        },
+        {
+          "rule": 37,
+          "nurse": "P5",
+          "cert": "ICU"
+        },
+        {
+          "rule": 40,
+          "nurse": "R5",
+          "cert": "ICU"
+        },
+        {
+          "rule": 50,
+          "nurse": "XNurse A",
+          "cert": "NICU"
+        }
+      ],
+      "day_shift_only_restrictions": [
+        {
+          "rule": 1,
+          "nurse": "YNurse G",
+          "cert": "OR"
+        },
+        {
+          "rule": 42,
+          "nurse": "XNurse A",
+          "cert": "NICU"
+        }
+      ],
+      "leaves": [
+        {
+          "rule": 46,
+          "nurse": "YNurse E",
+          "start": "Mar 1",
+          "end": "Mar 9"
+        },
+        {
+          "rule": 53,
+          "nurse": "XNurse E",
+          "start": "Mar 1",
+          "end": "Mar 9"
+        }
+      ],
+      "consecutive_nights": [],
+      "fatigue_rule_present": [],
+      "float_pool": [],
+      "ambiguous_certifications": []
+    },
+    "true_status": "inconsistent"
+  },
+  {
+    "status_correct": false,
+    "precision": 0.0,
+    "recall": 0.0,
+    "hallucination": false,
+    "parse_ok": true,
+    "case_type": "D",
+    "size": 100,
+    "seed": 0,
+    "shuffle": 0,
+    "seconds": 193.0,
+    "raw_response": "Let me go through each rule and categorize them:\n\n**requirements**: A shift on a specific date requires a specific certification.\n- Rule 85: \"The Operating Room night shift on Thu Mar 5 requires a nurse certified in OR.\" \u2192 cert_required = \"OR\", date = \"Thu Mar 5\"\n- Rule 91: \"The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\" \u2192 cert_required = \"NICU\", date = \"Thu Mar 5\"\n\n**certifications**: A named nurse holds a specific certification, stated plainly with no restriction or doubt.\n- Rule 1: Nurse S4 is certified in ICU. \u2192 nurse = \"S4\", cert = \"ICU\"\n- Rule 13: Nurse U2 is not certified in any specialty unit. \u2192 This says NOT certified, so doesn't match \"certifications\" (which requires a positive statement). Skip.\n- Rule 14: Nurse U5 is certified in ICU. \u2192 nurse = \"U5\", cert = \"ICU\"\n- Rule 15: Nurse W7 is not certified... Skip.\n- Rule 19: Nurse S6 is certified in ICU. \u2192 nurse = \"S6\", cert = \"ICU\"\n- Rule 20: Nurse P7 is not certified... Skip.\n- Rule 22: Nurse Y1 is not certified... Skip.\n- Rule 23: Nurse T9 is certified in ICU. \u2192 nurse = \"T9\", cert = \"ICU\"\n- Rule 26: Nurse R7 is not certified... Skip.\n- Rule 28: Nurse P3 is certified in ICU. \u2192 nurse = \"P3\", cert = \"ICU\"\n- Rule 29: Nurse W2 is certified in ICU. \u2192 nurse = \"W2\", cert = \"ICU\"\n- Rule 30: Nurse R5 is certified in ICU. \u2192 nurse = \"R5\", cert = \"ICU\"\n- Rule 32: Nurse R2 is certified in ICU. \u2192 nurse = \"R2\", cert = \"ICU\"\n- Rule 33: Nurse R8 is certified in ICU. \u2192 nurse = \"R8\", cert = \"ICU\"\n- Rule 41: Nurse U4 is not certified... Skip.\n- Rule 44: Nurse Q2 is not certified... Skip.\n- Rule 46: Nurse S9 is not certified... Skip.\n- Rule 54: Nurse Q8 is certified in ICU. \u2192 nurse = \"Q8\", cert = \"ICU\"\n- Rule 56: Nurse V7 is certified in ICU. \u2192 nurse = \"V7\", cert = \"ICU\"\n- Rule 59: Nurse V1 is certified in ICU. \u2192 nurse = \"V1\", cert = \"ICU\"\n- Rule 63: Nurse X1 is not certified... Skip.\n- Rule 64: Nurse Q3 is not certified... Skip.\n- Rule 65: Nurse R6 is not certified... Skip.\n- Rule 66: Nurse R9 is not certified... Skip.\n- Rule 70: Nurse P1 is not certified... Skip.\n- Rule 78: Nurse T4 is not certified... Skip.\n- Rule 80: Nurse P5 is certified in ICU. \u2192 nurse = \"P5\", cert = \"ICU\"\n- Rule 81: YNurse E is certified in OR. \u2192 nurse = \"E\", cert = \"OR\"\n- Rule 86: Nurse U3 is certified in ICU. \u2192 nurse = \"U3\", cert = \"ICU\"\n- Rule 89: Nurse U7 is certified in ICU. \u2192 nurse = \"U7\", cert = \"ICU\"\n- Rule 90: XNurse E is certified in NICU. \u2192 nurse = \"E\", cert = \"NICU\"\n- Rule 94: Nurse U6 is certified in ICU. \u2192 nurse = \"U6\", cert = \"ICU\"\n- Rule 95: Nurse V2 is certified in ICU. \u2192 nurse = \"V2\", cert = \"ICU\"\n\n**day_shift_only_restrictions**: A named nurse's certification is restricted to day shifts only.\n- Rule 2: XNurse A is certified in NICU only for day shifts, per bylaw 4.2. \u2192 nurse = \"A\", cert = \"NICU\"\n- Rule 39: XNurse A is certified in NICU. \u2192 This is a plain certification (no restriction mentioned here). But wait - rule 2 already says the restriction. Rule 39 just states the certification without restriction. So rule 39 matches \"certifications\", not \"day_shift_only_restrictions\".\n- Rule 42: YNurse G is certified in OR only for day shifts, per bylaw 4.2. \u2192 nurse = \"G\", cert = \"OR\"\n\n**leaves**: A named nurse is on leave/absence covering a date range.\n- Rule 25: YNurse E is on approved leave from Mar 1 to Mar 9. \u2192 nurse = \"E\", start = \"Mar 1\", end = \"Mar 9\"\n- Rule 57: XNurse E is on approved leave from Mar 1 to Mar 9. \u2192 nurse = \"E\", start = \"Mar 1\", end = \"Mar 9\"\n\n**consecutive_nights**: A named nurse worked three consecutive night shifts before a specific date.\n- None of the rules mention this. Skip all.\n\n**fatigue_rule_present**: A general rule stating nurses must rest after three consecutive night shifts (not about a specific nurse).\n- None of the rules state this generically. Skip all.\n\n**float_pool**: A named nurse is a float-pool nurse certified in something, available any day/shift.\n- None mention \"float pool\". Skip all.\n\n**ambiguous_certifications**: A named nurse's certification status is left uncertain (e.g. a recertification test result not confirmed).\n- Rule 9: Nurse S8 prefers day shifts but has no restriction on record. \u2192 This says they prefer day shifts but have NO restriction. That's actually saying there IS no restriction, which is clear. Not ambiguous. Skip.\n- Rule 10: Same pattern - \"no restriction on record\". Clear that there's no restriction. Skip.\n- Rule 24: Same. Skip.\n- Rule 27: Same. Skip.\n- Rule 31: Same. Skip.\n- Rule 35: Nurse Y4 requested Thu Mar 5 off... \u2192 This is about being off, not certification ambiguity. Skip.\n- Rule 36: Same. Skip.\n- Rule 37: Same pattern as above. Skip.\n- Rule 38: Same. Skip.\n- Rule 40: Same. Skip.\n- Rule 43: Same. Skip.\n- Rule 45: Requested off. Skip.\n- Rule 47: Requested off. Skip.\n- Rule 55: Requested off. Skip.\n- Rule 60: Requested off. Skip.\n- Rule 61: Requested off. Skip.\n- Rule 62: Same pattern as above (prefers day shifts, no restriction). Skip.\n- Rule 67: Requested off. Skip.\n- Rule 68: Requested off. Skip.\n- Rule 72: Scheduled for ICU day shift on Sat Mar 7. \u2192 This is a scheduling assignment, not certification ambiguity. Skip.\n- Rule 74: Requested off. Skip.\n- Rule 75: Requested off. Skip.\n- Rule 76: Same pattern (prefers day shifts, no restriction). Skip.\n- Rule 77: Requested off. Skip.\n- Rule 82: Same pattern. Skip.\n- Rule 83: Requested off. Skip.\n- Rule 84: Requested off. Skip.\n- Rule 87: Same pattern. Skip.\n- Rule 92: Same pattern. Skip.\n- Rule 96: Same pattern. Skip.\n\nWait, let me reconsider rule 35 and similar - \"Nurse Y4 requested Thu Mar 5 off and has no shift assigned that day.\" This is about being on leave/off for a specific date, not a date range. The \"leaves\" category says \"covering a date range\". A single date request might not be a \"date range\". Let me re-read: \"a named nurse is on leave/absence covering a date range.\" A single day off could be considered a date range with start = end. But the instruction says to copy date strings exactly, e.g., \"Mar 1\", \"Mar 9\" - these are different dates suggesting a range. I think single-day requests don't match this category well enough. Let me skip them.\n\nActually wait - let me reconsider. The examples show start and end as potentially the same or different. But the instruction says \"covering a date range.\" A single day is technically a range of one day. However, these are about requesting time off, not being on leave/absence. I'll be conservative and skip them since they're requests rather than confirmed leaves.\n\nLet me also reconsider rule 90: XNurse E is certified in NICU. This is a plain certification statement (no restriction mentioned). So it goes to \"certifications\". But wait - we already have rule 2 saying XNurse A has NICU only for day shifts. Rule 39 says XNurse A is certified in NICU (plain). And rule 40 says XNurse E prefers day shifts but no restriction. \n\nWait, I need to re-examine: Rule 39 \"XNurse A is certified in NICU.\" - This is a plain certification statement with no restriction mentioned IN THIS RULE. So it goes to certifications. But rule 2 already establishes the day-shift-only restriction for XNurse A's NICU cert. These are separate facts from different rules.\n\nSimilarly, Rule 90 \"XNurse E is certified in NICU.\" - This is a plain certification statement. Goes to certifications.\n\nNow let me also check: Rule 81 says \"YNurse E is certified in OR.\" and Rule 42 says \"YNurse G is certified in OR only for day shifts, per bylaw 4.2.\" And Rule 100 says \"YNurse G is certified in OR.\" - plain certification.\n\nLet me compile the final lists:\n\n**requirements**:\n- Rule 85: cert_required = \"OR\", date = \"Thu Mar 5\"\n- Rule 91: cert_required = \"NICU\", date = \"Thu Mar 5\"\n\n**certifications**:\n- Rule 1: nurse = \"S4\", cert = \"ICU\"\n- Rule 14: nurse = \"U5\", cert = \"ICU\"\n- Rule 19: nurse = \"S6\", cert = \"ICU\"\n- Rule 23: nurse = \"T9\", cert = \"ICU\"\n- Rule 28: nurse = \"P3\", cert = \"ICU\"\n- Rule 29: nurse = \"W2\", cert = \"ICU\"\n- Rule 30: nurse = \"R5\", cert = \"ICU\"\n- Rule 32: nurse = \"R2\", cert = \"ICU\"\n- Rule 33: nurse = \"R8\", cert = \"ICU\"\n- Rule 41: Nurse U4 is not certified... \u2192 Skip (negative)\n- Rule 54: nurse = \"Q8\", cert = \"ICU\"\n- Rule 56: nurse = \"V7\", cert = \"ICU\"\n- Rule 59: nurse = \"V1\", cert = \"ICU\"\n- Rule 80: nurse = \"P5\", cert = \"ICU\"\n- Rule 81: nurse = \"E\", cert = \"OR\"\n- Rule 86: nurse = \"U3\", cert = \"ICU\"\n- Rule 89: nurse = \"U7\", cert = \"ICU\"\n- Rule 90: nurse = \"E\", cert = \"NICU\"\n- Rule 94: nurse = \"U6\", cert = \"ICU\"\n- Rule 95: nurse = \"V2\", cert = \"ICU\"\n\nWait, I need to double-check rule 39 and 41. Rule 39 says \"XNurse A is certified in NICU.\" - This IS a plain certification statement (no restriction mentioned in this specific rule). So it goes to certifications.\nRule 41 says \"Nurse U4 is not certified in any specialty unit.\" - Negative, skip.\n\nLet me also check: Rule 26 \"Nurse R7 is not certified...\" - negative, skip.\nRule 44 \"Nurse Q2 is not certified...\" - negative, skip.\nRule 46 \"Nurse S9 is not certified...\" - negative, skip.\nRule 63 \"Nurse X1 is not certified...\" - negative, skip.\nRule 64 \"Nurse Q3 is not certified...\" - negative, skip.\nRule 65 \"Nurse R6 is not certified...\" - negative, skip.\nRule 66 \"Nurse R9 is not certified...\" - negative, skip.\nRule 70 \"Nurse P1 is not certified...\" - negative, skip.\nRule 78 \"Nurse T4 is not certified...\" - negative, skip.\n\n**day_shift_only_restrictions**:\n- Rule 2: nurse = \"A\", cert = \"NICU\"\n- Rule 42: nurse = \"G\", cert = \"OR\"\n\nWait, I need to reconsider rule 39 again. \"XNurse A is certified in NICU.\" - This doesn't mention any restriction. It's a plain certification statement. So it goes to certifications, not day_shift_only_restrictions. The restriction comes from rule 2 separately.\n\n**leaves**:\n- Rule 25: nurse = \"E\", start = \"Mar 1\", end = \"Mar 9\"\n- Rule 57: nurse = \"E\", start = \"Mar 1\", end = \"Mar 9\"\n\n**consecutive_nights**: None.\n\n**fatigue_rule_present**: None.\n\n**float_pool**: None.\n\n**ambiguous_certifications**: Let me reconsider... The rules about \"prefers day shifts but has no restriction on record\" - these are clear statements that there IS NO restriction. They're not ambiguous. So skip all of them.\n\nWhat about rules like rule 35, 36, etc. (requested off)? These aren't about certification ambiguity either. Skip.\n\nActually wait - let me reconsider if any rules could be \"ambiguous_certifications\". The category says \"a named nurse's certification status is left uncertain (e.g. a recertification test result not confirmed).\" None of the rules seem to have this pattern. All certifications are stated clearly or denied clearly.\n\nLet me finalize:\n\n**requirements**:\n- {\"rule\": 85, \"cert_required\": \"OR\", \"date\": \"Thu Mar 5\"}\n- {\"rule\": 91, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"}\n\n**certifications**:\n- {\"rule\": 1, \"nurse\": \"S4\", \"cert\": \"ICU\"}\n- {\"rule\": 14, \"nurse\": \"U5\", \"cert\": \"ICU\"}\n- {\"rule\": 19, \"nurse\": \"S6\", \"cert\": \"ICU\"}\n- {\"rule\": 23, \"nurse\": \"T9\", \"cert\": \"ICU\"}\n- {\"rule\": 28, \"nurse\": \"P3\", \"cert\": \"ICU\"}\n- {\"rule\": 29, \"nurse\": \"W2\", \"cert\": \"ICU\"}\n- {\"rule\": 30, \"nurse\": \"R5\", \"cert\": \"ICU\"}\n- {\"rule\": 32, \"nurse\": \"R2\", \"cert\": \"ICU\"}\n- {\"rule\": 33, \"nurse\": \"R8\", \"cert\": \"ICU\"}\n- {\"rule\": 39, \"nurse\": \"A\", \"cert\": \"NICU\"}\n- {\"rule\": 54, \"nurse\": \"Q8\", \"cert\": \"ICU\"}\n- {\"rule\": 56, \"nurse\": \"V7\", \"cert\": \"ICU\"}\n- {\"rule\": 59, \"nurse\": \"V1\", \"cert\": \"ICU\"}\n- {\"rule\": 80, \"nurse\": \"P5\", \"cert\": \"ICU\"}\n- {\"rule\": 81, \"nurse\": \"E\", \"cert\": \"OR\"}\n- {\"rule\": 86, \"nurse\": \"U3\", \"cert\": \"ICU\"}\n- {\"rule\": 89, \"nurse\": \"U7\", \"cert\": \"ICU\"}\n- {\"rule\": 90, \"nurse\": \"E\", \"cert\": \"NICU\"}\n- {\"rule\": 94, \"nurse\": \"U6\", \"cert\": \"ICU\"}\n- {\"rule\": 95, \"nurse\": \"V2\", \"cert\": \"ICU\"}\n- {\"rule\": 100, \"nurse\": \"G\", \"cert\": \"OR\"}\n\n**day_shift_only_restrictions**:\n- {\"rule\": 2, \"nurse\": \"A\", \"cert\": \"NICU\"}\n- {\"rule\": 42, \"nurse\": \"G\", \"cert\": \"OR\"}\n\n**leaves**:\n- {\"rule\": 25, \"nurse\": \"E\", \"start\": \"Mar 1\", \"end\": \"Mar 9\"}\n- {\"rule\": 57, \"nurse\": \"E\", \"start\": \"Mar 1\", \"end\": \"Mar 9\"}\n\n**consecutive_nights**: []\n**fatigue_rule_present**: []\n**float_pool**: []\n**ambiguous_certifications**: []\n\nLet me double-check I haven't missed anything...\n\nRule 3: Nurse V8 completed annual safety training on Tue Mar 3. \u2192 Training completion, not a certification statement per se. Skip.\nRule 4-7, 12, etc.: Scheduled shifts. These are scheduling assignments, not certifications or requirements (requirements is about what's needed for a shift, not who is assigned). Skip.\nRule 8: Nurse S8 prefers day shifts but has no restriction on record. \u2192 Clear that there's NO restriction. Not ambiguous. Skip.\nRule 9-10: Same pattern. Skip.\nRule 11: Requested off. Skip.\nRule 16, 34, etc.: Similar patterns. Skip.\n\nI think my extraction is complete and correct. Let me format the JSON.\n</think>\n\n```json\n{\n  \"requirements\": [\n    {\"rule\": 85, \"cert_required\": \"OR\", \"date\": \"Thu Mar 5\"},\n    {\"rule\": 91, \"cert_required\": \"NICU\", \"date\": \"Thu Mar 5\"}\n  ],\n  \"certifications\": [\n    {\"rule\": 1, \"nurse\": \"S4\", \"cert\": \"ICU\"},\n    {\"rule\": 14, \"nurse\": \"U5\", \"cert\": \"ICU\"},\n    {\"rule\": 19, \"nurse\": \"S6\", \"cert\": \"ICU\"},\n    {\"rule\": 23, \"nurse\": \"T9\", \"cert\": \"ICU\"},\n    {\"rule\": 28, \"nurse\": \"P3\", \"cert\": \"ICU\"},\n    {\"rule\": 29, \"nurse\": \"W2\", \"cert\": \"ICU\"},\n    {\"rule\": 30, \"nurse\": \"R5\", \"cert\": \"ICU\"},\n    {\"rule\": 32, \"nurse\": \"R2\", \"cert\": \"ICU\"},\n    {\"rule\": 33, \"nurse\": \"R8\", \"cert\": \"ICU\"},\n    {\"rule\": 39, \"nurse\": \"A\", \"cert\": \"NICU\"},\n    {\"rule\": 54, \"nurse\": \"Q8\", \"cert\": \"ICU\"},\n    {\"rule\": 56, \"nurse\": \"V7\", \"cert\": \"ICU\"},\n    {\"rule\": 59, \"nurse\": \"V1\", \"cert\": \"ICU\"},\n    {\"rule\": 80, \"nurse\": \"P5\", \"cert\": \"ICU\"},\n    {\"rule\": 81, \"nurse\": \"E\", \"cert\": \"OR\"},\n    {\"rule\": 86, \"nurse\": \"U3\", \"cert\": \"ICU\"},\n    {\"rule\": 89, \"nurse\": \"U7\", \"cert\": \"ICU\"},\n    {\"rule\": 90, \"nurse\": \"E\", \"cert\": \"NICU\"},\n    {\"rule\": 94, \"nurse\": \"U6\", \"cert\": \"ICU\"},\n    {\"rule\": 95, \"nurse\": \"V2\", \"cert\": \"ICU\"},\n    {\"rule\": 100, \"nurse\": \"G\", \"cert\": \"OR\"}\n  ],\n  \"day_shift_only_restrictions\": [\n    {\"rule\": 2, \"nurse\": \"A\", \"cert\": \"NICU\"},\n    {\"rule\": 42, \"nurse\": \"G\", \"cert\": \"OR\"}\n  ],\n  \"leaves\": [\n    {\"rule\": 25, \"nurse\": \"E\", \"start\": \"Mar 1\", \"end\": \"Mar 9\"},\n    {\"rule\": 57, \"nurse\": \"E\", \"start\": \"Mar 1\", \"end\": \"Mar 9\"}\n  ],\n  \"consecutive_nights\": [],\n  \"fatigue_rule_present\": [],\n  \"float_pool\": [],\n  \"ambiguous_certifications\": []\n}\n```",
+    "parsed": {
+      "status": "consistent",
+      "minimal_obstruction_rules": [],
+      "best_probe": "",
+      "confidence": 0.9
+    },
+    "extracted_facts": {
+      "rule": 85,
+      "cert_required": "OR",
+      "date": "Thu Mar 5"
+    },
+    "true_status": "inconsistent"
+  }
+]

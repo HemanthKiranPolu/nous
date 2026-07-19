@@ -1,0 +1,32 @@
+[1/8] A size=60 seed=0 sh=0 -> status=inconsistent (true=inconsistent) 95.2s
+[2/8] A size=100 seed=0 sh=0 -> status=inconsistent (true=inconsistent) 219.5s
+[3/8] B size=60 seed=0 sh=0 -> status=inconsistent (true=underspecified) 148.1s
+[4/8] B size=100 seed=0 sh=0 -> status=inconsistent (true=underspecified) 263.6s
+[5/8] C size=60 seed=0 sh=0 -> status=consistent (true=consistent) 125.9s
+[6/8] C size=100 seed=0 sh=0 -> status=consistent (true=consistent) 96.7s
+[7/8] D size=60 seed=0 sh=0 -> status=inconsistent (true=inconsistent) 161.1s
+[8/8] D size=100 seed=0 sh=0 -> status=inconsistent (true=inconsistent) 68.2s
+
+=== by size (all case types) ===
+size=60                      n=  4  status_acc= 75.0%  precision=100.0%  recall= 70.8%  hallucination= 0.0%  parse_fail= 0.0%
+size=100                     n=  4  status_acc= 75.0%  precision=100.0%  recall= 67.5%  hallucination= 0.0%  parse_fail= 0.0%
+
+=== by case type ===
+case_type=A                  n=  2  status_acc=100.0%  precision=100.0%  recall= 60.0%  hallucination= 0.0%  parse_fail= 0.0%
+case_type=B                  n=  2  status_acc=  0.0%  precision=100.0%  recall= 66.7%  hallucination= 0.0%  parse_fail= 0.0%
+case_type=C                  n=  2  status_acc=100.0%  precision=100.0%  recall=100.0%  hallucination= 0.0%  parse_fail= 0.0%
+case_type=D                  n=  2  status_acc=100.0%  precision=100.0%  recall= 50.0%  hallucination= 0.0%  parse_fail= 0.0%
+
+=== by size x case type ===
+size=60, case_type=A         n=  1  status_acc=100.0%  precision=100.0%  recall= 50.0%  hallucination= 0.0%  parse_fail= 0.0%
+size=60, case_type=B         n=  1  status_acc=  0.0%  precision=100.0%  recall= 66.7%  hallucination= 0.0%  parse_fail= 0.0%
+size=60, case_type=C         n=  1  status_acc=100.0%  precision=100.0%  recall=100.0%  hallucination= 0.0%  parse_fail= 0.0%
+size=60, case_type=D         n=  1  status_acc=100.0%  precision=100.0%  recall= 66.7%  hallucination= 0.0%  parse_fail= 0.0%
+size=100, case_type=A        n=  1  status_acc=100.0%  precision=100.0%  recall= 70.0%  hallucination= 0.0%  parse_fail= 0.0%
+size=100, case_type=B        n=  1  status_acc=  0.0%  precision=100.0%  recall= 66.7%  hallucination= 0.0%  parse_fail= 0.0%
+size=100, case_type=C        n=  1  status_acc=100.0%  precision=100.0%  recall=100.0%  hallucination= 0.0%  parse_fail= 0.0%
+size=100, case_type=D        n=  1  status_acc=100.0%  precision=100.0%  recall= 33.3%  hallucination= 0.0%  parse_fail= 0.0%
+
+shuffle stability (status agrees across all shuffles of same case): 100.0%
+
+raw trials -> results/structured.json

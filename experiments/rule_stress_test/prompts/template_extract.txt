@@ -1,0 +1,19 @@
+You are extracting structured facts from a numbered list of hospital scheduling rules. Do NOT judge whether the rules are consistent -- only extract. A separate program will decide consistency from what you extract.
+
+For every rule below that matches one of these categories, add ONE entry to the matching list, always including "rule" = the rule's number. Skip rules that don't match any category (most rules are irrelevant filler -- that's expected). If a rule doesn't clearly and unambiguously match a category, leave it out rather than guessing.
+
+Categories:
+- "requirements": a shift on a specific date requires a specific certification. Fields: rule, cert_required, date (copy the date string exactly as written, e.g. "Thu Mar 5").
+- "certifications": a named nurse holds a specific certification, stated plainly with no restriction or doubt. Fields: rule, nurse, cert.
+- "day_shift_only_restrictions": a named nurse's certification is restricted to day shifts only. Fields: rule, nurse, cert.
+- "leaves": a named nurse is on leave/absence covering a date range. Fields: rule, nurse, start, end (copy date strings exactly, e.g. "Mar 1", "Mar 9").
+- "consecutive_nights": a named nurse worked three consecutive night shifts before a specific date. Fields: rule, nurse, before_date.
+- "fatigue_rule_present": a general rule stating nurses must rest after three consecutive night shifts (not about a specific nurse). Fields: rule.
+- "float_pool": a named nurse is a float-pool nurse certified in something, available any day/shift. Fields: rule, nurse, cert.
+- "ambiguous_certifications": a named nurse's certification status is left uncertain (e.g. a recertification test result not confirmed). Fields: rule, nurse, cert.
+
+Output ONLY a single JSON object with exactly these 8 keys, each an array (empty array if nothing matched), no other text before or after it:
+{"requirements": [], "certifications": [], "day_shift_only_restrictions": [], "leaves": [], "consecutive_nights": [], "fatigue_rule_present": [], "float_pool": [], "ambiguous_certifications": []}
+
+Rules:
+{rules}
