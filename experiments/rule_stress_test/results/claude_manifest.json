@@ -1,0 +1,2799 @@
+[
+  {
+    "size": 60,
+    "case_type": "A",
+    "case": {
+      "case_type": "A",
+      "status": "inconsistent",
+      "rules": [
+        [
+          1,
+          "Nurse U7 is certified in OR."
+        ],
+        [
+          2,
+          "Nurse S6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          3,
+          "Nurse T4 completed annual safety training on Mon Mar 2."
+        ],
+        [
+          4,
+          "Nurse S1 is not certified in any specialty unit."
+        ],
+        [
+          5,
+          "Nurse U8 is certified in ICU."
+        ],
+        [
+          6,
+          "Nurse S8 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          7,
+          "Nurse T3 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          8,
+          "Nurse S4 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          9,
+          "Nurse S5 is certified in OR."
+        ],
+        [
+          10,
+          "The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU."
+        ],
+        [
+          11,
+          "Nurse S3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          12,
+          "Nurse Q3 is not certified in any specialty unit."
+        ],
+        [
+          13,
+          "Nurse U9 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          14,
+          "Nurse P4 is certified in OR."
+        ],
+        [
+          15,
+          "Nurse Q6 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          16,
+          "Nurse P3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          17,
+          "Nurse R8 is not certified in any specialty unit."
+        ],
+        [
+          18,
+          "Nurse P5 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          19,
+          "Nurse T1 is not certified in any specialty unit."
+        ],
+        [
+          20,
+          "Nurse R1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          21,
+          "Nurse U2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          22,
+          "Nurse U5 is not certified in any specialty unit."
+        ],
+        [
+          23,
+          "Nurse Q7 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          24,
+          "Nurse U3 is not certified in any specialty unit."
+        ],
+        [
+          25,
+          "Nurse E is on approved leave from Mar 1 to Mar 9."
+        ],
+        [
+          26,
+          "Nurse Q4 is not certified in any specialty unit."
+        ],
+        [
+          27,
+          "Nurse R3 is certified in OR."
+        ],
+        [
+          28,
+          "Nurse Q1 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          29,
+          "Nurse Q9 is certified in OR."
+        ],
+        [
+          30,
+          "Nurse R5 is not certified in any specialty unit."
+        ],
+        [
+          31,
+          "Nurse T8 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          32,
+          "Nurse T6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          33,
+          "Nurse P7 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          34,
+          "Nurse R2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          35,
+          "Nurse T7 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          36,
+          "Nurse A is certified in NICU."
+        ],
+        [
+          37,
+          "Nurse R6 is certified in OR."
+        ],
+        [
+          38,
+          "Nurse R9 is certified in OR."
+        ],
+        [
+          39,
+          "Nurse U4 is certified in ICU."
+        ],
+        [
+          40,
+          "Nurse P6 is certified in ICU."
+        ],
+        [
+          41,
+          "Nurse T9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          42,
+          "Nurse Q8 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          43,
+          "Nurse Q5 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          44,
+          "Nurse S9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          45,
+          "Nurse U6 is certified in ICU."
+        ],
+        [
+          46,
+          "Nurse P9 is scheduled for the ICU day shift on Wed Mar 4."
+        ],
+        [
+          47,
+          "Nurse E is certified in NICU."
+        ],
+        [
+          48,
+          "Nurse Q2 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          49,
+          "Nurse P1 completed annual safety training on Thu Mar 5."
+        ],
+        [
+          50,
+          "Nurse S7 is certified in ICU."
+        ],
+        [
+          51,
+          "Nurse R4 is scheduled for the Operating Room day shift on Fri Mar 6."
+        ],
+        [
+          52,
+          "Nurse S2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          53,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          54,
+          "Nurse T2 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          55,
+          "Nurse A is certified in NICU only for day shifts, per bylaw 4.2."
+        ],
+        [
+          56,
+          "Nurse U1 is certified in OR."
+        ],
+        [
+          57,
+          "Nurse T5 is not certified in any specialty unit."
+        ],
+        [
+          58,
+          "Nurse P8 is not certified in any specialty unit."
+        ],
+        [
+          59,
+          "Nurse R7 is not certified in any specialty unit."
+        ],
+        [
+          60,
+          "Nurse P2 is not certified in any specialty unit."
+        ]
+      ],
+      "minimal_obstruction_rules": [
+        10,
+        25,
+        36,
+        47,
+        53,
+        55
+      ],
+      "best_probe": "Is there an ICU-certified float or agency nurse available for the Neonatal ICU night shift on Thu Mar 5, or can an administrative override waive the fatigue-rest requirement given no certified alternative exists?",
+      "notes": {
+        "cert": "NICU",
+        "unit": "Neonatal ICU",
+        "date": "Thu Mar 5",
+        "candidates": [
+          "Nurse A",
+          "Nurse E"
+        ]
+      }
+    },
+    "prompt": "You are auditing a numbered list of hospital scheduling rules for logical consistency.\n\nDetermine whether the rules, taken together, are:\n- \"consistent\": a valid schedule assignment satisfying every rule exists.\n- \"inconsistent\": no valid assignment can satisfy every rule -- a genuine, provable contradiction.\n- \"underspecified\": you cannot determine consistency because some fact needed to decide is not stated below. Do not guess -- if guessing either way would change your answer, say underspecified.\n\nDo not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it. \"Underspecified\" means a STATED entity's status is left ambiguous by the rules themselves (e.g. a certification whose renewal outcome isn't given) -- it does NOT mean \"an unlisted nurse might exist.\" If no assignment using only the listed people/resources satisfies all rules, and the only way to satisfy it would require an unlisted exception, mark it \"inconsistent\", not \"underspecified\".\n\nKeep any reasoning brief (a few sentences). Then output the JSON object.\n\nRespond with ONLY a single JSON object, no other text before or after it, in exactly this format:\n{\"status\": \"consistent|inconsistent|underspecified\", \"minimal_obstruction_rules\": [<rule numbers>], \"reasoning_summary\": \"<one or two sentences>\", \"best_probe\": \"<the single cheapest question that would resolve or override the issue, empty string if consistent>\", \"confidence\": <0.0-1.0>}\n\nminimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is \"consistent\".\n\nRules:\n1. Nurse U7 is certified in OR.\n2. Nurse S6 prefers day shifts but has no restriction on record.\n3. Nurse T4 completed annual safety training on Mon Mar 2.\n4. Nurse S1 is not certified in any specialty unit.\n5. Nurse U8 is certified in ICU.\n6. Nurse S8 requested Sun Mar 8 off and has no shift assigned that day.\n7. Nurse T3 requested Thu Mar 5 off and has no shift assigned that day.\n8. Nurse S4 requested Fri Mar 6 off and has no shift assigned that day.\n9. Nurse S5 is certified in OR.\n10. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\n11. Nurse S3 prefers day shifts but has no restriction on record.\n12. Nurse Q3 is not certified in any specialty unit.\n13. Nurse U9 requested Tue Mar 3 off and has no shift assigned that day.\n14. Nurse P4 is certified in OR.\n15. Nurse Q6 requested Sat Mar 7 off and has no shift assigned that day.\n16. Nurse P3 prefers day shifts but has no restriction on record.\n17. Nurse R8 is not certified in any specialty unit.\n18. Nurse P5 requested Fri Mar 6 off and has no shift assigned that day.\n19. Nurse T1 is not certified in any specialty unit.\n20. Nurse R1 prefers day shifts but has no restriction on record.\n21. Nurse U2 prefers day shifts but has no restriction on record.\n22. Nurse U5 is not certified in any specialty unit.\n23. Nurse Q7 is scheduled for the ICU day shift on Fri Mar 6.\n24. Nurse U3 is not certified in any specialty unit.\n25. Nurse E is on approved leave from Mar 1 to Mar 9.\n26. Nurse Q4 is not certified in any specialty unit.\n27. Nurse R3 is certified in OR.\n28. Nurse Q1 requested Fri Mar 6 off and has no shift assigned that day.\n29. Nurse Q9 is certified in OR.\n30. Nurse R5 is not certified in any specialty unit.\n31. Nurse T8 requested Mon Mar 2 off and has no shift assigned that day.\n32. Nurse T6 prefers day shifts but has no restriction on record.\n33. Nurse P7 requested Sun Mar 8 off and has no shift assigned that day.\n34. Nurse R2 prefers day shifts but has no restriction on record.\n35. Nurse T7 requested Mon Mar 2 off and has no shift assigned that day.\n36. Nurse A is certified in NICU.\n37. Nurse R6 is certified in OR.\n38. Nurse R9 is certified in OR.\n39. Nurse U4 is certified in ICU.\n40. Nurse P6 is certified in ICU.\n41. Nurse T9 prefers day shifts but has no restriction on record.\n42. Nurse Q8 requested Tue Mar 3 off and has no shift assigned that day.\n43. Nurse Q5 requested Mon Mar 2 off and has no shift assigned that day.\n44. Nurse S9 prefers day shifts but has no restriction on record.\n45. Nurse U6 is certified in ICU.\n46. Nurse P9 is scheduled for the ICU day shift on Wed Mar 4.\n47. Nurse E is certified in NICU.\n48. Nurse Q2 is scheduled for the ICU day shift on Fri Mar 6.\n49. Nurse P1 completed annual safety training on Thu Mar 5.\n50. Nurse S7 is certified in ICU.\n51. Nurse R4 is scheduled for the Operating Room day shift on Fri Mar 6.\n52. Nurse S2 prefers day shifts but has no restriction on record.\n53. Thu Mar 5 is a weekday.\n54. Nurse T2 completed annual safety training on Fri Mar 6.\n55. Nurse A is certified in NICU only for day shifts, per bylaw 4.2.\n56. Nurse U1 is certified in OR.\n57. Nurse T5 is not certified in any specialty unit.\n58. Nurse P8 is not certified in any specialty unit.\n59. Nurse R7 is not certified in any specialty unit.\n60. Nurse P2 is not certified in any specialty unit.\n"
+  },
+  {
+    "size": 60,
+    "case_type": "B",
+    "case": {
+      "case_type": "B",
+      "status": "underspecified",
+      "rules": [
+        [
+          1,
+          "Nurse V1 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          2,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          3,
+          "Nurse R4 is certified in OR."
+        ],
+        [
+          4,
+          "Nurse R3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          5,
+          "Nurse U3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          6,
+          "Nurse Q6 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          7,
+          "Nurse S7 prefers day shifts but has no restriction on record."
+        ],
+        [
+          8,
+          "Nurse P5 is certified in OR."
+        ],
+        [
+          9,
+          "Nurse Q9 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          10,
+          "Nurse R6 is not certified in any specialty unit."
+        ],
+        [
+          11,
+          "Nurse T4 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          12,
+          "Nurse U4 is not certified in any specialty unit."
+        ],
+        [
+          13,
+          "Nurse R8 is not certified in any specialty unit."
+        ],
+        [
+          14,
+          "Nurse Q7 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          15,
+          "Nurse T2 is not certified in any specialty unit."
+        ],
+        [
+          16,
+          "Nurse T8 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          17,
+          "Nurse P7 is certified in ICU."
+        ],
+        [
+          18,
+          "Nurse S6 is certified in OR."
+        ],
+        [
+          19,
+          "Nurse S4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          20,
+          "Nurse Q4 is not certified in any specialty unit."
+        ],
+        [
+          21,
+          "The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU."
+        ],
+        [
+          22,
+          "Nurse T5 completed annual safety training on Mon Mar 2."
+        ],
+        [
+          23,
+          "Nurse R1 is certified in OR."
+        ],
+        [
+          24,
+          "Nurse U5 is certified in ICU."
+        ],
+        [
+          25,
+          "Nurse U2 is certified in OR."
+        ],
+        [
+          26,
+          "Nurse T6 is not certified in any specialty unit."
+        ],
+        [
+          27,
+          "Nurse P6 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          28,
+          "Nurse S8 is certified in ICU."
+        ],
+        [
+          29,
+          "Nurse S2 is not certified in any specialty unit."
+        ],
+        [
+          30,
+          "Nurse P3 is not certified in any specialty unit."
+        ],
+        [
+          31,
+          "Nurse T9 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          32,
+          "Nurse V3 is certified in ICU."
+        ],
+        [
+          33,
+          "Nurse T7 prefers day shifts but has no restriction on record."
+        ],
+        [
+          34,
+          "Nurse Q2 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          35,
+          "Nurse P8 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          36,
+          "Nurse S1 is certified in OR."
+        ],
+        [
+          37,
+          "Nurse U1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          38,
+          "Nurse U7 is certified in ICU."
+        ],
+        [
+          39,
+          "Nurse Q1 is scheduled for the ICU day shift on Wed Mar 4."
+        ],
+        [
+          40,
+          "Nurse R5 is scheduled for the Operating Room day shift on Fri Mar 6."
+        ],
+        [
+          41,
+          "Nurse U9 is certified in ICU."
+        ],
+        [
+          42,
+          "Nurse S9 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          43,
+          "Nurse A's NICU certification requires re-testing every 2 years; Nurse A's last test was two years ago and the retest has not been confirmed."
+        ],
+        [
+          44,
+          "Nurse R9 is not certified in any specialty unit."
+        ],
+        [
+          45,
+          "Nurse S3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          46,
+          "Nurse P1 is scheduled for the Operating Room day shift on Fri Mar 6."
+        ],
+        [
+          47,
+          "Nurse P9 is not certified in any specialty unit."
+        ],
+        [
+          48,
+          "Nurse V2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          49,
+          "Nurse R2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          50,
+          "Nurse Q8 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          51,
+          "Nurse T3 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          52,
+          "Nurse U8 is certified in OR."
+        ],
+        [
+          53,
+          "Nurse Q3 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          54,
+          "Nurse P2 completed annual safety training on Sun Mar 8."
+        ],
+        [
+          55,
+          "Nurse Q5 is not certified in any specialty unit."
+        ],
+        [
+          56,
+          "Nurse U6 is not certified in any specialty unit."
+        ],
+        [
+          57,
+          "Nurse P4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          58,
+          "Nurse T1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          59,
+          "Nurse R7 is certified in OR."
+        ],
+        [
+          60,
+          "Nurse S5 requested Fri Mar 6 off and has no shift assigned that day."
+        ]
+      ],
+      "minimal_obstruction_rules": [
+        2,
+        21,
+        43
+      ],
+      "best_probe": "Has Nurse A's NICU recertification test result come back, and is the certification currently active for Thu Mar 5?",
+      "notes": {
+        "cert": "NICU",
+        "date": "Thu Mar 5",
+        "nurse": "Nurse A"
+      }
+    },
+    "prompt": "You are auditing a numbered list of hospital scheduling rules for logical consistency.\n\nDetermine whether the rules, taken together, are:\n- \"consistent\": a valid schedule assignment satisfying every rule exists.\n- \"inconsistent\": no valid assignment can satisfy every rule -- a genuine, provable contradiction.\n- \"underspecified\": you cannot determine consistency because some fact needed to decide is not stated below. Do not guess -- if guessing either way would change your answer, say underspecified.\n\nDo not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it. \"Underspecified\" means a STATED entity's status is left ambiguous by the rules themselves (e.g. a certification whose renewal outcome isn't given) -- it does NOT mean \"an unlisted nurse might exist.\" If no assignment using only the listed people/resources satisfies all rules, and the only way to satisfy it would require an unlisted exception, mark it \"inconsistent\", not \"underspecified\".\n\nKeep any reasoning brief (a few sentences). Then output the JSON object.\n\nRespond with ONLY a single JSON object, no other text before or after it, in exactly this format:\n{\"status\": \"consistent|inconsistent|underspecified\", \"minimal_obstruction_rules\": [<rule numbers>], \"reasoning_summary\": \"<one or two sentences>\", \"best_probe\": \"<the single cheapest question that would resolve or override the issue, empty string if consistent>\", \"confidence\": <0.0-1.0>}\n\nminimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is \"consistent\".\n\nRules:\n1. Nurse V1 requested Tue Mar 3 off and has no shift assigned that day.\n2. Thu Mar 5 is a weekday.\n3. Nurse R4 is certified in OR.\n4. Nurse R3 prefers day shifts but has no restriction on record.\n5. Nurse U3 prefers day shifts but has no restriction on record.\n6. Nurse Q6 requested Mon Mar 2 off and has no shift assigned that day.\n7. Nurse S7 prefers day shifts but has no restriction on record.\n8. Nurse P5 is certified in OR.\n9. Nurse Q9 requested Tue Mar 3 off and has no shift assigned that day.\n10. Nurse R6 is not certified in any specialty unit.\n11. Nurse T4 requested Thu Mar 5 off and has no shift assigned that day.\n12. Nurse U4 is not certified in any specialty unit.\n13. Nurse R8 is not certified in any specialty unit.\n14. Nurse Q7 requested Sat Mar 7 off and has no shift assigned that day.\n15. Nurse T2 is not certified in any specialty unit.\n16. Nurse T8 requested Mon Mar 2 off and has no shift assigned that day.\n17. Nurse P7 is certified in ICU.\n18. Nurse S6 is certified in OR.\n19. Nurse S4 prefers day shifts but has no restriction on record.\n20. Nurse Q4 is not certified in any specialty unit.\n21. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\n22. Nurse T5 completed annual safety training on Mon Mar 2.\n23. Nurse R1 is certified in OR.\n24. Nurse U5 is certified in ICU.\n25. Nurse U2 is certified in OR.\n26. Nurse T6 is not certified in any specialty unit.\n27. Nurse P6 requested Fri Mar 6 off and has no shift assigned that day.\n28. Nurse S8 is certified in ICU.\n29. Nurse S2 is not certified in any specialty unit.\n30. Nurse P3 is not certified in any specialty unit.\n31. Nurse T9 requested Mon Mar 2 off and has no shift assigned that day.\n32. Nurse V3 is certified in ICU.\n33. Nurse T7 prefers day shifts but has no restriction on record.\n34. Nurse Q2 requested Fri Mar 6 off and has no shift assigned that day.\n35. Nurse P8 requested Sun Mar 8 off and has no shift assigned that day.\n36. Nurse S1 is certified in OR.\n37. Nurse U1 prefers day shifts but has no restriction on record.\n38. Nurse U7 is certified in ICU.\n39. Nurse Q1 is scheduled for the ICU day shift on Wed Mar 4.\n40. Nurse R5 is scheduled for the Operating Room day shift on Fri Mar 6.\n41. Nurse U9 is certified in ICU.\n42. Nurse S9 requested Sun Mar 8 off and has no shift assigned that day.\n43. Nurse A's NICU certification requires re-testing every 2 years; Nurse A's last test was two years ago and the retest has not been confirmed.\n44. Nurse R9 is not certified in any specialty unit.\n45. Nurse S3 prefers day shifts but has no restriction on record.\n46. Nurse P1 is scheduled for the Operating Room day shift on Fri Mar 6.\n47. Nurse P9 is not certified in any specialty unit.\n48. Nurse V2 prefers day shifts but has no restriction on record.\n49. Nurse R2 prefers day shifts but has no restriction on record.\n50. Nurse Q8 is scheduled for the ICU day shift on Fri Mar 6.\n51. Nurse T3 completed annual safety training on Fri Mar 6.\n52. Nurse U8 is certified in OR.\n53. Nurse Q3 is scheduled for the ICU day shift on Fri Mar 6.\n54. Nurse P2 completed annual safety training on Sun Mar 8.\n55. Nurse Q5 is not certified in any specialty unit.\n56. Nurse U6 is not certified in any specialty unit.\n57. Nurse P4 prefers day shifts but has no restriction on record.\n58. Nurse T1 prefers day shifts but has no restriction on record.\n59. Nurse R7 is certified in OR.\n60. Nurse S5 requested Fri Mar 6 off and has no shift assigned that day.\n"
+  },
+  {
+    "size": 60,
+    "case_type": "C",
+    "case": {
+      "case_type": "C",
+      "status": "consistent",
+      "rules": [
+        [
+          1,
+          "Nurse U7 is certified in OR."
+        ],
+        [
+          2,
+          "Nurse S6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          3,
+          "Nurse T4 completed annual safety training on Mon Mar 2."
+        ],
+        [
+          4,
+          "Nurse S1 is not certified in any specialty unit."
+        ],
+        [
+          5,
+          "Nurse U8 is certified in ICU."
+        ],
+        [
+          6,
+          "Nurse S8 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          7,
+          "Nurse T3 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          8,
+          "Nurse S4 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          9,
+          "Nurse S5 is certified in OR."
+        ],
+        [
+          10,
+          "The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU."
+        ],
+        [
+          11,
+          "Nurse S3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          12,
+          "Nurse Q3 is not certified in any specialty unit."
+        ],
+        [
+          13,
+          "Nurse U9 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          14,
+          "Nurse P4 is certified in OR."
+        ],
+        [
+          15,
+          "Nurse Q6 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          16,
+          "Nurse P3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          17,
+          "Nurse R8 is not certified in any specialty unit."
+        ],
+        [
+          18,
+          "Nurse P5 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          19,
+          "Nurse T1 is not certified in any specialty unit."
+        ],
+        [
+          20,
+          "Nurse R1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          21,
+          "Nurse U2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          22,
+          "Nurse U5 is not certified in any specialty unit."
+        ],
+        [
+          23,
+          "Nurse Q7 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          24,
+          "Nurse U3 is not certified in any specialty unit."
+        ],
+        [
+          25,
+          "Nurse E is a float-pool nurse certified in NICU, available any day, any shift, and is not assigned elsewhere on Thu Mar 5."
+        ],
+        [
+          26,
+          "Nurse Q4 is not certified in any specialty unit."
+        ],
+        [
+          27,
+          "Nurse R3 is certified in OR."
+        ],
+        [
+          28,
+          "Nurse Q1 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          29,
+          "Nurse Q9 is certified in OR."
+        ],
+        [
+          30,
+          "Nurse R5 is not certified in any specialty unit."
+        ],
+        [
+          31,
+          "Nurse T8 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          32,
+          "Nurse T6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          33,
+          "Nurse P7 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          34,
+          "Nurse R2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          35,
+          "Nurse T7 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          36,
+          "Nurse A is certified in NICU."
+        ],
+        [
+          37,
+          "Nurse R6 is certified in OR."
+        ],
+        [
+          38,
+          "Nurse R9 is certified in OR."
+        ],
+        [
+          39,
+          "Nurse U4 is certified in ICU."
+        ],
+        [
+          40,
+          "Nurse P6 is certified in ICU."
+        ],
+        [
+          41,
+          "Nurse T9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          42,
+          "Nurse Q8 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          43,
+          "Nurse Q5 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          44,
+          "Nurse S9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          45,
+          "Nurse U6 is certified in ICU."
+        ],
+        [
+          46,
+          "Nurse P9 is scheduled for the ICU day shift on Wed Mar 4."
+        ],
+        [
+          47,
+          "Nurse E is certified in NICU."
+        ],
+        [
+          48,
+          "Nurse Q2 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          49,
+          "Nurse P1 completed annual safety training on Thu Mar 5."
+        ],
+        [
+          50,
+          "Nurse S7 is certified in ICU."
+        ],
+        [
+          51,
+          "Nurse R4 is scheduled for the Operating Room day shift on Fri Mar 6."
+        ],
+        [
+          52,
+          "Nurse S2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          53,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          54,
+          "Nurse T2 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          55,
+          "Nurse A is on approved leave from Mar 10 to Mar 14."
+        ],
+        [
+          56,
+          "Nurse U1 is certified in OR."
+        ],
+        [
+          57,
+          "Nurse T5 is not certified in any specialty unit."
+        ],
+        [
+          58,
+          "Nurse P8 is not certified in any specialty unit."
+        ],
+        [
+          59,
+          "Nurse R7 is not certified in any specialty unit."
+        ],
+        [
+          60,
+          "Nurse P2 is not certified in any specialty unit."
+        ]
+      ],
+      "minimal_obstruction_rules": [],
+      "best_probe": "",
+      "notes": {
+        "cert": "NICU",
+        "date": "Thu Mar 5",
+        "resolving_nurse": "Nurse E",
+        "also_certified_but_leave": "Nurse A"
+      }
+    },
+    "prompt": "You are auditing a numbered list of hospital scheduling rules for logical consistency.\n\nDetermine whether the rules, taken together, are:\n- \"consistent\": a valid schedule assignment satisfying every rule exists.\n- \"inconsistent\": no valid assignment can satisfy every rule -- a genuine, provable contradiction.\n- \"underspecified\": you cannot determine consistency because some fact needed to decide is not stated below. Do not guess -- if guessing either way would change your answer, say underspecified.\n\nDo not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it. \"Underspecified\" means a STATED entity's status is left ambiguous by the rules themselves (e.g. a certification whose renewal outcome isn't given) -- it does NOT mean \"an unlisted nurse might exist.\" If no assignment using only the listed people/resources satisfies all rules, and the only way to satisfy it would require an unlisted exception, mark it \"inconsistent\", not \"underspecified\".\n\nKeep any reasoning brief (a few sentences). Then output the JSON object.\n\nRespond with ONLY a single JSON object, no other text before or after it, in exactly this format:\n{\"status\": \"consistent|inconsistent|underspecified\", \"minimal_obstruction_rules\": [<rule numbers>], \"reasoning_summary\": \"<one or two sentences>\", \"best_probe\": \"<the single cheapest question that would resolve or override the issue, empty string if consistent>\", \"confidence\": <0.0-1.0>}\n\nminimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is \"consistent\".\n\nRules:\n1. Nurse U7 is certified in OR.\n2. Nurse S6 prefers day shifts but has no restriction on record.\n3. Nurse T4 completed annual safety training on Mon Mar 2.\n4. Nurse S1 is not certified in any specialty unit.\n5. Nurse U8 is certified in ICU.\n6. Nurse S8 requested Sun Mar 8 off and has no shift assigned that day.\n7. Nurse T3 requested Thu Mar 5 off and has no shift assigned that day.\n8. Nurse S4 requested Fri Mar 6 off and has no shift assigned that day.\n9. Nurse S5 is certified in OR.\n10. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\n11. Nurse S3 prefers day shifts but has no restriction on record.\n12. Nurse Q3 is not certified in any specialty unit.\n13. Nurse U9 requested Tue Mar 3 off and has no shift assigned that day.\n14. Nurse P4 is certified in OR.\n15. Nurse Q6 requested Sat Mar 7 off and has no shift assigned that day.\n16. Nurse P3 prefers day shifts but has no restriction on record.\n17. Nurse R8 is not certified in any specialty unit.\n18. Nurse P5 requested Fri Mar 6 off and has no shift assigned that day.\n19. Nurse T1 is not certified in any specialty unit.\n20. Nurse R1 prefers day shifts but has no restriction on record.\n21. Nurse U2 prefers day shifts but has no restriction on record.\n22. Nurse U5 is not certified in any specialty unit.\n23. Nurse Q7 is scheduled for the ICU day shift on Fri Mar 6.\n24. Nurse U3 is not certified in any specialty unit.\n25. Nurse E is a float-pool nurse certified in NICU, available any day, any shift, and is not assigned elsewhere on Thu Mar 5.\n26. Nurse Q4 is not certified in any specialty unit.\n27. Nurse R3 is certified in OR.\n28. Nurse Q1 requested Fri Mar 6 off and has no shift assigned that day.\n29. Nurse Q9 is certified in OR.\n30. Nurse R5 is not certified in any specialty unit.\n31. Nurse T8 requested Mon Mar 2 off and has no shift assigned that day.\n32. Nurse T6 prefers day shifts but has no restriction on record.\n33. Nurse P7 requested Sun Mar 8 off and has no shift assigned that day.\n34. Nurse R2 prefers day shifts but has no restriction on record.\n35. Nurse T7 requested Mon Mar 2 off and has no shift assigned that day.\n36. Nurse A is certified in NICU.\n37. Nurse R6 is certified in OR.\n38. Nurse R9 is certified in OR.\n39. Nurse U4 is certified in ICU.\n40. Nurse P6 is certified in ICU.\n41. Nurse T9 prefers day shifts but has no restriction on record.\n42. Nurse Q8 requested Tue Mar 3 off and has no shift assigned that day.\n43. Nurse Q5 requested Mon Mar 2 off and has no shift assigned that day.\n44. Nurse S9 prefers day shifts but has no restriction on record.\n45. Nurse U6 is certified in ICU.\n46. Nurse P9 is scheduled for the ICU day shift on Wed Mar 4.\n47. Nurse E is certified in NICU.\n48. Nurse Q2 is scheduled for the ICU day shift on Fri Mar 6.\n49. Nurse P1 completed annual safety training on Thu Mar 5.\n50. Nurse S7 is certified in ICU.\n51. Nurse R4 is scheduled for the Operating Room day shift on Fri Mar 6.\n52. Nurse S2 prefers day shifts but has no restriction on record.\n53. Thu Mar 5 is a weekday.\n54. Nurse T2 completed annual safety training on Fri Mar 6.\n55. Nurse A is on approved leave from Mar 10 to Mar 14.\n56. Nurse U1 is certified in OR.\n57. Nurse T5 is not certified in any specialty unit.\n58. Nurse P8 is not certified in any specialty unit.\n59. Nurse R7 is not certified in any specialty unit.\n60. Nurse P2 is not certified in any specialty unit.\n"
+  },
+  {
+    "size": 60,
+    "case_type": "D",
+    "case": {
+      "case_type": "D",
+      "status": "inconsistent",
+      "rules": [
+        [
+          1,
+          "YNurse G is certified in OR only for day shifts, per bylaw 4.2."
+        ],
+        [
+          2,
+          "Nurse Q4 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          3,
+          "Nurse P6 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          4,
+          "Nurse T9 is certified in ICU."
+        ],
+        [
+          5,
+          "Nurse T4 is not certified in any specialty unit."
+        ],
+        [
+          6,
+          "Nurse S6 is certified in ICU."
+        ],
+        [
+          7,
+          "Nurse S5 prefers day shifts but has no restriction on record."
+        ],
+        [
+          8,
+          "Nurse R4 is not certified in any specialty unit."
+        ],
+        [
+          9,
+          "Nurse T1 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          10,
+          "Nurse P7 is not certified in any specialty unit."
+        ],
+        [
+          11,
+          "Nurse T2 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          12,
+          "YNurse E is certified in OR."
+        ],
+        [
+          13,
+          "Nurse Q6 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          14,
+          "The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU."
+        ],
+        [
+          15,
+          "Nurse Q1 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          16,
+          "Nurse P9 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          17,
+          "Nurse Q9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          18,
+          "Nurse P4 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          19,
+          "Nurse S7 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          20,
+          "YNurse G is certified in OR."
+        ],
+        [
+          21,
+          "Nurse R8 is certified in ICU."
+        ],
+        [
+          22,
+          "Nurse S8 prefers day shifts but has no restriction on record."
+        ],
+        [
+          23,
+          "Nurse R2 is certified in ICU."
+        ],
+        [
+          24,
+          "Nurse S3 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          25,
+          "Nurse R3 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          26,
+          "Nurse Q8 is certified in ICU."
+        ],
+        [
+          27,
+          "Nurse S1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          28,
+          "Nurse T8 prefers day shifts but has no restriction on record."
+        ],
+        [
+          29,
+          "Nurse U3 is certified in ICU."
+        ],
+        [
+          30,
+          "Nurse T5 prefers day shifts but has no restriction on record."
+        ],
+        [
+          31,
+          "Nurse S4 is certified in ICU."
+        ],
+        [
+          32,
+          "Nurse Q2 is not certified in any specialty unit."
+        ],
+        [
+          33,
+          "Nurse P8 is scheduled for the ICU day shift on Wed Mar 4."
+        ],
+        [
+          34,
+          "Nurse R6 is not certified in any specialty unit."
+        ],
+        [
+          35,
+          "Nurse P3 is certified in ICU."
+        ],
+        [
+          36,
+          "XNurse E is certified in NICU."
+        ],
+        [
+          37,
+          "Nurse P5 is certified in ICU."
+        ],
+        [
+          38,
+          "The Operating Room night shift on Thu Mar 5 requires a nurse certified in OR."
+        ],
+        [
+          39,
+          "Nurse Q7 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          40,
+          "Nurse R5 is certified in ICU."
+        ],
+        [
+          41,
+          "Nurse S9 is not certified in any specialty unit."
+        ],
+        [
+          42,
+          "XNurse A is certified in NICU only for day shifts, per bylaw 4.2."
+        ],
+        [
+          43,
+          "Nurse P2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          44,
+          "Nurse R1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          45,
+          "Nurse T3 completed annual safety training on Mon Mar 2."
+        ],
+        [
+          46,
+          "YNurse E is on approved leave from Mar 1 to Mar 9."
+        ],
+        [
+          47,
+          "Nurse U2 is not certified in any specialty unit."
+        ],
+        [
+          48,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          49,
+          "Nurse U1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          50,
+          "XNurse A is certified in NICU."
+        ],
+        [
+          51,
+          "Nurse T7 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          52,
+          "Nurse Q3 is not certified in any specialty unit."
+        ],
+        [
+          53,
+          "XNurse E is on approved leave from Mar 1 to Mar 9."
+        ],
+        [
+          54,
+          "Nurse Q5 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          55,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          56,
+          "Nurse R7 is not certified in any specialty unit."
+        ],
+        [
+          57,
+          "Nurse T6 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          58,
+          "Nurse R9 is not certified in any specialty unit."
+        ],
+        [
+          59,
+          "Nurse P1 is not certified in any specialty unit."
+        ],
+        [
+          60,
+          "Nurse S2 prefers day shifts but has no restriction on record."
+        ]
+      ],
+      "minimal_obstruction_rules": [
+        1,
+        12,
+        14,
+        20,
+        36,
+        38,
+        42,
+        46,
+        48,
+        50,
+        53,
+        55
+      ],
+      "best_probe": "For both Neonatal ICU on Thu Mar 5 and Operating Room on Thu Mar 5: is any float/agency-certified nurse available, or can an override apply?",
+      "notes": {
+        "core1": {
+          "cert": "NICU",
+          "unit": "Neonatal ICU",
+          "date": "Thu Mar 5",
+          "candidates": [
+            "XNurse A",
+            "XNurse E"
+          ]
+        },
+        "core2": {
+          "cert": "OR",
+          "unit": "Operating Room",
+          "date": "Thu Mar 5",
+          "candidates": [
+            "YNurse G",
+            "YNurse E"
+          ]
+        }
+      }
+    },
+    "prompt": "You are auditing a numbered list of hospital scheduling rules for logical consistency.\n\nDetermine whether the rules, taken together, are:\n- \"consistent\": a valid schedule assignment satisfying every rule exists.\n- \"inconsistent\": no valid assignment can satisfy every rule -- a genuine, provable contradiction.\n- \"underspecified\": you cannot determine consistency because some fact needed to decide is not stated below. Do not guess -- if guessing either way would change your answer, say underspecified.\n\nDo not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it. \"Underspecified\" means a STATED entity's status is left ambiguous by the rules themselves (e.g. a certification whose renewal outcome isn't given) -- it does NOT mean \"an unlisted nurse might exist.\" If no assignment using only the listed people/resources satisfies all rules, and the only way to satisfy it would require an unlisted exception, mark it \"inconsistent\", not \"underspecified\".\n\nKeep any reasoning brief (a few sentences). Then output the JSON object.\n\nRespond with ONLY a single JSON object, no other text before or after it, in exactly this format:\n{\"status\": \"consistent|inconsistent|underspecified\", \"minimal_obstruction_rules\": [<rule numbers>], \"reasoning_summary\": \"<one or two sentences>\", \"best_probe\": \"<the single cheapest question that would resolve or override the issue, empty string if consistent>\", \"confidence\": <0.0-1.0>}\n\nminimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is \"consistent\".\n\nRules:\n1. YNurse G is certified in OR only for day shifts, per bylaw 4.2.\n2. Nurse Q4 requested Mon Mar 2 off and has no shift assigned that day.\n3. Nurse P6 requested Sun Mar 8 off and has no shift assigned that day.\n4. Nurse T9 is certified in ICU.\n5. Nurse T4 is not certified in any specialty unit.\n6. Nurse S6 is certified in ICU.\n7. Nurse S5 prefers day shifts but has no restriction on record.\n8. Nurse R4 is not certified in any specialty unit.\n9. Nurse T1 completed annual safety training on Fri Mar 6.\n10. Nurse P7 is not certified in any specialty unit.\n11. Nurse T2 requested Thu Mar 5 off and has no shift assigned that day.\n12. YNurse E is certified in OR.\n13. Nurse Q6 is scheduled for the ICU day shift on Fri Mar 6.\n14. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\n15. Nurse Q1 is scheduled for the ICU day shift on Fri Mar 6.\n16. Nurse P9 requested Fri Mar 6 off and has no shift assigned that day.\n17. Nurse Q9 prefers day shifts but has no restriction on record.\n18. Nurse P4 requested Fri Mar 6 off and has no shift assigned that day.\n19. Nurse S7 requested Sun Mar 8 off and has no shift assigned that day.\n20. YNurse G is certified in OR.\n21. Nurse R8 is certified in ICU.\n22. Nurse S8 prefers day shifts but has no restriction on record.\n23. Nurse R2 is certified in ICU.\n24. Nurse S3 requested Fri Mar 6 off and has no shift assigned that day.\n25. Nurse R3 is scheduled for the ICU day shift on Fri Mar 6.\n26. Nurse Q8 is certified in ICU.\n27. Nurse S1 prefers day shifts but has no restriction on record.\n28. Nurse T8 prefers day shifts but has no restriction on record.\n29. Nurse U3 is certified in ICU.\n30. Nurse T5 prefers day shifts but has no restriction on record.\n31. Nurse S4 is certified in ICU.\n32. Nurse Q2 is not certified in any specialty unit.\n33. Nurse P8 is scheduled for the ICU day shift on Wed Mar 4.\n34. Nurse R6 is not certified in any specialty unit.\n35. Nurse P3 is certified in ICU.\n36. XNurse E is certified in NICU.\n37. Nurse P5 is certified in ICU.\n38. The Operating Room night shift on Thu Mar 5 requires a nurse certified in OR.\n39. Nurse Q7 requested Tue Mar 3 off and has no shift assigned that day.\n40. Nurse R5 is certified in ICU.\n41. Nurse S9 is not certified in any specialty unit.\n42. XNurse A is certified in NICU only for day shifts, per bylaw 4.2.\n43. Nurse P2 prefers day shifts but has no restriction on record.\n44. Nurse R1 prefers day shifts but has no restriction on record.\n45. Nurse T3 completed annual safety training on Mon Mar 2.\n46. YNurse E is on approved leave from Mar 1 to Mar 9.\n47. Nurse U2 is not certified in any specialty unit.\n48. Thu Mar 5 is a weekday.\n49. Nurse U1 prefers day shifts but has no restriction on record.\n50. XNurse A is certified in NICU.\n51. Nurse T7 requested Mon Mar 2 off and has no shift assigned that day.\n52. Nurse Q3 is not certified in any specialty unit.\n53. XNurse E is on approved leave from Mar 1 to Mar 9.\n54. Nurse Q5 requested Sat Mar 7 off and has no shift assigned that day.\n55. Thu Mar 5 is a weekday.\n56. Nurse R7 is not certified in any specialty unit.\n57. Nurse T6 requested Mon Mar 2 off and has no shift assigned that day.\n58. Nurse R9 is not certified in any specialty unit.\n59. Nurse P1 is not certified in any specialty unit.\n60. Nurse S2 prefers day shifts but has no restriction on record.\n"
+  },
+  {
+    "size": 100,
+    "case_type": "A",
+    "case": {
+      "case_type": "A",
+      "status": "inconsistent",
+      "rules": [
+        [
+          1,
+          "Nurse S8 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          2,
+          "Nurse A is certified in NICU only for day shifts, per bylaw 4.2."
+        ],
+        [
+          3,
+          "Nurse S9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          4,
+          "Nurse X3 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          5,
+          "Nurse V6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          6,
+          "Nurse P5 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          7,
+          "Nurse T3 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          8,
+          "Nurse Q8 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          9,
+          "Nurse R3 is certified in OR."
+        ],
+        [
+          10,
+          "Nurse Q3 is not certified in any specialty unit."
+        ],
+        [
+          11,
+          "Nurse R5 is not certified in any specialty unit."
+        ],
+        [
+          12,
+          "Nurse T1 is not certified in any specialty unit."
+        ],
+        [
+          13,
+          "Nurse U1 is certified in OR."
+        ],
+        [
+          14,
+          "Nurse Y1 is scheduled for the Operating Room day shift on Sat Mar 7."
+        ],
+        [
+          15,
+          "Nurse R7 is not certified in any specialty unit."
+        ],
+        [
+          16,
+          "Nurse S1 is not certified in any specialty unit."
+        ],
+        [
+          17,
+          "Nurse X1 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          18,
+          "Nurse W6 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          19,
+          "Nurse Q1 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          20,
+          "Nurse Y2 is not certified in any specialty unit."
+        ],
+        [
+          21,
+          "Nurse W1 is scheduled for the Operating Room day shift on Sat Mar 7."
+        ],
+        [
+          22,
+          "Nurse S7 is certified in ICU."
+        ],
+        [
+          23,
+          "Nurse P9 is scheduled for the ICU day shift on Wed Mar 4."
+        ],
+        [
+          24,
+          "Nurse V1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          25,
+          "Nurse X6 is scheduled for the ICU day shift on Tue Mar 3."
+        ],
+        [
+          26,
+          "Nurse U4 is certified in ICU."
+        ],
+        [
+          27,
+          "Nurse S6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          28,
+          "Nurse W3 is certified in ICU."
+        ],
+        [
+          29,
+          "Nurse P2 is not certified in any specialty unit."
+        ],
+        [
+          30,
+          "Nurse V9 completed annual safety training on Tue Mar 3."
+        ],
+        [
+          31,
+          "Nurse R9 is certified in OR."
+        ],
+        [
+          32,
+          "Nurse R2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          33,
+          "Nurse R4 is scheduled for the Operating Room day shift on Fri Mar 6."
+        ],
+        [
+          34,
+          "Nurse X8 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          35,
+          "Nurse V2 is certified in ICU."
+        ],
+        [
+          36,
+          "Nurse Y9 requested Wed Mar 4 off and has no shift assigned that day."
+        ],
+        [
+          37,
+          "Nurse V3 is certified in OR."
+        ],
+        [
+          38,
+          "Nurse Y6 is scheduled for the Operating Room day shift on Mon Mar 2."
+        ],
+        [
+          39,
+          "Nurse P4 is certified in OR."
+        ],
+        [
+          40,
+          "Nurse U7 is certified in OR."
+        ],
+        [
+          41,
+          "Nurse A is certified in NICU."
+        ],
+        [
+          42,
+          "Nurse Y8 is scheduled for the ICU day shift on Tue Mar 3."
+        ],
+        [
+          43,
+          "Nurse U2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          44,
+          "Any nurse who works three consecutive night shifts must be off the following night shift."
+        ],
+        [
+          45,
+          "Nurse T7 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          46,
+          "Nurse Q4 is not certified in any specialty unit."
+        ],
+        [
+          47,
+          "Nurse T2 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          48,
+          "Nurse T4 completed annual safety training on Mon Mar 2."
+        ],
+        [
+          49,
+          "Nurse R6 is certified in OR."
+        ],
+        [
+          50,
+          "Nurse X9 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          51,
+          "Nurse I worked night shifts on the three consecutive nights before Thu Mar 5."
+        ],
+        [
+          52,
+          "Nurse X2 is not certified in any specialty unit."
+        ],
+        [
+          53,
+          "Nurse I requested Thu Mar 5 off."
+        ],
+        [
+          54,
+          "Nurse T5 is not certified in any specialty unit."
+        ],
+        [
+          55,
+          "Nurse W7 is scheduled for the ICU day shift on Mon Mar 2."
+        ],
+        [
+          56,
+          "Nurse R1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          57,
+          "Nurse P8 is not certified in any specialty unit."
+        ],
+        [
+          58,
+          "Nurse W2 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          59,
+          "Nurse E is on approved leave from Mar 1 to Mar 9."
+        ],
+        [
+          60,
+          "Nurse Y4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          61,
+          "Nurse V5 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          62,
+          "Nurse X7 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          63,
+          "Nurse T9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          64,
+          "Nurse U6 is certified in ICU."
+        ],
+        [
+          65,
+          "Nurse Y5 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          66,
+          "Nurse Q5 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          67,
+          "Nurse R8 is not certified in any specialty unit."
+        ],
+        [
+          68,
+          "Nurse S2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          69,
+          "Nurse Q7 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          70,
+          "Nurse P6 is certified in ICU."
+        ],
+        [
+          71,
+          "Nurse X4 requested Wed Mar 4 off and has no shift assigned that day."
+        ],
+        [
+          72,
+          "Nurse P3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          73,
+          "Nurse Y7 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          74,
+          "Nurse W4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          75,
+          "Nurse W8 is not certified in any specialty unit."
+        ],
+        [
+          76,
+          "Nurse Q9 is certified in OR."
+        ],
+        [
+          77,
+          "Nurse Y3 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          78,
+          "Nurse S4 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          79,
+          "Nurse X5 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          80,
+          "Nurse T6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          81,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          82,
+          "Nurse P7 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          83,
+          "Nurse P1 completed annual safety training on Thu Mar 5."
+        ],
+        [
+          84,
+          "Nurse W9 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          85,
+          "Nurse V7 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          86,
+          "Nurse Q6 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          87,
+          "Nurse T8 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          88,
+          "Nurse I is certified in NICU."
+        ],
+        [
+          89,
+          "Nurse U5 is not certified in any specialty unit."
+        ],
+        [
+          90,
+          "Nurse S3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          91,
+          "Nurse S5 is certified in OR."
+        ],
+        [
+          92,
+          "Nurse U9 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          93,
+          "Nurse E is certified in NICU."
+        ],
+        [
+          94,
+          "The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU."
+        ],
+        [
+          95,
+          "Nurse W5 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          96,
+          "Nurse V8 is certified in ICU."
+        ],
+        [
+          97,
+          "Nurse U8 is certified in ICU."
+        ],
+        [
+          98,
+          "Nurse V4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          99,
+          "Nurse U3 is not certified in any specialty unit."
+        ],
+        [
+          100,
+          "Nurse Q2 is scheduled for the ICU day shift on Fri Mar 6."
+        ]
+      ],
+      "minimal_obstruction_rules": [
+        2,
+        41,
+        44,
+        51,
+        53,
+        59,
+        81,
+        88,
+        93,
+        94
+      ],
+      "best_probe": "Is there an ICU-certified float or agency nurse available for the Neonatal ICU night shift on Thu Mar 5, or can an administrative override waive the fatigue-rest requirement given no certified alternative exists?",
+      "notes": {
+        "cert": "NICU",
+        "unit": "Neonatal ICU",
+        "date": "Thu Mar 5",
+        "candidates": [
+          "Nurse A",
+          "Nurse E",
+          "Nurse I"
+        ]
+      }
+    },
+    "prompt": "You are auditing a numbered list of hospital scheduling rules for logical consistency.\n\nDetermine whether the rules, taken together, are:\n- \"consistent\": a valid schedule assignment satisfying every rule exists.\n- \"inconsistent\": no valid assignment can satisfy every rule -- a genuine, provable contradiction.\n- \"underspecified\": you cannot determine consistency because some fact needed to decide is not stated below. Do not guess -- if guessing either way would change your answer, say underspecified.\n\nDo not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it. \"Underspecified\" means a STATED entity's status is left ambiguous by the rules themselves (e.g. a certification whose renewal outcome isn't given) -- it does NOT mean \"an unlisted nurse might exist.\" If no assignment using only the listed people/resources satisfies all rules, and the only way to satisfy it would require an unlisted exception, mark it \"inconsistent\", not \"underspecified\".\n\nKeep any reasoning brief (a few sentences). Then output the JSON object.\n\nRespond with ONLY a single JSON object, no other text before or after it, in exactly this format:\n{\"status\": \"consistent|inconsistent|underspecified\", \"minimal_obstruction_rules\": [<rule numbers>], \"reasoning_summary\": \"<one or two sentences>\", \"best_probe\": \"<the single cheapest question that would resolve or override the issue, empty string if consistent>\", \"confidence\": <0.0-1.0>}\n\nminimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is \"consistent\".\n\nRules:\n1. Nurse S8 requested Sun Mar 8 off and has no shift assigned that day.\n2. Nurse A is certified in NICU only for day shifts, per bylaw 4.2.\n3. Nurse S9 prefers day shifts but has no restriction on record.\n4. Nurse X3 requested Thu Mar 5 off and has no shift assigned that day.\n5. Nurse V6 prefers day shifts but has no restriction on record.\n6. Nurse P5 requested Fri Mar 6 off and has no shift assigned that day.\n7. Nurse T3 requested Thu Mar 5 off and has no shift assigned that day.\n8. Nurse Q8 requested Tue Mar 3 off and has no shift assigned that day.\n9. Nurse R3 is certified in OR.\n10. Nurse Q3 is not certified in any specialty unit.\n11. Nurse R5 is not certified in any specialty unit.\n12. Nurse T1 is not certified in any specialty unit.\n13. Nurse U1 is certified in OR.\n14. Nurse Y1 is scheduled for the Operating Room day shift on Sat Mar 7.\n15. Nurse R7 is not certified in any specialty unit.\n16. Nurse S1 is not certified in any specialty unit.\n17. Nurse X1 requested Sun Mar 8 off and has no shift assigned that day.\n18. Nurse W6 is scheduled for the ICU day shift on Fri Mar 6.\n19. Nurse Q1 requested Fri Mar 6 off and has no shift assigned that day.\n20. Nurse Y2 is not certified in any specialty unit.\n21. Nurse W1 is scheduled for the Operating Room day shift on Sat Mar 7.\n22. Nurse S7 is certified in ICU.\n23. Nurse P9 is scheduled for the ICU day shift on Wed Mar 4.\n24. Nurse V1 prefers day shifts but has no restriction on record.\n25. Nurse X6 is scheduled for the ICU day shift on Tue Mar 3.\n26. Nurse U4 is certified in ICU.\n27. Nurse S6 prefers day shifts but has no restriction on record.\n28. Nurse W3 is certified in ICU.\n29. Nurse P2 is not certified in any specialty unit.\n30. Nurse V9 completed annual safety training on Tue Mar 3.\n31. Nurse R9 is certified in OR.\n32. Nurse R2 prefers day shifts but has no restriction on record.\n33. Nurse R4 is scheduled for the Operating Room day shift on Fri Mar 6.\n34. Nurse X8 requested Fri Mar 6 off and has no shift assigned that day.\n35. Nurse V2 is certified in ICU.\n36. Nurse Y9 requested Wed Mar 4 off and has no shift assigned that day.\n37. Nurse V3 is certified in OR.\n38. Nurse Y6 is scheduled for the Operating Room day shift on Mon Mar 2.\n39. Nurse P4 is certified in OR.\n40. Nurse U7 is certified in OR.\n41. Nurse A is certified in NICU.\n42. Nurse Y8 is scheduled for the ICU day shift on Tue Mar 3.\n43. Nurse U2 prefers day shifts but has no restriction on record.\n44. Any nurse who works three consecutive night shifts must be off the following night shift.\n45. Nurse T7 requested Mon Mar 2 off and has no shift assigned that day.\n46. Nurse Q4 is not certified in any specialty unit.\n47. Nurse T2 completed annual safety training on Fri Mar 6.\n48. Nurse T4 completed annual safety training on Mon Mar 2.\n49. Nurse R6 is certified in OR.\n50. Nurse X9 completed annual safety training on Sat Mar 7.\n51. Nurse I worked night shifts on the three consecutive nights before Thu Mar 5.\n52. Nurse X2 is not certified in any specialty unit.\n53. Nurse I requested Thu Mar 5 off.\n54. Nurse T5 is not certified in any specialty unit.\n55. Nurse W7 is scheduled for the ICU day shift on Mon Mar 2.\n56. Nurse R1 prefers day shifts but has no restriction on record.\n57. Nurse P8 is not certified in any specialty unit.\n58. Nurse W2 requested Sat Mar 7 off and has no shift assigned that day.\n59. Nurse E is on approved leave from Mar 1 to Mar 9.\n60. Nurse Y4 prefers day shifts but has no restriction on record.\n61. Nurse V5 completed annual safety training on Sat Mar 7.\n62. Nurse X7 completed annual safety training on Fri Mar 6.\n63. Nurse T9 prefers day shifts but has no restriction on record.\n64. Nurse U6 is certified in ICU.\n65. Nurse Y5 requested Thu Mar 5 off and has no shift assigned that day.\n66. Nurse Q5 requested Mon Mar 2 off and has no shift assigned that day.\n67. Nurse R8 is not certified in any specialty unit.\n68. Nurse S2 prefers day shifts but has no restriction on record.\n69. Nurse Q7 is scheduled for the ICU day shift on Fri Mar 6.\n70. Nurse P6 is certified in ICU.\n71. Nurse X4 requested Wed Mar 4 off and has no shift assigned that day.\n72. Nurse P3 prefers day shifts but has no restriction on record.\n73. Nurse Y7 requested Sun Mar 8 off and has no shift assigned that day.\n74. Nurse W4 prefers day shifts but has no restriction on record.\n75. Nurse W8 is not certified in any specialty unit.\n76. Nurse Q9 is certified in OR.\n77. Nurse Y3 completed annual safety training on Sat Mar 7.\n78. Nurse S4 requested Fri Mar 6 off and has no shift assigned that day.\n79. Nurse X5 completed annual safety training on Fri Mar 6.\n80. Nurse T6 prefers day shifts but has no restriction on record.\n81. Thu Mar 5 is a weekday.\n82. Nurse P7 requested Sun Mar 8 off and has no shift assigned that day.\n83. Nurse P1 completed annual safety training on Thu Mar 5.\n84. Nurse W9 completed annual safety training on Sat Mar 7.\n85. Nurse V7 is scheduled for the ICU day shift on Fri Mar 6.\n86. Nurse Q6 requested Sat Mar 7 off and has no shift assigned that day.\n87. Nurse T8 requested Mon Mar 2 off and has no shift assigned that day.\n88. Nurse I is certified in NICU.\n89. Nurse U5 is not certified in any specialty unit.\n90. Nurse S3 prefers day shifts but has no restriction on record.\n91. Nurse S5 is certified in OR.\n92. Nurse U9 requested Tue Mar 3 off and has no shift assigned that day.\n93. Nurse E is certified in NICU.\n94. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\n95. Nurse W5 completed annual safety training on Fri Mar 6.\n96. Nurse V8 is certified in ICU.\n97. Nurse U8 is certified in ICU.\n98. Nurse V4 prefers day shifts but has no restriction on record.\n99. Nurse U3 is not certified in any specialty unit.\n100. Nurse Q2 is scheduled for the ICU day shift on Fri Mar 6.\n"
+  },
+  {
+    "size": 100,
+    "case_type": "B",
+    "case": {
+      "case_type": "B",
+      "status": "underspecified",
+      "rules": [
+        [
+          1,
+          "Nurse T4 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          2,
+          "Nurse T7 prefers day shifts but has no restriction on record."
+        ],
+        [
+          3,
+          "Nurse P4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          4,
+          "Nurse S8 is certified in ICU."
+        ],
+        [
+          5,
+          "Nurse V8 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          6,
+          "Nurse Z3 is not certified in any specialty unit."
+        ],
+        [
+          7,
+          "Nurse U8 is certified in OR."
+        ],
+        [
+          8,
+          "Nurse X8 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          9,
+          "Nurse T1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          10,
+          "Nurse P1 is scheduled for the Operating Room day shift on Fri Mar 6."
+        ],
+        [
+          11,
+          "Nurse P5 is certified in OR."
+        ],
+        [
+          12,
+          "Nurse R1 is certified in OR."
+        ],
+        [
+          13,
+          "Nurse V5 prefers day shifts but has no restriction on record."
+        ],
+        [
+          14,
+          "Nurse R8 is not certified in any specialty unit."
+        ],
+        [
+          15,
+          "Nurse Z1 requested Wed Mar 4 off and has no shift assigned that day."
+        ],
+        [
+          16,
+          "Nurse X2 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          17,
+          "Nurse U1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          18,
+          "Nurse W3 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          19,
+          "Nurse P2 completed annual safety training on Sun Mar 8."
+        ],
+        [
+          20,
+          "Nurse P3 is not certified in any specialty unit."
+        ],
+        [
+          21,
+          "Nurse S4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          22,
+          "Nurse R6 is not certified in any specialty unit."
+        ],
+        [
+          23,
+          "Nurse X1 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          24,
+          "Nurse V7 prefers day shifts but has no restriction on record."
+        ],
+        [
+          25,
+          "Nurse U9 is certified in ICU."
+        ],
+        [
+          26,
+          "Nurse W9 is not certified in any specialty unit."
+        ],
+        [
+          27,
+          "Nurse R2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          28,
+          "Nurse U2 is certified in OR."
+        ],
+        [
+          29,
+          "Nurse X6 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          30,
+          "Nurse S1 is certified in OR."
+        ],
+        [
+          31,
+          "Nurse W8 is scheduled for the ICU day shift on Mon Mar 2."
+        ],
+        [
+          32,
+          "Nurse V6 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          33,
+          "Nurse P7 is certified in ICU."
+        ],
+        [
+          34,
+          "Nurse P6 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          35,
+          "Nurse Y5 prefers day shifts but has no restriction on record."
+        ],
+        [
+          36,
+          "Nurse Q7 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          37,
+          "Nurse X9 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          38,
+          "Nurse W5 prefers day shifts but has no restriction on record."
+        ],
+        [
+          39,
+          "Nurse P9 is not certified in any specialty unit."
+        ],
+        [
+          40,
+          "Nurse S5 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          41,
+          "Nurse U5 is certified in ICU."
+        ],
+        [
+          42,
+          "Nurse Y7 is scheduled for the Operating Room day shift on Mon Mar 2."
+        ],
+        [
+          43,
+          "Nurse Z6 is scheduled for the ICU day shift on Sun Mar 8."
+        ],
+        [
+          44,
+          "Nurse R9 is not certified in any specialty unit."
+        ],
+        [
+          45,
+          "Nurse T8 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          46,
+          "Nurse S2 is not certified in any specialty unit."
+        ],
+        [
+          47,
+          "Nurse T3 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          48,
+          "Nurse X5 requested Wed Mar 4 off and has no shift assigned that day."
+        ],
+        [
+          49,
+          "Nurse V9 is certified in ICU."
+        ],
+        [
+          50,
+          "Nurse T9 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          51,
+          "Nurse V2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          52,
+          "Nurse S7 prefers day shifts but has no restriction on record."
+        ],
+        [
+          53,
+          "Nurse X7 is scheduled for the ICU day shift on Tue Mar 3."
+        ],
+        [
+          54,
+          "Nurse Q9 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          55,
+          "Nurse W6 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          56,
+          "Nurse Z5 is scheduled for the Operating Room day shift on Wed Mar 4."
+        ],
+        [
+          57,
+          "Nurse T5 completed annual safety training on Mon Mar 2."
+        ],
+        [
+          58,
+          "Nurse Q2 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          59,
+          "Nurse V3 is certified in ICU."
+        ],
+        [
+          60,
+          "Nurse W7 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          61,
+          "Nurse Y6 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          62,
+          "Nurse U7 is certified in ICU."
+        ],
+        [
+          63,
+          "Nurse Y4 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          64,
+          "Nurse Q8 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          65,
+          "Nurse W4 is certified in ICU."
+        ],
+        [
+          66,
+          "Nurse T6 is not certified in any specialty unit."
+        ],
+        [
+          67,
+          "Nurse W1 completed annual safety training on Tue Mar 3."
+        ],
+        [
+          68,
+          "Nurse Q6 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          69,
+          "Nurse S3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          70,
+          "Nurse Q3 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          71,
+          "Nurse V1 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          72,
+          "Nurse Y2 is scheduled for the Operating Room day shift on Sat Mar 7."
+        ],
+        [
+          73,
+          "Nurse A's NICU certification requires re-testing every 2 years; Nurse A's last test was two years ago and the retest has not been confirmed."
+        ],
+        [
+          74,
+          "Nurse Z7 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          75,
+          "Nurse U3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          76,
+          "Nurse V4 is certified in OR."
+        ],
+        [
+          77,
+          "Nurse Y1 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          78,
+          "Nurse R3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          79,
+          "Nurse S6 is certified in OR."
+        ],
+        [
+          80,
+          "Nurse S9 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          81,
+          "Nurse R5 is scheduled for the Operating Room day shift on Fri Mar 6."
+        ],
+        [
+          82,
+          "Nurse X3 is not certified in any specialty unit."
+        ],
+        [
+          83,
+          "Nurse Q4 is not certified in any specialty unit."
+        ],
+        [
+          84,
+          "Nurse R4 is certified in OR."
+        ],
+        [
+          85,
+          "Nurse Q1 is scheduled for the ICU day shift on Wed Mar 4."
+        ],
+        [
+          86,
+          "Nurse X4 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          87,
+          "Nurse W2 is scheduled for the Operating Room day shift on Sat Mar 7."
+        ],
+        [
+          88,
+          "Nurse Z2 is not certified in any specialty unit."
+        ],
+        [
+          89,
+          "Nurse Y8 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          90,
+          "Nurse Z4 is scheduled for the ICU day shift on Mon Mar 2."
+        ],
+        [
+          91,
+          "Nurse R7 is certified in OR."
+        ],
+        [
+          92,
+          "The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU."
+        ],
+        [
+          93,
+          "Nurse T2 is not certified in any specialty unit."
+        ],
+        [
+          94,
+          "Nurse U6 is not certified in any specialty unit."
+        ],
+        [
+          95,
+          "Nurse Y3 is not certified in any specialty unit."
+        ],
+        [
+          96,
+          "Nurse U4 is not certified in any specialty unit."
+        ],
+        [
+          97,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          98,
+          "Nurse Q5 is not certified in any specialty unit."
+        ],
+        [
+          99,
+          "Nurse Y9 is scheduled for the ICU day shift on Tue Mar 3."
+        ],
+        [
+          100,
+          "Nurse P8 requested Sun Mar 8 off and has no shift assigned that day."
+        ]
+      ],
+      "minimal_obstruction_rules": [
+        73,
+        92,
+        97
+      ],
+      "best_probe": "Has Nurse A's NICU recertification test result come back, and is the certification currently active for Thu Mar 5?",
+      "notes": {
+        "cert": "NICU",
+        "date": "Thu Mar 5",
+        "nurse": "Nurse A"
+      }
+    },
+    "prompt": "You are auditing a numbered list of hospital scheduling rules for logical consistency.\n\nDetermine whether the rules, taken together, are:\n- \"consistent\": a valid schedule assignment satisfying every rule exists.\n- \"inconsistent\": no valid assignment can satisfy every rule -- a genuine, provable contradiction.\n- \"underspecified\": you cannot determine consistency because some fact needed to decide is not stated below. Do not guess -- if guessing either way would change your answer, say underspecified.\n\nDo not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it. \"Underspecified\" means a STATED entity's status is left ambiguous by the rules themselves (e.g. a certification whose renewal outcome isn't given) -- it does NOT mean \"an unlisted nurse might exist.\" If no assignment using only the listed people/resources satisfies all rules, and the only way to satisfy it would require an unlisted exception, mark it \"inconsistent\", not \"underspecified\".\n\nKeep any reasoning brief (a few sentences). Then output the JSON object.\n\nRespond with ONLY a single JSON object, no other text before or after it, in exactly this format:\n{\"status\": \"consistent|inconsistent|underspecified\", \"minimal_obstruction_rules\": [<rule numbers>], \"reasoning_summary\": \"<one or two sentences>\", \"best_probe\": \"<the single cheapest question that would resolve or override the issue, empty string if consistent>\", \"confidence\": <0.0-1.0>}\n\nminimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is \"consistent\".\n\nRules:\n1. Nurse T4 requested Thu Mar 5 off and has no shift assigned that day.\n2. Nurse T7 prefers day shifts but has no restriction on record.\n3. Nurse P4 prefers day shifts but has no restriction on record.\n4. Nurse S8 is certified in ICU.\n5. Nurse V8 is scheduled for the ICU day shift on Fri Mar 6.\n6. Nurse Z3 is not certified in any specialty unit.\n7. Nurse U8 is certified in OR.\n8. Nurse X8 completed annual safety training on Fri Mar 6.\n9. Nurse T1 prefers day shifts but has no restriction on record.\n10. Nurse P1 is scheduled for the Operating Room day shift on Fri Mar 6.\n11. Nurse P5 is certified in OR.\n12. Nurse R1 is certified in OR.\n13. Nurse V5 prefers day shifts but has no restriction on record.\n14. Nurse R8 is not certified in any specialty unit.\n15. Nurse Z1 requested Wed Mar 4 off and has no shift assigned that day.\n16. Nurse X2 requested Sun Mar 8 off and has no shift assigned that day.\n17. Nurse U1 prefers day shifts but has no restriction on record.\n18. Nurse W3 requested Sat Mar 7 off and has no shift assigned that day.\n19. Nurse P2 completed annual safety training on Sun Mar 8.\n20. Nurse P3 is not certified in any specialty unit.\n21. Nurse S4 prefers day shifts but has no restriction on record.\n22. Nurse R6 is not certified in any specialty unit.\n23. Nurse X1 completed annual safety training on Sat Mar 7.\n24. Nurse V7 prefers day shifts but has no restriction on record.\n25. Nurse U9 is certified in ICU.\n26. Nurse W9 is not certified in any specialty unit.\n27. Nurse R2 prefers day shifts but has no restriction on record.\n28. Nurse U2 is certified in OR.\n29. Nurse X6 completed annual safety training on Fri Mar 6.\n30. Nurse S1 is certified in OR.\n31. Nurse W8 is scheduled for the ICU day shift on Mon Mar 2.\n32. Nurse V6 completed annual safety training on Sat Mar 7.\n33. Nurse P7 is certified in ICU.\n34. Nurse P6 requested Fri Mar 6 off and has no shift assigned that day.\n35. Nurse Y5 prefers day shifts but has no restriction on record.\n36. Nurse Q7 requested Sat Mar 7 off and has no shift assigned that day.\n37. Nurse X9 requested Fri Mar 6 off and has no shift assigned that day.\n38. Nurse W5 prefers day shifts but has no restriction on record.\n39. Nurse P9 is not certified in any specialty unit.\n40. Nurse S5 requested Fri Mar 6 off and has no shift assigned that day.\n41. Nurse U5 is certified in ICU.\n42. Nurse Y7 is scheduled for the Operating Room day shift on Mon Mar 2.\n43. Nurse Z6 is scheduled for the ICU day shift on Sun Mar 8.\n44. Nurse R9 is not certified in any specialty unit.\n45. Nurse T8 requested Mon Mar 2 off and has no shift assigned that day.\n46. Nurse S2 is not certified in any specialty unit.\n47. Nurse T3 completed annual safety training on Fri Mar 6.\n48. Nurse X5 requested Wed Mar 4 off and has no shift assigned that day.\n49. Nurse V9 is certified in ICU.\n50. Nurse T9 requested Mon Mar 2 off and has no shift assigned that day.\n51. Nurse V2 prefers day shifts but has no restriction on record.\n52. Nurse S7 prefers day shifts but has no restriction on record.\n53. Nurse X7 is scheduled for the ICU day shift on Tue Mar 3.\n54. Nurse Q9 requested Tue Mar 3 off and has no shift assigned that day.\n55. Nurse W6 completed annual safety training on Fri Mar 6.\n56. Nurse Z5 is scheduled for the Operating Room day shift on Wed Mar 4.\n57. Nurse T5 completed annual safety training on Mon Mar 2.\n58. Nurse Q2 requested Fri Mar 6 off and has no shift assigned that day.\n59. Nurse V3 is certified in ICU.\n60. Nurse W7 is scheduled for the ICU day shift on Fri Mar 6.\n61. Nurse Y6 requested Thu Mar 5 off and has no shift assigned that day.\n62. Nurse U7 is certified in ICU.\n63. Nurse Y4 completed annual safety training on Sat Mar 7.\n64. Nurse Q8 is scheduled for the ICU day shift on Fri Mar 6.\n65. Nurse W4 is certified in ICU.\n66. Nurse T6 is not certified in any specialty unit.\n67. Nurse W1 completed annual safety training on Tue Mar 3.\n68. Nurse Q6 requested Mon Mar 2 off and has no shift assigned that day.\n69. Nurse S3 prefers day shifts but has no restriction on record.\n70. Nurse Q3 is scheduled for the ICU day shift on Fri Mar 6.\n71. Nurse V1 requested Tue Mar 3 off and has no shift assigned that day.\n72. Nurse Y2 is scheduled for the Operating Room day shift on Sat Mar 7.\n73. Nurse A's NICU certification requires re-testing every 2 years; Nurse A's last test was two years ago and the retest has not been confirmed.\n74. Nurse Z7 requested Fri Mar 6 off and has no shift assigned that day.\n75. Nurse U3 prefers day shifts but has no restriction on record.\n76. Nurse V4 is certified in OR.\n77. Nurse Y1 completed annual safety training on Sat Mar 7.\n78. Nurse R3 prefers day shifts but has no restriction on record.\n79. Nurse S6 is certified in OR.\n80. Nurse S9 requested Sun Mar 8 off and has no shift assigned that day.\n81. Nurse R5 is scheduled for the Operating Room day shift on Fri Mar 6.\n82. Nurse X3 is not certified in any specialty unit.\n83. Nurse Q4 is not certified in any specialty unit.\n84. Nurse R4 is certified in OR.\n85. Nurse Q1 is scheduled for the ICU day shift on Wed Mar 4.\n86. Nurse X4 requested Thu Mar 5 off and has no shift assigned that day.\n87. Nurse W2 is scheduled for the Operating Room day shift on Sat Mar 7.\n88. Nurse Z2 is not certified in any specialty unit.\n89. Nurse Y8 requested Sun Mar 8 off and has no shift assigned that day.\n90. Nurse Z4 is scheduled for the ICU day shift on Mon Mar 2.\n91. Nurse R7 is certified in OR.\n92. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\n93. Nurse T2 is not certified in any specialty unit.\n94. Nurse U6 is not certified in any specialty unit.\n95. Nurse Y3 is not certified in any specialty unit.\n96. Nurse U4 is not certified in any specialty unit.\n97. Thu Mar 5 is a weekday.\n98. Nurse Q5 is not certified in any specialty unit.\n99. Nurse Y9 is scheduled for the ICU day shift on Tue Mar 3.\n100. Nurse P8 requested Sun Mar 8 off and has no shift assigned that day.\n"
+  },
+  {
+    "size": 100,
+    "case_type": "C",
+    "case": {
+      "case_type": "C",
+      "status": "consistent",
+      "rules": [
+        [
+          1,
+          "Nurse V6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          2,
+          "Nurse V2 is certified in ICU."
+        ],
+        [
+          3,
+          "Nurse Q7 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          4,
+          "Nurse Y1 is scheduled for the Operating Room day shift on Sat Mar 7."
+        ],
+        [
+          5,
+          "Nurse U6 is certified in ICU."
+        ],
+        [
+          6,
+          "Nurse W4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          7,
+          "Nurse A is on approved leave from Mar 10 to Mar 14."
+        ],
+        [
+          8,
+          "Nurse V5 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          9,
+          "Nurse T7 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          10,
+          "Nurse S5 is certified in OR."
+        ],
+        [
+          11,
+          "Nurse Y2 is not certified in any specialty unit."
+        ],
+        [
+          12,
+          "Nurse Z4 is scheduled for the Operating Room day shift on Wed Mar 4."
+        ],
+        [
+          13,
+          "Nurse T6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          14,
+          "Nurse Y9 requested Wed Mar 4 off and has no shift assigned that day."
+        ],
+        [
+          15,
+          "Nurse U4 is certified in ICU."
+        ],
+        [
+          16,
+          "Nurse S7 is certified in ICU."
+        ],
+        [
+          17,
+          "Nurse E is a float-pool nurse certified in NICU, available any day, any shift, and is not assigned elsewhere on Thu Mar 5."
+        ],
+        [
+          18,
+          "Nurse R5 is not certified in any specialty unit."
+        ],
+        [
+          19,
+          "Nurse T4 completed annual safety training on Mon Mar 2."
+        ],
+        [
+          20,
+          "Nurse W3 is certified in ICU."
+        ],
+        [
+          21,
+          "Nurse Q5 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          22,
+          "Nurse R3 is certified in OR."
+        ],
+        [
+          23,
+          "Nurse T1 is not certified in any specialty unit."
+        ],
+        [
+          24,
+          "Nurse V7 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          25,
+          "Nurse T5 is not certified in any specialty unit."
+        ],
+        [
+          26,
+          "Nurse W8 is not certified in any specialty unit."
+        ],
+        [
+          27,
+          "Nurse U8 is certified in ICU."
+        ],
+        [
+          28,
+          "Nurse W1 is scheduled for the Operating Room day shift on Sat Mar 7."
+        ],
+        [
+          29,
+          "Nurse P3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          30,
+          "Nurse R7 is not certified in any specialty unit."
+        ],
+        [
+          31,
+          "Nurse E is certified in NICU."
+        ],
+        [
+          32,
+          "Nurse X6 is scheduled for the ICU day shift on Tue Mar 3."
+        ],
+        [
+          33,
+          "Nurse Q4 is not certified in any specialty unit."
+        ],
+        [
+          34,
+          "Nurse X2 is not certified in any specialty unit."
+        ],
+        [
+          35,
+          "Nurse T8 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          36,
+          "Nurse P6 is certified in ICU."
+        ],
+        [
+          37,
+          "Nurse S2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          38,
+          "Nurse T3 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          39,
+          "Nurse X8 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          40,
+          "Nurse R6 is certified in OR."
+        ],
+        [
+          41,
+          "Nurse R8 is not certified in any specialty unit."
+        ],
+        [
+          42,
+          "Nurse W7 is scheduled for the ICU day shift on Mon Mar 2."
+        ],
+        [
+          43,
+          "Nurse Z1 is not certified in any specialty unit."
+        ],
+        [
+          44,
+          "Nurse S4 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          45,
+          "Nurse W5 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          46,
+          "Nurse Q6 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          47,
+          "Nurse X5 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          48,
+          "Nurse Y7 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          49,
+          "Nurse T2 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          50,
+          "Nurse P8 is not certified in any specialty unit."
+        ],
+        [
+          51,
+          "Nurse Y4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          52,
+          "Nurse V9 completed annual safety training on Tue Mar 3."
+        ],
+        [
+          53,
+          "Nurse X7 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          54,
+          "Nurse V4 prefers day shifts but has no restriction on record."
+        ],
+        [
+          55,
+          "Nurse P4 is certified in OR."
+        ],
+        [
+          56,
+          "Nurse U5 is not certified in any specialty unit."
+        ],
+        [
+          57,
+          "Nurse P2 is not certified in any specialty unit."
+        ],
+        [
+          58,
+          "Nurse Q8 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          59,
+          "Nurse U9 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          60,
+          "Nurse V3 is certified in OR."
+        ],
+        [
+          61,
+          "Nurse U2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          62,
+          "Nurse S1 is not certified in any specialty unit."
+        ],
+        [
+          63,
+          "Nurse S9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          64,
+          "Nurse Q3 is not certified in any specialty unit."
+        ],
+        [
+          65,
+          "Nurse R9 is certified in OR."
+        ],
+        [
+          66,
+          "Nurse P9 is scheduled for the ICU day shift on Wed Mar 4."
+        ],
+        [
+          67,
+          "Nurse U7 is certified in OR."
+        ],
+        [
+          68,
+          "Nurse W6 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          69,
+          "Nurse A is certified in NICU."
+        ],
+        [
+          70,
+          "Nurse Y8 is scheduled for the ICU day shift on Tue Mar 3."
+        ],
+        [
+          71,
+          "Nurse T9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          72,
+          "Nurse V1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          73,
+          "Nurse X3 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          74,
+          "Nurse Q9 is certified in OR."
+        ],
+        [
+          75,
+          "Nurse S3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          76,
+          "Nurse S6 prefers day shifts but has no restriction on record."
+        ],
+        [
+          77,
+          "Nurse R2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          78,
+          "Nurse W9 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          79,
+          "Nurse Q1 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          80,
+          "Nurse Z2 is not certified in any specialty unit."
+        ],
+        [
+          81,
+          "Nurse P7 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          82,
+          "Nurse X1 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          83,
+          "Nurse V8 is certified in ICU."
+        ],
+        [
+          84,
+          "Nurse Y3 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          85,
+          "Nurse Y5 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          86,
+          "Nurse R4 is scheduled for the Operating Room day shift on Fri Mar 6."
+        ],
+        [
+          87,
+          "The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU."
+        ],
+        [
+          88,
+          "Nurse S8 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          89,
+          "Nurse Z3 is scheduled for the ICU day shift on Mon Mar 2."
+        ],
+        [
+          90,
+          "Nurse X9 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          91,
+          "Nurse U1 is certified in OR."
+        ],
+        [
+          92,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          93,
+          "Nurse Q2 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          94,
+          "Nurse Y6 is scheduled for the Operating Room day shift on Mon Mar 2."
+        ],
+        [
+          95,
+          "Nurse P5 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          96,
+          "Nurse X4 requested Wed Mar 4 off and has no shift assigned that day."
+        ],
+        [
+          97,
+          "Nurse W2 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          98,
+          "Nurse R1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          99,
+          "Nurse U3 is not certified in any specialty unit."
+        ],
+        [
+          100,
+          "Nurse P1 completed annual safety training on Thu Mar 5."
+        ]
+      ],
+      "minimal_obstruction_rules": [],
+      "best_probe": "",
+      "notes": {
+        "cert": "NICU",
+        "date": "Thu Mar 5",
+        "resolving_nurse": "Nurse E",
+        "also_certified_but_leave": "Nurse A"
+      }
+    },
+    "prompt": "You are auditing a numbered list of hospital scheduling rules for logical consistency.\n\nDetermine whether the rules, taken together, are:\n- \"consistent\": a valid schedule assignment satisfying every rule exists.\n- \"inconsistent\": no valid assignment can satisfy every rule -- a genuine, provable contradiction.\n- \"underspecified\": you cannot determine consistency because some fact needed to decide is not stated below. Do not guess -- if guessing either way would change your answer, say underspecified.\n\nDo not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it. \"Underspecified\" means a STATED entity's status is left ambiguous by the rules themselves (e.g. a certification whose renewal outcome isn't given) -- it does NOT mean \"an unlisted nurse might exist.\" If no assignment using only the listed people/resources satisfies all rules, and the only way to satisfy it would require an unlisted exception, mark it \"inconsistent\", not \"underspecified\".\n\nKeep any reasoning brief (a few sentences). Then output the JSON object.\n\nRespond with ONLY a single JSON object, no other text before or after it, in exactly this format:\n{\"status\": \"consistent|inconsistent|underspecified\", \"minimal_obstruction_rules\": [<rule numbers>], \"reasoning_summary\": \"<one or two sentences>\", \"best_probe\": \"<the single cheapest question that would resolve or override the issue, empty string if consistent>\", \"confidence\": <0.0-1.0>}\n\nminimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is \"consistent\".\n\nRules:\n1. Nurse V6 prefers day shifts but has no restriction on record.\n2. Nurse V2 is certified in ICU.\n3. Nurse Q7 is scheduled for the ICU day shift on Fri Mar 6.\n4. Nurse Y1 is scheduled for the Operating Room day shift on Sat Mar 7.\n5. Nurse U6 is certified in ICU.\n6. Nurse W4 prefers day shifts but has no restriction on record.\n7. Nurse A is on approved leave from Mar 10 to Mar 14.\n8. Nurse V5 completed annual safety training on Sat Mar 7.\n9. Nurse T7 requested Mon Mar 2 off and has no shift assigned that day.\n10. Nurse S5 is certified in OR.\n11. Nurse Y2 is not certified in any specialty unit.\n12. Nurse Z4 is scheduled for the Operating Room day shift on Wed Mar 4.\n13. Nurse T6 prefers day shifts but has no restriction on record.\n14. Nurse Y9 requested Wed Mar 4 off and has no shift assigned that day.\n15. Nurse U4 is certified in ICU.\n16. Nurse S7 is certified in ICU.\n17. Nurse E is a float-pool nurse certified in NICU, available any day, any shift, and is not assigned elsewhere on Thu Mar 5.\n18. Nurse R5 is not certified in any specialty unit.\n19. Nurse T4 completed annual safety training on Mon Mar 2.\n20. Nurse W3 is certified in ICU.\n21. Nurse Q5 requested Mon Mar 2 off and has no shift assigned that day.\n22. Nurse R3 is certified in OR.\n23. Nurse T1 is not certified in any specialty unit.\n24. Nurse V7 is scheduled for the ICU day shift on Fri Mar 6.\n25. Nurse T5 is not certified in any specialty unit.\n26. Nurse W8 is not certified in any specialty unit.\n27. Nurse U8 is certified in ICU.\n28. Nurse W1 is scheduled for the Operating Room day shift on Sat Mar 7.\n29. Nurse P3 prefers day shifts but has no restriction on record.\n30. Nurse R7 is not certified in any specialty unit.\n31. Nurse E is certified in NICU.\n32. Nurse X6 is scheduled for the ICU day shift on Tue Mar 3.\n33. Nurse Q4 is not certified in any specialty unit.\n34. Nurse X2 is not certified in any specialty unit.\n35. Nurse T8 requested Mon Mar 2 off and has no shift assigned that day.\n36. Nurse P6 is certified in ICU.\n37. Nurse S2 prefers day shifts but has no restriction on record.\n38. Nurse T3 requested Thu Mar 5 off and has no shift assigned that day.\n39. Nurse X8 requested Fri Mar 6 off and has no shift assigned that day.\n40. Nurse R6 is certified in OR.\n41. Nurse R8 is not certified in any specialty unit.\n42. Nurse W7 is scheduled for the ICU day shift on Mon Mar 2.\n43. Nurse Z1 is not certified in any specialty unit.\n44. Nurse S4 requested Fri Mar 6 off and has no shift assigned that day.\n45. Nurse W5 completed annual safety training on Fri Mar 6.\n46. Nurse Q6 requested Sat Mar 7 off and has no shift assigned that day.\n47. Nurse X5 completed annual safety training on Fri Mar 6.\n48. Nurse Y7 requested Sun Mar 8 off and has no shift assigned that day.\n49. Nurse T2 completed annual safety training on Fri Mar 6.\n50. Nurse P8 is not certified in any specialty unit.\n51. Nurse Y4 prefers day shifts but has no restriction on record.\n52. Nurse V9 completed annual safety training on Tue Mar 3.\n53. Nurse X7 completed annual safety training on Fri Mar 6.\n54. Nurse V4 prefers day shifts but has no restriction on record.\n55. Nurse P4 is certified in OR.\n56. Nurse U5 is not certified in any specialty unit.\n57. Nurse P2 is not certified in any specialty unit.\n58. Nurse Q8 requested Tue Mar 3 off and has no shift assigned that day.\n59. Nurse U9 requested Tue Mar 3 off and has no shift assigned that day.\n60. Nurse V3 is certified in OR.\n61. Nurse U2 prefers day shifts but has no restriction on record.\n62. Nurse S1 is not certified in any specialty unit.\n63. Nurse S9 prefers day shifts but has no restriction on record.\n64. Nurse Q3 is not certified in any specialty unit.\n65. Nurse R9 is certified in OR.\n66. Nurse P9 is scheduled for the ICU day shift on Wed Mar 4.\n67. Nurse U7 is certified in OR.\n68. Nurse W6 is scheduled for the ICU day shift on Fri Mar 6.\n69. Nurse A is certified in NICU.\n70. Nurse Y8 is scheduled for the ICU day shift on Tue Mar 3.\n71. Nurse T9 prefers day shifts but has no restriction on record.\n72. Nurse V1 prefers day shifts but has no restriction on record.\n73. Nurse X3 requested Thu Mar 5 off and has no shift assigned that day.\n74. Nurse Q9 is certified in OR.\n75. Nurse S3 prefers day shifts but has no restriction on record.\n76. Nurse S6 prefers day shifts but has no restriction on record.\n77. Nurse R2 prefers day shifts but has no restriction on record.\n78. Nurse W9 completed annual safety training on Sat Mar 7.\n79. Nurse Q1 requested Fri Mar 6 off and has no shift assigned that day.\n80. Nurse Z2 is not certified in any specialty unit.\n81. Nurse P7 requested Sun Mar 8 off and has no shift assigned that day.\n82. Nurse X1 requested Sun Mar 8 off and has no shift assigned that day.\n83. Nurse V8 is certified in ICU.\n84. Nurse Y3 completed annual safety training on Sat Mar 7.\n85. Nurse Y5 requested Thu Mar 5 off and has no shift assigned that day.\n86. Nurse R4 is scheduled for the Operating Room day shift on Fri Mar 6.\n87. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\n88. Nurse S8 requested Sun Mar 8 off and has no shift assigned that day.\n89. Nurse Z3 is scheduled for the ICU day shift on Mon Mar 2.\n90. Nurse X9 completed annual safety training on Sat Mar 7.\n91. Nurse U1 is certified in OR.\n92. Thu Mar 5 is a weekday.\n93. Nurse Q2 is scheduled for the ICU day shift on Fri Mar 6.\n94. Nurse Y6 is scheduled for the Operating Room day shift on Mon Mar 2.\n95. Nurse P5 requested Fri Mar 6 off and has no shift assigned that day.\n96. Nurse X4 requested Wed Mar 4 off and has no shift assigned that day.\n97. Nurse W2 requested Sat Mar 7 off and has no shift assigned that day.\n98. Nurse R1 prefers day shifts but has no restriction on record.\n99. Nurse U3 is not certified in any specialty unit.\n100. Nurse P1 completed annual safety training on Thu Mar 5.\n"
+  },
+  {
+    "size": 100,
+    "case_type": "D",
+    "case": {
+      "case_type": "D",
+      "status": "inconsistent",
+      "rules": [
+        [
+          1,
+          "Nurse S4 is certified in ICU."
+        ],
+        [
+          2,
+          "XNurse A is certified in NICU only for day shifts, per bylaw 4.2."
+        ],
+        [
+          3,
+          "Nurse V8 completed annual safety training on Tue Mar 3."
+        ],
+        [
+          4,
+          "Nurse Q1 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          5,
+          "Nurse P8 is scheduled for the ICU day shift on Wed Mar 4."
+        ],
+        [
+          6,
+          "Nurse W6 is scheduled for the ICU day shift on Mon Mar 2."
+        ],
+        [
+          7,
+          "Nurse R3 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          8,
+          "Nurse T1 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          9,
+          "Nurse S8 prefers day shifts but has no restriction on record."
+        ],
+        [
+          10,
+          "Nurse V3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          11,
+          "Nurse X3 requested Wed Mar 4 off and has no shift assigned that day."
+        ],
+        [
+          12,
+          "Nurse Q6 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          13,
+          "Nurse U2 is not certified in any specialty unit."
+        ],
+        [
+          14,
+          "Nurse U5 is certified in ICU."
+        ],
+        [
+          15,
+          "Nurse W7 is not certified in any specialty unit."
+        ],
+        [
+          16,
+          "Nurse U8 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          17,
+          "Nurse Y5 is scheduled for the ICU day shift on Mon Mar 2."
+        ],
+        [
+          18,
+          "Nurse X9 is scheduled for the ICU day shift on Sat Mar 7."
+        ],
+        [
+          19,
+          "Nurse S6 is certified in ICU."
+        ],
+        [
+          20,
+          "Nurse P7 is not certified in any specialty unit."
+        ],
+        [
+          21,
+          "Nurse V4 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          22,
+          "Nurse Y1 is not certified in any specialty unit."
+        ],
+        [
+          23,
+          "Nurse T9 is certified in ICU."
+        ],
+        [
+          24,
+          "Nurse Y3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          25,
+          "YNurse E is on approved leave from Mar 1 to Mar 9."
+        ],
+        [
+          26,
+          "Nurse R7 is not certified in any specialty unit."
+        ],
+        [
+          27,
+          "Nurse Q9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          28,
+          "Nurse P3 is certified in ICU."
+        ],
+        [
+          29,
+          "Nurse W2 is certified in ICU."
+        ],
+        [
+          30,
+          "Nurse R5 is certified in ICU."
+        ],
+        [
+          31,
+          "Nurse S5 prefers day shifts but has no restriction on record."
+        ],
+        [
+          32,
+          "Nurse R2 is certified in ICU."
+        ],
+        [
+          33,
+          "Nurse R8 is certified in ICU."
+        ],
+        [
+          34,
+          "Nurse X5 is scheduled for the ICU day shift on Tue Mar 3."
+        ],
+        [
+          35,
+          "Nurse Y4 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          36,
+          "Nurse T2 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          37,
+          "Nurse P2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          38,
+          "Nurse U9 prefers day shifts but has no restriction on record."
+        ],
+        [
+          39,
+          "XNurse A is certified in NICU."
+        ],
+        [
+          40,
+          "Nurse T8 prefers day shifts but has no restriction on record."
+        ],
+        [
+          41,
+          "Nurse U4 is not certified in any specialty unit."
+        ],
+        [
+          42,
+          "YNurse G is certified in OR only for day shifts, per bylaw 4.2."
+        ],
+        [
+          43,
+          "Nurse T5 prefers day shifts but has no restriction on record."
+        ],
+        [
+          44,
+          "Nurse Q2 is not certified in any specialty unit."
+        ],
+        [
+          45,
+          "Nurse S7 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          46,
+          "Nurse S9 is not certified in any specialty unit."
+        ],
+        [
+          47,
+          "Nurse Y6 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          48,
+          "Nurse X4 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          49,
+          "Nurse Y7 is scheduled for the ICU day shift on Tue Mar 3."
+        ],
+        [
+          50,
+          "Nurse W5 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          51,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          52,
+          "Nurse T3 completed annual safety training on Mon Mar 2."
+        ],
+        [
+          53,
+          "Nurse X8 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          54,
+          "Nurse Q8 is certified in ICU."
+        ],
+        [
+          55,
+          "Nurse P6 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          56,
+          "Nurse V7 is certified in ICU."
+        ],
+        [
+          57,
+          "XNurse E is on approved leave from Mar 1 to Mar 9."
+        ],
+        [
+          58,
+          "Nurse W1 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          59,
+          "Nurse V1 is certified in ICU."
+        ],
+        [
+          60,
+          "Nurse X2 requested Thu Mar 5 off and has no shift assigned that day."
+        ],
+        [
+          61,
+          "Nurse T7 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          62,
+          "Nurse R1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          63,
+          "Nurse X1 is not certified in any specialty unit."
+        ],
+        [
+          64,
+          "Nurse Q3 is not certified in any specialty unit."
+        ],
+        [
+          65,
+          "Nurse R6 is not certified in any specialty unit."
+        ],
+        [
+          66,
+          "Nurse R9 is not certified in any specialty unit."
+        ],
+        [
+          67,
+          "Nurse Q5 requested Sat Mar 7 off and has no shift assigned that day."
+        ],
+        [
+          68,
+          "Nurse P4 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          69,
+          "Nurse W8 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          70,
+          "Nurse P1 is not certified in any specialty unit."
+        ],
+        [
+          71,
+          "Nurse Y2 completed annual safety training on Sat Mar 7."
+        ],
+        [
+          72,
+          "Nurse V9 is scheduled for the ICU day shift on Sat Mar 7."
+        ],
+        [
+          73,
+          "Nurse W4 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          74,
+          "Nurse Q7 requested Tue Mar 3 off and has no shift assigned that day."
+        ],
+        [
+          75,
+          "Nurse X7 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          76,
+          "Nurse S2 prefers day shifts but has no restriction on record."
+        ],
+        [
+          77,
+          "Nurse W9 requested Sun Mar 8 off and has no shift assigned that day."
+        ],
+        [
+          78,
+          "Nurse T4 is not certified in any specialty unit."
+        ],
+        [
+          79,
+          "Thu Mar 5 is a weekday."
+        ],
+        [
+          80,
+          "Nurse P5 is certified in ICU."
+        ],
+        [
+          81,
+          "YNurse E is certified in OR."
+        ],
+        [
+          82,
+          "Nurse V5 prefers day shifts but has no restriction on record."
+        ],
+        [
+          83,
+          "Nurse Q4 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          84,
+          "Nurse T6 requested Mon Mar 2 off and has no shift assigned that day."
+        ],
+        [
+          85,
+          "The Operating Room night shift on Thu Mar 5 requires a nurse certified in OR."
+        ],
+        [
+          86,
+          "Nurse U3 is certified in ICU."
+        ],
+        [
+          87,
+          "Nurse S1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          88,
+          "Nurse S3 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          89,
+          "Nurse U7 is certified in ICU."
+        ],
+        [
+          90,
+          "XNurse E is certified in NICU."
+        ],
+        [
+          91,
+          "The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU."
+        ],
+        [
+          92,
+          "Nurse W3 prefers day shifts but has no restriction on record."
+        ],
+        [
+          93,
+          "Nurse V6 is scheduled for the ICU day shift on Fri Mar 6."
+        ],
+        [
+          94,
+          "Nurse U6 is certified in ICU."
+        ],
+        [
+          95,
+          "Nurse V2 is certified in ICU."
+        ],
+        [
+          96,
+          "Nurse U1 prefers day shifts but has no restriction on record."
+        ],
+        [
+          97,
+          "Nurse P9 requested Fri Mar 6 off and has no shift assigned that day."
+        ],
+        [
+          98,
+          "Nurse X6 completed annual safety training on Fri Mar 6."
+        ],
+        [
+          99,
+          "Nurse R4 is not certified in any specialty unit."
+        ],
+        [
+          100,
+          "YNurse G is certified in OR."
+        ]
+      ],
+      "minimal_obstruction_rules": [
+        2,
+        25,
+        39,
+        42,
+        51,
+        57,
+        79,
+        81,
+        85,
+        90,
+        91,
+        100
+      ],
+      "best_probe": "For both Neonatal ICU on Thu Mar 5 and Operating Room on Thu Mar 5: is any float/agency-certified nurse available, or can an override apply?",
+      "notes": {
+        "core1": {
+          "cert": "NICU",
+          "unit": "Neonatal ICU",
+          "date": "Thu Mar 5",
+          "candidates": [
+            "XNurse A",
+            "XNurse E"
+          ]
+        },
+        "core2": {
+          "cert": "OR",
+          "unit": "Operating Room",
+          "date": "Thu Mar 5",
+          "candidates": [
+            "YNurse G",
+            "YNurse E"
+          ]
+        }
+      }
+    },
+    "prompt": "You are auditing a numbered list of hospital scheduling rules for logical consistency.\n\nDetermine whether the rules, taken together, are:\n- \"consistent\": a valid schedule assignment satisfying every rule exists.\n- \"inconsistent\": no valid assignment can satisfy every rule -- a genuine, provable contradiction.\n- \"underspecified\": you cannot determine consistency because some fact needed to decide is not stated below. Do not guess -- if guessing either way would change your answer, say underspecified.\n\nDo not invent any rule, fact, nurse, or shift not explicitly given below. Only cite rule numbers that actually appear below. The listed people, certifications, availability, and constraints below are complete -- do not assume any unlisted nurse, waiver, exception, or extra resource exists unless a rule states it. \"Underspecified\" means a STATED entity's status is left ambiguous by the rules themselves (e.g. a certification whose renewal outcome isn't given) -- it does NOT mean \"an unlisted nurse might exist.\" If no assignment using only the listed people/resources satisfies all rules, and the only way to satisfy it would require an unlisted exception, mark it \"inconsistent\", not \"underspecified\".\n\nKeep any reasoning brief (a few sentences). Then output the JSON object.\n\nRespond with ONLY a single JSON object, no other text before or after it, in exactly this format:\n{\"status\": \"consistent|inconsistent|underspecified\", \"minimal_obstruction_rules\": [<rule numbers>], \"reasoning_summary\": \"<one or two sentences>\", \"best_probe\": \"<the single cheapest question that would resolve or override the issue, empty string if consistent>\", \"confidence\": <0.0-1.0>}\n\nminimal_obstruction_rules must be the SMALLEST set of rule numbers whose combination proves your status -- not every rule you read, only the ones the contradiction (or ambiguity) actually depends on. Empty list if status is \"consistent\".\n\nRules:\n1. Nurse S4 is certified in ICU.\n2. XNurse A is certified in NICU only for day shifts, per bylaw 4.2.\n3. Nurse V8 completed annual safety training on Tue Mar 3.\n4. Nurse Q1 is scheduled for the ICU day shift on Fri Mar 6.\n5. Nurse P8 is scheduled for the ICU day shift on Wed Mar 4.\n6. Nurse W6 is scheduled for the ICU day shift on Mon Mar 2.\n7. Nurse R3 is scheduled for the ICU day shift on Fri Mar 6.\n8. Nurse T1 completed annual safety training on Fri Mar 6.\n9. Nurse S8 prefers day shifts but has no restriction on record.\n10. Nurse V3 prefers day shifts but has no restriction on record.\n11. Nurse X3 requested Wed Mar 4 off and has no shift assigned that day.\n12. Nurse Q6 is scheduled for the ICU day shift on Fri Mar 6.\n13. Nurse U2 is not certified in any specialty unit.\n14. Nurse U5 is certified in ICU.\n15. Nurse W7 is not certified in any specialty unit.\n16. Nurse U8 requested Tue Mar 3 off and has no shift assigned that day.\n17. Nurse Y5 is scheduled for the ICU day shift on Mon Mar 2.\n18. Nurse X9 is scheduled for the ICU day shift on Sat Mar 7.\n19. Nurse S6 is certified in ICU.\n20. Nurse P7 is not certified in any specialty unit.\n21. Nurse V4 completed annual safety training on Sat Mar 7.\n22. Nurse Y1 is not certified in any specialty unit.\n23. Nurse T9 is certified in ICU.\n24. Nurse Y3 prefers day shifts but has no restriction on record.\n25. YNurse E is on approved leave from Mar 1 to Mar 9.\n26. Nurse R7 is not certified in any specialty unit.\n27. Nurse Q9 prefers day shifts but has no restriction on record.\n28. Nurse P3 is certified in ICU.\n29. Nurse W2 is certified in ICU.\n30. Nurse R5 is certified in ICU.\n31. Nurse S5 prefers day shifts but has no restriction on record.\n32. Nurse R2 is certified in ICU.\n33. Nurse R8 is certified in ICU.\n34. Nurse X5 is scheduled for the ICU day shift on Tue Mar 3.\n35. Nurse Y4 requested Thu Mar 5 off and has no shift assigned that day.\n36. Nurse T2 requested Thu Mar 5 off and has no shift assigned that day.\n37. Nurse P2 prefers day shifts but has no restriction on record.\n38. Nurse U9 prefers day shifts but has no restriction on record.\n39. XNurse A is certified in NICU.\n40. Nurse T8 prefers day shifts but has no restriction on record.\n41. Nurse U4 is not certified in any specialty unit.\n42. YNurse G is certified in OR only for day shifts, per bylaw 4.2.\n43. Nurse T5 prefers day shifts but has no restriction on record.\n44. Nurse Q2 is not certified in any specialty unit.\n45. Nurse S7 requested Sun Mar 8 off and has no shift assigned that day.\n46. Nurse S9 is not certified in any specialty unit.\n47. Nurse Y6 requested Sun Mar 8 off and has no shift assigned that day.\n48. Nurse X4 completed annual safety training on Fri Mar 6.\n49. Nurse Y7 is scheduled for the ICU day shift on Tue Mar 3.\n50. Nurse W5 is scheduled for the ICU day shift on Fri Mar 6.\n51. Thu Mar 5 is a weekday.\n52. Nurse T3 completed annual safety training on Mon Mar 2.\n53. Nurse X8 completed annual safety training on Sat Mar 7.\n54. Nurse Q8 is certified in ICU.\n55. Nurse P6 requested Sun Mar 8 off and has no shift assigned that day.\n56. Nurse V7 is certified in ICU.\n57. XNurse E is on approved leave from Mar 1 to Mar 9.\n58. Nurse W1 requested Sat Mar 7 off and has no shift assigned that day.\n59. Nurse V1 is certified in ICU.\n60. Nurse X2 requested Thu Mar 5 off and has no shift assigned that day.\n61. Nurse T7 requested Mon Mar 2 off and has no shift assigned that day.\n62. Nurse R1 prefers day shifts but has no restriction on record.\n63. Nurse X1 is not certified in any specialty unit.\n64. Nurse Q3 is not certified in any specialty unit.\n65. Nurse R6 is not certified in any specialty unit.\n66. Nurse R9 is not certified in any specialty unit.\n67. Nurse Q5 requested Sat Mar 7 off and has no shift assigned that day.\n68. Nurse P4 requested Fri Mar 6 off and has no shift assigned that day.\n69. Nurse W8 completed annual safety training on Sat Mar 7.\n70. Nurse P1 is not certified in any specialty unit.\n71. Nurse Y2 completed annual safety training on Sat Mar 7.\n72. Nurse V9 is scheduled for the ICU day shift on Sat Mar 7.\n73. Nurse W4 completed annual safety training on Fri Mar 6.\n74. Nurse Q7 requested Tue Mar 3 off and has no shift assigned that day.\n75. Nurse X7 requested Fri Mar 6 off and has no shift assigned that day.\n76. Nurse S2 prefers day shifts but has no restriction on record.\n77. Nurse W9 requested Sun Mar 8 off and has no shift assigned that day.\n78. Nurse T4 is not certified in any specialty unit.\n79. Thu Mar 5 is a weekday.\n80. Nurse P5 is certified in ICU.\n81. YNurse E is certified in OR.\n82. Nurse V5 prefers day shifts but has no restriction on record.\n83. Nurse Q4 requested Mon Mar 2 off and has no shift assigned that day.\n84. Nurse T6 requested Mon Mar 2 off and has no shift assigned that day.\n85. The Operating Room night shift on Thu Mar 5 requires a nurse certified in OR.\n86. Nurse U3 is certified in ICU.\n87. Nurse S1 prefers day shifts but has no restriction on record.\n88. Nurse S3 requested Fri Mar 6 off and has no shift assigned that day.\n89. Nurse U7 is certified in ICU.\n90. XNurse E is certified in NICU.\n91. The Neonatal ICU night shift on Thu Mar 5 requires a nurse certified in NICU.\n92. Nurse W3 prefers day shifts but has no restriction on record.\n93. Nurse V6 is scheduled for the ICU day shift on Fri Mar 6.\n94. Nurse U6 is certified in ICU.\n95. Nurse V2 is certified in ICU.\n96. Nurse U1 prefers day shifts but has no restriction on record.\n97. Nurse P9 requested Fri Mar 6 off and has no shift assigned that day.\n98. Nurse X6 completed annual safety training on Fri Mar 6.\n99. Nurse R4 is not certified in any specialty unit.\n100. YNurse G is certified in OR.\n"
+  }
+]

@@ -1,0 +1,9 @@
+ase: [2026-06-30 11:04:39.600]: [INFO]: service: listening on port 43809
+ase: [2026-06-30 11:04:39.691]: [INFO]: mcp: POST /mcp [initialize]
+ase: [2026-06-30 11:04:39.708]: [INFO]: mcp: POST /mcp [notifications/initialized]
+ase: [2026-06-30 11:04:39.711]: [INFO]: mcp: POST /mcp [tools/list]
+ase: [2026-06-30 11:04:39.718]: [INFO]: mcp: GET /mcp
+ase: [2026-07-04 20:32:18.453]: [INFO]: mcp: POST /mcp [initialize]
+ase: [2026-07-04 20:32:18.538]: [INFO]: mcp: POST /mcp [notifications/initialized]
+ase: [2026-07-04 20:32:18.546]: [INFO]: mcp: POST /mcp [tools/list]
+ase: [2026-07-04 20:32:18.553]: [INFO]: mcp: GET /mcp
