@@ -873,3 +873,36 @@ phase we measure accuracy on every task so far and report **average forgetting**
 - The baselines' collapse to 0 % on task 0 is the standard class-incremental,
   no-replay setting — the point is the *contrast* with modular under identical
   data and budget.
+
+---
+
+# NOUS Agent — the whole thing as a running system (`nous/agent.py`)
+
+The arc's mechanisms wired into a **self-growing, fault-tolerant** system on a
+**frozen** local LLM — the "unfrozen LLM" done safely. The base model's weights
+never change; knowledge grows in an external librarian memory and conditions the
+model at answer time (retrieval-augmented).
+
+```bash
+python -m nous.agent ingest "<fact>"     # add evidence; consolidates on corroboration, rejects one-offs
+python -m nous.agent ask "<question>"    # retrieve memory + answer with frozen Qwen (Ollama)
+python -m nous.agent forget <id>         # delete a concept — editable/auditable memory
+python -m nous.agent status | heal       # component health + auto-recovery
+```
+
+- **Self-grows** (real): memory persists on disk and accretes concepts across runs;
+  evidence-gated (a fact becomes memory only after **repeated, corroborated**
+  observation — one-offs stay provisional, which is the anti-poisoning defense).
+- **Frozen weights**: generation is Qwen-2.5-14B via Ollama; it is never trained,
+  so no catastrophic forgetting and no model-collapse loop from self-ingestion.
+- **Self-heals** (real *fault-tolerance*, honestly bounded): each component has a
+  health check + fallback. Embedder crash → hashing fallback; Ollama down → retry
+  then **degrade to memory-only** answers; corrupt store → back it up and start
+  fresh — the agent stays up through all three. It does **not** claim to repair
+  arbitrary novel breakage autonomously; that is beyond the state of the art.
+- **Editable**: `forget <id>` removes a concept (regulatory deletion / correcting
+  a wrong fact) — impossible to do cleanly in dense weights.
+
+Verified locally end to end: two corroborating ingests **consolidate**; a one-off
+is **rejected**; the frozen 14B answers grounded in retrieved memory; deleting an
+id and corrupting the store both recover without crashing.

@@ -9,3 +9,4 @@ dist/
 build/
 .env
 results/scan_mini_quick.json
+results/agent_memory*.json
