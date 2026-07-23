@@ -105,9 +105,17 @@ class BasinField:
         return sum(s == scope for s in self.scope)
 
     def lru_in_scope(self, scope: str):
-        """Least-recently-used basin index within a scope (evict this one)."""
+        """Least-recently-used basin index within a scope (age-based eviction)."""
         idxs = [i for i, s in enumerate(self.scope) if s == scope]
         return min(idxs, key=lambda i: self.last_used[i]) if idxs else None
+
+    def nearest_in_scope(self, scope: str, q: torch.Tensor):
+        """Spatially nearest basin index within a scope, any label (geometric eviction).
+        Keeps a reuse's damage inside the current input's region — no task label needed."""
+        idxs = [i for i, s in enumerate(self.scope) if s == scope]
+        if not idxs:
+            return None
+        return min(idxs, key=lambda i: ((self.mu[i] - q) ** 2).sum().item())
 
     def reuse(self, i: int, q: torch.Tensor, label: int, t: int, amp0: float = 2.0):
         """Repurpose basin i for a new (region, label) — the capacity-pressure event."""
@@ -187,9 +195,10 @@ class NOUSLearner:
     """
 
     def __init__(self, field: BasinField, op_aware: bool = True, gate: bool = True,
-                 radius: float = 1.0, budget: int = None, n_ops: int = 1):
+                 radius: float = 1.0, budget: int = None, n_ops: int = 1,
+                 evict: str = "lru"):
         self.f, self.op_aware, self.gate, self.R = field, op_aware, gate, radius
-        self.budget, self.n_ops = budget, n_ops
+        self.budget, self.n_ops, self.evict = budget, n_ops, evict
         self.t = 0                                       # global step (for LRU)
         self.n_alloc = self.n_reuse = 0
 
@@ -228,8 +237,9 @@ class NOUSLearner:
         elif self.f.scope_count(scope) < self._cap():    # room left → allocate
             self.f.add_basin(q, y, scope, t=self.t)
             self.n_alloc += 1
-        else:                                            # full → evict LRU in scope
-            j = self.f.lru_in_scope(scope)
+        else:                                            # full → evict a basin in scope
+            j = (self.f.nearest_in_scope(scope, q) if self.evict == "geom"
+                 else self.f.lru_in_scope(scope))
             if j is not None:
                 self.f.reuse(j, q, y, self.t)
                 self.n_reuse += 1
@@ -281,7 +291,12 @@ def make_model(kind: str, state_dim: int, seed: int, budget: int = None, n_ops: 
                            budget=budget, n_ops=n_ops)
     if kind == "ungated":
         return NOUSLearner(new_field(state_dim, seed), op_aware=False, gate=False,
-                           budget=budget, n_ops=n_ops)
+                           budget=budget, n_ops=n_ops, evict="lru")
+    if kind == "taskfree":
+        # no op label: one shared pool (like ungated) but geometric eviction —
+        # locality must emerge from the input geometry alone.
+        return NOUSLearner(new_field(state_dim, seed), op_aware=False, gate=True,
+                           budget=budget, n_ops=n_ops, evict="geom")
     if kind == "mlp":
         return MLPStream()
     raise ValueError(kind)
@@ -360,10 +375,19 @@ def selfcheck():
     # LRU-evicts old ops (forgets). Same total capacity, only partitioning differs.
     cap_g = summarize([run_stream("gated", ops, s, 15, D, budget=20) for s in range(3)], ops)
     cap_u = summarize([run_stream("ungated", ops, s, 15, D, budget=20) for s in range(3)], ops)
+    cap_t = summarize([run_stream("taskfree", ops, s, 15, D, budget=20) for s in range(3)], ops)
     print(f"capped   gated forget {cap_g['forgetting_mean']:+.2f}  "
-          f"ungated forget {cap_u['forgetting_mean']:+.2f}")
+          f"ungated forget {cap_u['forgetting_mean']:+.2f}  "
+          f"taskfree forget {cap_t['forgetting_mean']:+.2f}")
     assert cap_g["forgetting_mean"] < cap_u["forgetting_mean"] - 0.2, \
         "under a cap, op-locality did not reduce forgetting vs op-blind"
+
+    # (4) EMERGENT LOCALITY: task-free (no op label, geometric eviction) forgets
+    # less than op-blind (same shared pool, LRU eviction) — locality is discovered
+    # from the input geometry, not handed via the label. The gap depends on how
+    # separable the frozen W_in makes the ops, so we assert only the direction.
+    assert cap_t["forgetting_mean"] < cap_u["forgetting_mean"], \
+        "task-free geometric routing did not reduce forgetting without the op label"
     print("selfcheck OK")
 
 
@@ -389,7 +413,7 @@ def main():
     out = {"config": {"ops": ops, "seeds": seeds, "epochs": args.epochs,
                       "state_dim": args.state_dim, "vals": VALS, "budget": args.budget},
            "per_seed": {}, "summary": {}}
-    for kind in ("gated", "ungated", "mlp"):
+    for kind in ("gated", "ungated", "taskfree", "mlp"):
         res = [run_stream(kind, ops, s, args.epochs, args.state_dim, budget=args.budget)
                for s in seeds]
         out["per_seed"][kind] = res

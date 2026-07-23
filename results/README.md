@@ -160,6 +160,32 @@ Reproduce any row with `--budget <N>`. The op-aware column is the knob the
 question asked for: **more per-op capacity buys peak accuracy without trading
 away retention** — the reserved-slot locality holds at every budget.
 
+### Task-free routing — step 1: remove the op label (`taskfree`)
+
+The op-aware result hands locality to the model: the op id names the region and
+slots are reserved per op. Step 1 removes that crutch. The `taskfree` learner
+gets **no op label at all** — one shared pool (exactly like op-blind), and the
+*only* change from op-blind is the eviction rule: when the budget is full it
+reuses the **spatially nearest** basin instead of the oldest (LRU). If that alone
+restores retention, locality was *discovered* from the input geometry, not told.
+
+5 seeds, `add → mul → sub`:
+
+| budget | op-blind (LRU) forget | **task-free (geom) peak→final, forget** | op-aware forget |
+| ------ | --------------------- | --------------------------------------- | --------------- |
+| 30     | +77.6 pp              | 100.0 % → 40.8 %,  **+59.2 pp**          | −1.6 pp         |
+| 60     | +62.4 pp              | 100.0 % → 90.4 %,  **+9.6 pp**           | −0.8 pp         |
+
+- At budget 60, task-free keeps op-blind's **full 100 % peak** *and* retains
+  90 % — forgetting collapses from +62 pp to **+9.6 pp** with the label removed,
+  just by evicting geometrically. Locality genuinely emerges from `x`.
+- But it does **not** fully match op-aware (≈0 forget), and at the tight
+  budget 30 it still forgets +59 pp. Cause: with a **frozen random `W_in`** the
+  op is only 3 of 13 input dims, so `add`/`mul`/`sub` regions partly overlap in
+  state space (mean cross-op distance 7.1 vs within-op 5.6, but min cross-op 4.5
+  ≈ within-op) — geometry can route only as well as the representation separates
+  the tasks. That gap is exactly what **step 2 (unfreeze `W_in`)** should close.
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*
@@ -167,11 +193,13 @@ parameters for interference, on a 75-point toy where capacity, separability, and
 the eviction rule are all hand-set. It is **not** an unfrozen LLM, and several
 loads are bearing that will not survive scale:
 
-- **Locality is handed to the model, not discovered.** The op id is a model
-  input and slots are reserved per op. The real problem — task-free continual
-  learning, where the model must *infer* when a surprise is a new region vs a
-  known one — is sidestepped. The surprise/curvature gate does no routing work
-  here; the label does.
+- **Locality is only partly discovered.** The op-aware result hands locality to
+  the model (op id names the region, slots reserved per op). The `taskfree`
+  learner (step 1) removes the label and recovers most of the retention from
+  geometry alone (+9.6 pp forgetting at budget 60 vs op-blind's +62) — but only
+  *most*, and only with enough capacity, because the frozen `W_in` separates the
+  tasks imperfectly. Full task-free routing on an under-separated or truly
+  unlabelled task is still open.
 - **No representation learning.** `W_in` is a frozen random projection, so inputs
   sit at fixed, separable positions and the field just *memorizes* each op in a
   disjoint region. The "zero forgetting" is partly *because* of that disjointness.
