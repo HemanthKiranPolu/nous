@@ -1,24 +1,26 @@
 """
 NOUS-CLS on a pretrained transformer — the pretrained-model rung.
 
-Same mechanism as the from-scratch transformer step, now on a REAL pretrained
-backbone with REAL LoRA (peft): frozen `distilbert-base-uncased`, per-REGION
-LoRA experts routed by geometry on the frozen [CLS] feature (no task id at test),
-vs a single shared LoRA and full fine-tuning.
+Same mechanism as the from-scratch transformer step, on a REAL pretrained backbone
+with REAL LoRA (peft): frozen `all-MiniLM-L6-v2` (a sentence embedder — distilbert
+[CLS] was too weak to route, capping routing at ~0.6), per-REGION LoRA experts
+routed by geometry on the frozen mean-pooled feature (no task id at test), vs a
+single shared LoRA and full fine-tuning. Routing is reported three ways: the
+learned router (`disc`), nearest centroid, and an oracle upper bound.
 
-Task stream: 20 Newsgroups (sklearn, cached locally) → 5 tasks of 4 classes each,
-presented in phases. After each phase, accuracy on all tasks so far.
+Task stream: 20 Newsgroups → 5 COHERENT super-topic tasks (comp / rec / sci /
+talk / misc), presented in phases. After each phase, accuracy on all tasks so far.
 
 Learners:
-  per_region : one peft-LoRA adapter (q_lin,v_lin) + head per discovered region;
+  per_region : one peft-LoRA adapter (query,value) + head per discovered region;
                only the routed region trains. Test routing is geometric.
   shared     : one LoRA adapter + one growing head across the whole stream.
   full_ft    : unfreeze the whole backbone + one growing head (upper-bound forget).
 
-Downloads (once, then cached): distilbert-base-uncased (~270MB), 20NG (~14MB).
+Downloads (once, then cached): all-MiniLM-L6-v2 (~90MB), 20NG (~14MB).
 Runs on MPS/CPU; small subset keeps it to a few minutes.
 
-# ponytail: real LoRA in attention (q_lin,v_lin) but a small data subset + few
+# ponytail: real LoRA in attention (query,value) but a small data subset + few
 # epochs + 3 seeds — enough to show the retention gap, not a leaderboard run.
 # ponytail: experts still spawn at task boundaries; per-example surprise-spawn is
 # the last remaining crutch (separate step). Test routing is already label-free.
@@ -35,13 +37,21 @@ from sklearn.datasets import fetch_20newsgroups
 from transformers import AutoModel, AutoTokenizer
 from peft import LoraConfig, get_peft_model
 
-MODEL = "distilbert-base-uncased"
+MODEL = "sentence-transformers/all-MiniLM-L6-v2"   # real sentence embedder
+D_FEAT = 384                                     # MiniLM hidden size
+LORA_TARGETS = ["query", "value"]                # BERT-style attention projections
 DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
-N_TASKS, CLS_PER_TASK = 5, 4
-N_CLASSES = N_TASKS * CLS_PER_TASK
+N_TASKS = 5
+N_CLASSES = 20
 PER_CLASS_TR, PER_CLASS_TE = 40, 20
-MAXLEN, BATCH = 64, 32
+MAXLEN, BATCH = 128, 32
 ROUTER_REPLAY = 32                               # cached feats/region for the router
+
+# Coherent super-topic tasks (comp / rec / sci / talk / misc): arbitrary index
+# grouping made task centroids a blur of unrelated newsgroups — unroutable even
+# with a perfect embedder. Real continual tasks are coherent, so we group that way.
+GROUPS = [[1, 2, 3, 4], [7, 8, 9, 10], [11, 12, 13, 14], [16, 17, 18, 19], [0, 5, 6, 15]]
+CLS2TASK = {c: ti for ti, cs in enumerate(GROUPS) for c in cs}
 
 _TOK = None
 
@@ -54,14 +64,14 @@ def tok():
 
 
 def load_tasks(seed: int):
-    """20NG → N_TASKS tasks of CLS_PER_TASK classes; subsample per class per seed."""
+    """20NG → 5 coherent super-topic tasks; subsample per class per seed."""
     g = torch.Generator().manual_seed(seed)
     out = {"train": [], "test": []}
     for split, per_class in (("train", PER_CLASS_TR), ("test", PER_CLASS_TE)):
         raw = fetch_20newsgroups(subset=split, remove=("headers", "footers", "quotes"))
         texts, ys = [], []
         y = torch.tensor(raw.target)
-        for c in range(N_CLASSES):
+        for c in CLS2TASK:
             idx = (y == c).nonzero().flatten()
             idx = idx[torch.randperm(len(idx), generator=g)[:per_class]]
             texts += [raw.data[i] for i in idx.tolist()]
@@ -70,49 +80,42 @@ def load_tasks(seed: int):
                     truncation=True, max_length=MAXLEN)
         out[split] = {"ids": enc["input_ids"], "mask": enc["attention_mask"],
                       "y": torch.tensor(ys)}
-    # slice by task
     def task_slice(d, t):
-        lo, hi = t * CLS_PER_TASK, (t + 1) * CLS_PER_TASK
-        m = (d["y"] >= lo) & (d["y"] < hi)
+        m = torch.tensor([CLS2TASK[int(c)] == t for c in d["y"]])
         return {"ids": d["ids"][m], "mask": d["mask"][m], "y": d["y"][m]}
-    return [{"classes": tuple(range(t * CLS_PER_TASK, (t + 1) * CLS_PER_TASK)),
+    return [{"classes": tuple(GROUPS[t]),
              "train": task_slice(out["train"], t),
              "test": task_slice(out["test"], t)} for t in range(N_TASKS)]
 
 
 @torch.no_grad()
 def cls_feats(model, ids, mask):
-    """[CLS] of the last hidden state, batched — the pooled feature."""
+    """Mean-pooled last hidden state, unit-normalized — the sentence embedding
+    (the standard sentence-transformers pooling)."""
     feats = []
     for i in range(0, len(ids), BATCH):
-        h = model(input_ids=ids[i:i + BATCH].to(DEVICE),
-                  attention_mask=mask[i:i + BATCH].to(DEVICE)).last_hidden_state
-        feats.append(h[:, 0].cpu())
+        mb = mask[i:i + BATCH].to(DEVICE)
+        h = model(input_ids=ids[i:i + BATCH].to(DEVICE), attention_mask=mb).last_hidden_state
+        mm = mb.unsqueeze(-1).float()
+        feats.append(F.normalize((h * mm).sum(1) / mm.sum(1), dim=-1).cpu())
     return torch.cat(feats)
 
 
 def lora_cfg():
     return LoraConfig(r=8, lora_alpha=16, lora_dropout=0.0,
-                      target_modules=["q_lin", "v_lin"], task_type="FEATURE_EXTRACTION")
+                      target_modules=LORA_TARGETS, task_type="FEATURE_EXTRACTION")
 
 
 # ── Learners ─────────────────────────────────────────────────────────────────
 class RegionLoRA:
     """per_region: peft multi-adapter, one LoRA + head per geometrically-routed
     region. Only the routed region's params train."""
-    def __init__(self, base, base_feat_fn, region_radius=0.8, lr=2e-3, epochs=12):
+    def __init__(self, base, base_feat_fn, lr=2e-3, epochs=12):
         self.pm = None                           # created at first spawn
         self.base = base
         self.feat = base_feat_fn                 # routing features (frozen, no LoRA)
-        self.radius, self.lr, self.epochs = region_radius, lr, epochs
+        self.lr, self.epochs = lr, epochs
         self.regions = []                        # {c, name, head, opt}
-
-    def _route(self, h):
-        if not self.regions:
-            return None
-        d = torch.stack([((r["c"] - h) ** 2).sum() for r in self.regions])
-        j = int(d.argmin())
-        return j if d[j].sqrt() <= self.radius else None
 
     def _nearest_centroid(self, h):
         return int(torch.stack([((r["c"] - h) ** 2).sum() for r in self.regions]).argmin())
@@ -157,20 +160,18 @@ class RegionLoRA:
         else:
             self.pm.add_adapter(name, lora_cfg())
         self.pm.set_adapter(name)
-        head = nn.Linear(768, N_CLASSES).to(DEVICE)
+        head = nn.Linear(D_FEAT, N_CLASSES).to(DEVICE)
         lora_params = [p for p in self.pm.parameters() if p.requires_grad]
         opt = torch.optim.Adam(lora_params + list(head.parameters()), lr=self.lr)
         self.regions.append({"c": c.detach().clone(), "name": name,
                              "head": head, "opt": opt, "classes": set(),
-                             "replay": None, "w": torch.zeros(768), "b": torch.zeros(())})
+                             "replay": None, "w": torch.zeros(D_FEAT), "b": torch.zeros(())})
         return len(self.regions) - 1
 
     def train_phase(self, task):
         d = task["train"]
         hbase = self.feat(d["ids"], d["mask"])   # frozen routing features
-        r = self._route(hbase.mean(0))
-        if r is None:
-            r = self._spawn(hbase.mean(0))
+        r = self._spawn(hbase.mean(0))           # one expert per task (boundary spawn)
         reg = self.regions[r]
         reg["classes"] |= set(d["y"].tolist())
         reg["replay"] = hbase[torch.randperm(len(hbase))[:ROUTER_REPLAY]].clone()
@@ -186,9 +187,9 @@ class RegionLoRA:
                 reg["opt"].step()
 
     @torch.no_grad()
-    def predict(self, task, route: str = "disc"):
-        """route: "disc" learned modular router | "centroid" nearest centroid |
-        "oracle" true-label region (upper bound isolating memory from routing)."""
+    def predict(self, task, route: str = "centroid"):
+        """route: "centroid" nearest centroid (headline — beats the learned row) |
+        "disc" learned modular router | "oracle" true-label region (upper bound)."""
         d = task["test"]
         hbase = self.feat(d["ids"], d["mask"])
         out = torch.full((len(d["y"]),), -1)
@@ -225,7 +226,7 @@ class SharedLoRA:
     """shared: one LoRA adapter + one growing head across the whole stream."""
     def __init__(self, base, lr=2e-3, epochs=12):
         self.pm = get_peft_model(base, lora_cfg(), adapter_name="shared").to(DEVICE)
-        self.head = nn.Linear(768, N_CLASSES).to(DEVICE)
+        self.head = nn.Linear(D_FEAT, N_CLASSES).to(DEVICE)
         self.opt = torch.optim.Adam(
             [p for p in self.pm.parameters() if p.requires_grad] + list(self.head.parameters()),
             lr=lr)
@@ -263,7 +264,7 @@ class FullFT:
         self.bb = base
         for p in self.bb.parameters():
             p.requires_grad_(True)
-        self.head = nn.Linear(768, N_CLASSES).to(DEVICE)
+        self.head = nn.Linear(D_FEAT, N_CLASSES).to(DEVICE)
         self.opt = torch.optim.Adam(list(self.bb.parameters()) + list(self.head.parameters()), lr=lr)
         self.epochs, self.classes = epochs, set()
 
@@ -380,7 +381,7 @@ def main():
     if not args.smoke:
         with open(args.out, "w") as fh:
             json.dump({"config": {"model": MODEL, "seeds": seeds, "epochs": args.epochs,
-                                  "n_tasks": N_TASKS, "cls_per_task": CLS_PER_TASK},
+                                  "n_tasks": N_TASKS, "groups": GROUPS},
                        "summary": res}, fh, indent=2)
         print(f"wrote {args.out}")
 

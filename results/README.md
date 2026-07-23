@@ -365,7 +365,7 @@ phase, accuracy on all tasks so far.
 
 # Results — Continual Learning on a Pretrained Transformer (`pretrained_cls.json`)
 
-Reproduce (downloads distilbert ~270MB + 20NG ~14MB once, then cached):
+Reproduce (downloads all-MiniLM-L6-v2 ~90MB + 20NG ~14MB once, then cached):
 
 ```bash
 python -m nous.train_pretrained_cls --seeds 3     # → results/pretrained_cls.json
@@ -373,13 +373,18 @@ python -m nous.train_pretrained_cls --smoke        # 1-seed sanity
 ```
 
 Source: [`nous/train_pretrained_cls.py`](../nous/train_pretrained_cls.py).
-A **real pretrained** `distilbert-base-uncased`, frozen, with **real `peft` LoRA**
-(on `q_lin`,`v_lin`): one LoRA adapter + head per geometrically-routed region, vs
-a single shared LoRA and full fine-tuning. Task stream = **20 Newsgroups** →
-5 tasks of 4 classes, in phases. This is the first rung with a genuinely
-pretrained model and real, *overlapping* tasks.
+A **real pretrained** transformer, frozen, with **real `peft` LoRA**: one LoRA
+adapter + head per geometrically-routed region, vs a single shared LoRA and full
+fine-tuning. Task stream = **20 Newsgroups**, 5 tasks, in phases. This is the
+first rung with a genuinely pretrained model and real, *overlapping* tasks.
 
-3 seeds:
+The committed script uses **`all-MiniLM-L6-v2`** with **coherent** super-topic
+tasks — the *fixed* setup (see the last two subsections for why). The table below
+is the **initial `distilbert-base-uncased` run** (commit `c3b80a7`, arbitrary
+class grouping) that exposed the routing bottleneck; the MiniLM headline is at the
+end of this section.
+
+Initial run — distilbert, 3 seeds:
 
 | after all 5 tasks                     | task 0: peak → final | forgetting | all-tasks final |
 | ------------------------------------- | -------------------- | ---------- | --------------- |
@@ -453,3 +458,42 @@ So the genuine next problem is **task-conditioned representation learning that
 yields separable routing features without shared-encoder drift** — the recursion
 this whole progression keeps hitting. A smarter router on frozen features is a
 dead end; the leverage is in the features.
+
+### Fix: a real sentence embedder + coherent tasks (MiniLM headline)
+
+The router was a dead end, so we changed **the features**, not the router — the
+cheapest lever. Two things were wrong with the distilbert setup:
+
+- **`distilbert-base` `[CLS]` is a weak sentence embedding** (no sentence-level
+  pretraining). Swapping to **`all-MiniLM-L6-v2`** (mean-pooled, unit-norm) —
+  a model *trained* for semantic separation — lifts task-routing from ~0.58 to
+  ~0.67.
+- **The tasks were arbitrary.** Grouping *consecutive* class indices put unrelated
+  newsgroups in one "task" (atheism + graphics + windows), so no embedder could
+  route them. Using **coherent** super-topics (comp / rec / sci / talk / misc),
+  which is what real continual tasks look like, lifts routing to ~0.71.
+
+Committed setup (MiniLM + coherent tasks), 3 seeds, **plain centroid routing**:
+
+| after all 5 tasks            | task 0: peak → final | forgetting | all-tasks final |
+| ---------------------------- | -------------------- | ---------- | --------------- |
+| **`per_region`**             | 70 % → **60 %**      | **+10 pp** | **53 %**        |
+| **`per_region`**, *oracle*   | 70 % → 70 %          | +0 pp      | 77 %            |
+| **`shared`** LoRA            | 70 % → 0 %           | +70 pp     | 7 %             |
+| **`full_ft`**                | 59 % → 0 %           | +59 pp     | 14 %            |
+
+- **Task-0 forgetting drops from +42 pp to +10 pp** just by fixing the
+  representation and the task definition — the modular mechanism was never the
+  problem, the embedding was. Baselines still collapse to 0 %.
+- The learned `disc` router **still ties centroid** (both 53 %) — confirming the
+  earlier finding a second time: on these features, plain nearest-centroid is the
+  right router; sophistication buys nothing.
+- A gap to oracle (77 %) remains — routing is ~0.68, dragged down by the one
+  incoherent "misc" task and genuine sci/talk overlap. 20NG tops out here; a
+  cleaner benchmark (or learned task-separating features) is the next lever.
+
+**Net of the whole arc:** modular per-region experts + a decent frozen embedder +
+coherent tasks give **+10 pp** forgetting where shared-LoRA and full fine-tuning
+give **+59–70 pp**. Catastrophic forgetting is removed by *modularity*; the
+residual is *pattern-separation* quality, set by the representation — exactly the
+neuroscience split the series set out to test.
