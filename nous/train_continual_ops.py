@@ -142,7 +142,7 @@ class BasinField:
 
     def force(self, x: torch.Tensor, q: torch.Tensor) -> torch.Tensor:
         """−∂E/∂q = −q + W_in x + Σ_k 2·amp_k·exp(−d²/σ²)/σ²·(μ_k − q)."""
-        f = -q + self.W_in @ x
+        f = -q + self.W_in.detach() @ x               # relax never needs ∂/∂W_in
         if self.mu:
             mu, amp, s2 = self._stack()
             diff = mu - q                                # (K, D)
@@ -196,11 +196,35 @@ class NOUSLearner:
 
     def __init__(self, field: BasinField, op_aware: bool = True, gate: bool = True,
                  radius: float = 1.0, budget: int = None, n_ops: int = 1,
-                 evict: str = "lru"):
+                 evict: str = "lru", plastic: bool = False, enc_lr: float = 0.02):
         self.f, self.op_aware, self.gate, self.R = field, op_aware, gate, radius
         self.budget, self.n_ops, self.evict = budget, n_ops, evict
+        self.plastic = plastic
+        self.enc_opt = torch.optim.SGD([field.W_in], lr=enc_lr) if plastic else None
         self.t = 0                                       # global step (for LRU)
         self.n_alloc = self.n_reuse = 0
+
+    def _encoder_step(self, x: torch.Tensor, y: int):
+        """Step 2: shape the (now plastic) encoder so raw embeddings e=W_in·x
+        separate by label — softmax-CE pulling e toward its correct-label basin
+        prototype, away from others. Shared W_in ⇒ this also moves *other* ops'
+        embeddings (the drift channel we are testing). No solver in the loop."""
+        if len(self.f.mu) < 2:
+            return
+        classes = sorted(set(self.f.label))
+        if y not in classes or len(classes) < 2:
+            return
+        e = self.f.W_in @ x                              # (D,), grad flows to W_in
+        mu = torch.stack([m.detach() for m in self.f.mu])
+        neg_d2 = -((mu - e) ** 2).sum(-1)                # per-basin logit
+        class_logit = torch.stack([
+            neg_d2[[i for i, c in enumerate(self.f.label) if c == cl]].max()
+            for cl in classes])                          # soft-nearest per label
+        loss = F.cross_entropy(class_logit.unsqueeze(0),
+                               torch.tensor([classes.index(y)]))
+        self.enc_opt.zero_grad()
+        loss.backward()
+        self.enc_opt.step()
 
     def _cap(self) -> float:
         """Capacity of the CURRENT scope. op-aware splits the budget across ops
@@ -227,22 +251,24 @@ class NOUSLearner:
             if i is not None:
                 self.f.deepen(i, step=0.1)
                 self.f.touch(i, self.t)
-            return
+        else:
+            i = self.f.nearest(q, y, scope, self.R)
+            if i is not None:                            # refine an existing basin
+                self.f.recenter(i, q)
+                self.f.deepen(i)
+                self.f.touch(i, self.t)
+            elif self.f.scope_count(scope) < self._cap():  # room left → allocate
+                self.f.add_basin(q, y, scope, t=self.t)
+                self.n_alloc += 1
+            else:                                        # full → evict a basin in scope
+                j = (self.f.nearest_in_scope(scope, q) if self.evict == "geom"
+                     else self.f.lru_in_scope(scope))
+                if j is not None:
+                    self.f.reuse(j, q, y, self.t)
+                    self.n_reuse += 1
 
-        i = self.f.nearest(q, y, scope, self.R)
-        if i is not None:                                # refine an existing basin
-            self.f.recenter(i, q)
-            self.f.deepen(i)
-            self.f.touch(i, self.t)
-        elif self.f.scope_count(scope) < self._cap():    # room left → allocate
-            self.f.add_basin(q, y, scope, t=self.t)
-            self.n_alloc += 1
-        else:                                            # full → evict a basin in scope
-            j = (self.f.nearest_in_scope(scope, q) if self.evict == "geom"
-                 else self.f.lru_in_scope(scope))
-            if j is not None:
-                self.f.reuse(j, q, y, self.t)
-                self.n_reuse += 1
+        if self.plastic:                                 # step 2: shape the encoder
+            self._encoder_step(x, y)
 
 
 class MLPStream:
@@ -279,9 +305,12 @@ def accuracy(model, op: str) -> float:
 
 
 # ── Streaming protocol + metrics ─────────────────────────────────────────────
-def new_field(state_dim: int, seed: int, scale: float = 3.0) -> BasinField:
+def new_field(state_dim: int, seed: int, scale: float = 3.0,
+              plastic: bool = False) -> BasinField:
     g = torch.Generator().manual_seed(seed)
     W_in = scale * torch.randn(state_dim, IN_DIM, generator=g) / math.sqrt(IN_DIM)
+    if plastic:
+        W_in.requires_grad_(True)                        # step 2: unfreeze the encoder
     return BasinField(state_dim, W_in)
 
 
@@ -297,6 +326,12 @@ def make_model(kind: str, state_dim: int, seed: int, budget: int = None, n_ops: 
         # locality must emerge from the input geometry alone.
         return NOUSLearner(new_field(state_dim, seed), op_aware=False, gate=True,
                            budget=budget, n_ops=n_ops, evict="geom")
+    if kind == "taskfree_plastic":
+        # step 2: same as taskfree but the encoder W_in is trainable (contrastive).
+        # Tests learned separation (+) vs shared-encoder drift (−).
+        return NOUSLearner(new_field(state_dim, seed, plastic=True), op_aware=False,
+                           gate=True, budget=budget, n_ops=n_ops, evict="geom",
+                           plastic=True)
     if kind == "mlp":
         return MLPStream()
     raise ValueError(kind)
@@ -388,6 +423,15 @@ def selfcheck():
     # separable the frozen W_in makes the ops, so we assert only the direction.
     assert cap_t["forgetting_mean"] < cap_u["forgetting_mean"], \
         "task-free geometric routing did not reduce forgetting without the op label"
+
+    # (5) PLASTIC ENCODER DRIFTS, DOESN'T RESCUE (step 2): unfreezing the shared
+    # W_in does not reach op-aware retention — the ops share the label space, so a
+    # label-driven encoder objective can't separate tasks, only drift. So plastic
+    # still forgets clearly more than op-aware.
+    cap_p = summarize([run_stream("taskfree_plastic", ops, s, 15, D, budget=20) for s in range(3)], ops)
+    print(f"         taskfree_plastic forget {cap_p['forgetting_mean']:+.2f}")
+    assert cap_p["forgetting_mean"] > cap_g["forgetting_mean"] + 0.2, \
+        "plastic encoder unexpectedly matched op-aware retention"
     print("selfcheck OK")
 
 
@@ -413,7 +457,7 @@ def main():
     out = {"config": {"ops": ops, "seeds": seeds, "epochs": args.epochs,
                       "state_dim": args.state_dim, "vals": VALS, "budget": args.budget},
            "per_seed": {}, "summary": {}}
-    for kind in ("gated", "ungated", "taskfree", "mlp"):
+    for kind in ("gated", "ungated", "taskfree", "taskfree_plastic", "mlp"):
         res = [run_stream(kind, ops, s, args.epochs, args.state_dim, budget=args.budget)
                for s in seeds]
         out["per_seed"][kind] = res

@@ -294,6 +294,98 @@
         "n_reuse": 0
       }
     ],
+    "taskfree_plastic": [
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 0.96,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 71,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      }
+    ],
     "mlp": [
       {
         "acc_matrix": [
@@ -411,6 +503,14 @@
       "forgetting_std": 0.0,
       "all_ops_final_mean": 0.9973333333333333,
       "n_basins_mean": 72.0
+    },
+    "taskfree_plastic": {
+      "op0_peak_mean": 1.0,
+      "op0_final_mean": 1.0,
+      "forgetting_mean": 0.0,
+      "forgetting_std": 0.0,
+      "all_ops_final_mean": 0.9973333333333333,
+      "n_basins_mean": 71.8
     },
     "mlp": {
       "op0_peak_mean": 1.0,

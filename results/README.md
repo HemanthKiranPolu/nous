@@ -186,6 +186,41 @@ restores retention, locality was *discovered* from the input geometry, not told.
   ≈ within-op) — geometry can route only as well as the representation separates
   the tasks. That gap is exactly what **step 2 (unfreeze `W_in`)** should close.
 
+### Unfreezing the encoder — step 2: plastic `W_in` (`taskfree_plastic`)
+
+Step 1 left `W_in` a frozen random projection, and its imperfect task separation
+was the ceiling on geometric routing. Step 2 makes `W_in` **trainable** and shapes
+it with an embedding-space contrastive loss (pull raw `e = W_in·x` toward its
+correct-label basin prototype, push from others) — no differentiation through the
+relaxation. Prediction: better separation → task-free tightens toward op-aware.
+
+**That is not what happens.** A plastic shared encoder is neutral at best and
+harmful as it moves (5 seeds, budget 60):
+
+| encoder LR | task-free (plastic) forget | note |
+| ---------- | -------------------------- | ---- |
+| frozen     | +9.6 pp                    | step-1 baseline |
+| 0.02       | +10.4 pp                   | ≈ neutral |
+| 0.1        | +16 pp                     | drift starts |
+| 0.3        | +19 pp                     | |
+| 0.6        | +35 pp                     | drift dominates |
+
+Two compounding reasons, both instructive:
+
+- **The memory co-adapts, so there is no separation pressure.** Basins are placed
+  *at* the current embeddings, so the contrastive loss is already near-zero — the
+  encoder gradient is tiny and `W_in` barely moves (why LR 0.02 ≈ frozen).
+- **The ops share the output label space.** `label 3` is produced by `add` *and*
+  `mul`, so a label-driven encoder objective pulls different ops' inputs
+  *together*, not apart — it cannot create task-separated regions, and once the
+  encoder does move (higher LR) it only **drifts** old ops' inputs off their
+  basins → *more* forgetting.
+
+Takeaway: **you cannot separate tasks by training a shared encoder on a shared
+label signal.** Representation plasticity has to be *task-conditioned* — which is
+precisely what step 3 (per-region / LoRA-style adapters) supplies: new-task
+updates that do not move old tasks' representations.
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*
@@ -200,10 +235,12 @@ loads are bearing that will not survive scale:
   *most*, and only with enough capacity, because the frozen `W_in` separates the
   tasks imperfectly. Full task-free routing on an under-separated or truly
   unlabelled task is still open.
-- **No representation learning.** `W_in` is a frozen random projection, so inputs
-  sit at fixed, separable positions and the field just *memorizes* each op in a
-  disjoint region. The "zero forgetting" is partly *because* of that disjointness.
-  Whether locality survives a `W_in` that moves under training is untested.
+- **Representation plasticity doesn't help — and can hurt.** Step 2 unfroze
+  `W_in` with a contrastive objective; it did not improve routing and drifts into
+  *more* forgetting as it moves, because the ops share the label space so a
+  label-driven encoder can't separate tasks (see step 2). The frozen random
+  projection remains the best encoder here; genuinely useful, *task-conditioned*
+  representation learning is still open (step 3).
 - **Retention, not generalization.** With ≈ one basin per input region there is
   no compositional transfer (SCAN-mini above is the generalization probe, not
   this). A growing labeled memory trivially avoids forgetting in the limit — the
