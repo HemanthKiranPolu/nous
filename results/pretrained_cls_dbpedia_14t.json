@@ -1,0 +1,85 @@
+{
+  "config": {
+    "model": "sentence-transformers/all-MiniLM-L6-v2",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "epochs": 12,
+    "n_tasks": 14,
+    "groups": [
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5
+      ],
+      [
+        6
+      ],
+      [
+        7
+      ],
+      [
+        8
+      ],
+      [
+        9
+      ],
+      [
+        10
+      ],
+      [
+        11
+      ],
+      [
+        12
+      ],
+      [
+        13
+      ]
+    ]
+  },
+  "summary": {
+    "per_region": {
+      "task0_peak": 1.0,
+      "task0_final": 0.8833333452542623,
+      "forgetting": 0.11666665474573772,
+      "all_final": 0.9309523758434114,
+      "n_regions": 14.0,
+      "task0_centroid": 0.8833333452542623,
+      "all_centroid": 0.9309523758434114,
+      "task0_disc": 0.8166666825612386,
+      "all_disc": 0.9166666652475085,
+      "task0_oracle": 1.0,
+      "all_oracle": 1.0
+    },
+    "shared": {
+      "task0_peak": 1.0,
+      "task0_final": 0.0,
+      "forgetting": 1.0,
+      "all_final": 0.07142857142857142,
+      "n_regions": 0.0
+    },
+    "full_ft": {
+      "task0_peak": 1.0,
+      "task0_final": 0.0,
+      "forgetting": 1.0,
+      "all_final": 0.07142857142857142,
+      "n_regions": 0.0
+    }
+  }
+}
