@@ -364,6 +364,33 @@ to a prototype is calibrated; a classifier's softmax is not.** Uncertainty
 estimation is a real remaining piece of the puzzle — and the cheap distance/entropy
 version already does the load-bearing job.
 
+### The whole loop, end to end (`--librarian`)
+
+Each piece above was validated in isolation; `LibrarianLearner` runs them **all at
+once** — task-free surprise-spawn + evidence-based consolidation + a frozen semantic
+id per concept + the defer gate — on a single mixed stream: clean concepts recurring
+with **15 % label noise**, plus a wave of **novel** concepts introduced halfway.
+(The learning-time defer adds a *near* guard so a novel input — high entropy but far
+from every id — still flows through to provisional memory; only blends *close to*
+known ids are parked.) vs `naive` = immediate spawn, no consolidation, no defer.
+5 seeds:
+
+| metric                          | **`librarian`** | `naive` |
+| ------------------------------- | --------------- | ------- |
+| clean-concept accuracy          | 0.97            | 0.95    |
+| novel-concept accuracy          | 0.92            | 1.00    |
+| **ids for 25 concepts**         | **24**          | 42      |
+| **ambiguous-query defer rate**  | **0.83**        | 0.00    |
+
+The librarian keeps **~one clean id per real concept (24)** while `naive` inflates
+to **42** — every noise blip becomes permanent structure. It still learns the real
+and novel concepts, and it **defers 83 %** of genuinely ambiguous queries where
+`naive` confidently misplaces every one. `naive` edges it on raw accuracy (it
+memorises everything, noise included), but at 1.75× the structure and zero
+uncertainty handling. That is the whole thesis in one run: **modular, evidence-gated,
+addressed, calibrated memory — clean structure and honest "I don't know," not just
+a bigger pile of parameters.**
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*

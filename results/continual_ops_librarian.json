@@ -1,0 +1,26 @@
+{
+  "config": {
+    "op": "add",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "summary": {
+    "librarian": {
+      "clean_acc": 0.968,
+      "novel_acc": 0.9199999999999999,
+      "n_ids": 24.2,
+      "amb_defer": 0.8341379310344827
+    },
+    "naive": {
+      "clean_acc": 0.952,
+      "novel_acc": 1.0,
+      "n_ids": 42.0,
+      "amb_defer": 0.0
+    }
+  }
+}

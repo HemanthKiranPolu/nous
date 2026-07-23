@@ -629,6 +629,18 @@ def selfcheck():
     ca, aa = _mean([r["clean_abstain"] for r in dfr]), _mean([r["amb_abstain"] for r in dfr])
     print(f"defer      clean abstain {ca:.2f}  ambiguous abstain {aa:.2f}")
     assert ca < 0.1 and aa > 0.5, "defer gate did not abstain selectively on ambiguous inputs"
+
+    # (10) FULL LIBRARIAN, end to end: surprise-spawn + consolidation + semantic id +
+    # defer, on one mixed stream. vs naive immediate spawn it keeps ~one clean id per
+    # concept (rejects noise), still learns concepts, and defers genuine ambiguity.
+    lib = [run_librarian("librarian", s) for s in range(3)]
+    nai = [run_librarian("naive", s) for s in range(3)]
+    lib_ids, nai_ids = _mean([r["n_ids"] for r in lib]), _mean([r["n_ids"] for r in nai])
+    print(f"librarian  clean {_mean([r['clean_acc'] for r in lib]):.2f}  ids {lib_ids:.0f} "
+          f"vs naive ids {nai_ids:.0f}  amb_defer {_mean([r['amb_defer'] for r in lib]):.2f}")
+    assert lib_ids < nai_ids, "librarian did not keep cleaner structure than naive"
+    assert _mean([r["amb_defer"] for r in lib]) > 0.5, "librarian did not defer ambiguity"
+    assert _mean([r["clean_acc"] for r in lib]) > 0.85, "librarian failed to learn concepts"
     print("selfcheck OK")
 
 
@@ -724,6 +736,74 @@ def run_defer(seed: int, tau: float = 0.35, state_dim: int = 16):
             "amb_abstain": amb_abstain, "n_ids": len(field.mu)}
 
 
+class LibrarianLearner(ConsolidatingLearner):
+    """The whole loop in one learner: task-free surprise-spawn + evidence-based
+    consolidation + a frozen semantic id per concept (all inherited) PLUS a
+    distance/entropy DEFER gate. Before touching structure, if an input is
+    ambiguous — high routing entropy over the consolidated ids, i.e. it sits
+    between two known concepts — it is parked (deferred), never forced into a
+    placement or an evidence tally. Novel inputs (low entropy, just far) still
+    flow through to provisional memory; only genuine blends of knowns are held."""
+
+    def __init__(self, field: BasinField, tau_ambig: float = 0.5, temp: float = 0.2,
+                 near_radius: float = 1.5, **kw):
+        super().__init__(field, **kw)
+        self.tau_ambig, self.temp, self.near_radius = tau_ambig, temp, near_radius
+        self.n_defer = 0
+
+    def is_ambiguous(self, q: torch.Tensor) -> bool:
+        """Ambiguous = a blend of KNOWN concepts: high routing entropy AND close to
+        an existing id. A NOVEL input is far from every id (large min-distance), so
+        it is not deferred — it flows on to provisional memory to form a new id."""
+        if len(self.f.mu) < 2:
+            return False
+        near = ((torch.stack(self.f.mu) - q) ** 2).sum(-1).min().sqrt().item() < self.near_radius
+        return near and _route_entropy(self.f, q, self.temp) > self.tau_ambig
+
+    def observe(self, x: torch.Tensor, y: int, op: str):
+        if self.is_ambiguous(self.f.relax(x)):
+            self.t += 1
+            self.n_defer += 1
+            return                               # "I don't know" → park, learn nothing
+        super().observe(x, y, op)
+
+
+def run_librarian(kind: str, seed: int, epochs: int = 8, noise: float = 0.15,
+                  state_dim: int = 16):
+    """The full librarian on one mixed stream: clean recurring concepts (with label
+    noise), plus AMBIGUOUS inputs (averages of two concepts) fed with random labels.
+    A late wave introduces NOVEL concepts. `librarian` runs the whole loop; `naive`
+    = immediate spawn, no consolidation, no defer. Reports: clean accuracy on the
+    real concepts, #ids (should ≈ #concepts, not inflated by noise/ambiguous), and
+    the fraction of ambiguous probes correctly deferred."""
+    torch.manual_seed(seed)
+    field = new_field(state_dim, seed)
+    lib = kind == "librarian"
+    model = (LibrarianLearner(field) if lib
+             else NOUSLearner(field, op_aware=False, gate=True, evict="geom"))
+    data = op_dataset("add")
+    novel = data[20:]                             # novel concepts arrive late
+    g = torch.Generator().manual_seed(seed + 3)
+    for ep in range(epochs):
+        seen = data if ep >= epochs // 2 else data[:20]    # novelty introduced halfway
+        for j in torch.randperm(len(seen)):
+            x, y = seen[j]
+            if torch.rand(1, generator=g).item() < noise:  # label noise
+                y = int(torch.randint(0, VALS, (1,), generator=g).item())
+            model.observe(x, y, "add")
+    clean_acc = sum(field.predict(x) == yt for x, yt in data) / len(data)
+    novel_acc = sum(field.predict(x) == yt for x, yt in novel) / len(novel)
+    q_amb = []                                    # genuine ambiguity: q-space id midpoints
+    for _ in range(60):
+        i, j = torch.randint(0, len(field.mu), (2,), generator=g).tolist()
+        if i != j:
+            q_amb.append((field.mu[i] + field.mu[j]) / 2)
+    amb_defer = (_mean([_route_entropy(field, q, model.temp) > model.tau_ambig
+                        for q in q_amb]) if lib else 0.0)
+    return {"clean_acc": clean_acc, "novel_acc": novel_acc, "n_ids": len(field.mu),
+            "amb_defer": amb_defer}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selfcheck", action="store_true")
@@ -733,6 +813,8 @@ def main():
                     help="semantic-ID store vs drifting similarity on a task-free discovery stream")
     ap.add_argument("--defer", action="store_true",
                     help="distance/entropy defer gate: abstain ('I don't know') on ambiguous inputs")
+    ap.add_argument("--librarian", action="store_true",
+                    help="full loop end-to-end on a mixed stream (clean+noise+ambiguous+novel)")
     ap.add_argument("--seeds", type=int, default=5)
     ap.add_argument("--epochs", type=int, default=15)
     ap.add_argument("--state-dim", type=int, default=16)
@@ -743,6 +825,21 @@ def main():
 
     if args.selfcheck:
         selfcheck()
+        return
+
+    if args.librarian:
+        seeds = list(range(args.seeds))
+        out = {"config": {"op": "add", "seeds": seeds}, "summary": {}}
+        for kind in ("librarian", "naive"):
+            res = [run_librarian(kind, s) for s in seeds]
+            out["summary"][kind] = {k: _mean([r[k] for r in res])
+                                    for k in ("clean_acc", "novel_acc", "n_ids", "amb_defer")}
+            s = out["summary"][kind]
+            print(f"{kind:10s} clean {s['clean_acc']:.2f}  novel {s['novel_acc']:.2f}  "
+                  f"ids {s['n_ids']:.0f}  amb_defer {s['amb_defer']:.2f}")
+        with open("results/continual_ops_librarian.json", "w") as fh:
+            json.dump(out, fh, indent=2)
+        print("wrote results/continual_ops_librarian.json")
         return
 
     if args.defer:
