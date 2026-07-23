@@ -1,0 +1,62 @@
+{
+  "config": {
+    "op": "add",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "epochs": 15,
+    "budget": 30,
+    "noises": [
+      0.0,
+      0.1,
+      0.2,
+      0.3
+    ]
+  },
+  "sweep": {
+    "0.0": {
+      "immediate": {
+        "acc": 1.0,
+        "basins": 25.0
+      },
+      "consolidate": {
+        "acc": 1.0,
+        "basins": 25.0
+      }
+    },
+    "0.1": {
+      "immediate": {
+        "acc": 0.8959999999999999,
+        "basins": 30.0
+      },
+      "consolidate": {
+        "acc": 1.0,
+        "basins": 25.0
+      }
+    },
+    "0.2": {
+      "immediate": {
+        "acc": 0.744,
+        "basins": 30.0
+      },
+      "consolidate": {
+        "acc": 0.992,
+        "basins": 24.8
+      }
+    },
+    "0.3": {
+      "immediate": {
+        "acc": 0.736,
+        "basins": 30.0
+      },
+      "consolidate": {
+        "acc": 0.976,
+        "basins": 24.4
+      }
+    }
+  }
+}
