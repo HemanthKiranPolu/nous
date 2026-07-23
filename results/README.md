@@ -421,12 +421,24 @@ stats) lifts DBpedia nearest-class-mean routing **0.52 → 0.91** — near a rea
 sentence embedder. Decoder-LM hidden states need that fix to be usable as concept
 addresses; encoders (MiniLM) are already isotropic (`--model minilm`).
 
-**On code models (Colab):** [`notebooks/librarian_code_colab.ipynb`](../notebooks/librarian_code_colab.ipynb)
-runs the same librarian on a **programming-language** continual stream
-(CodeSearchNet: Python → Java → Go → …) using real code-model embeddings, and
-compares an **older** code model (CodeBERT, 2020) vs a **newer** code LLM
-(Qwen2.5-Coder-1.5B) — routing + librarian retention per model, on Colab GPU.
-(Not run here — needs a GPU + large-model downloads.)
+**On code models — old vs new (`train_code_librarian.py`).** The same librarian on
+a **programming-language** continual stream (CodeSearchNet: Python → Java → Go →
+JS → PHP, PHP novel, 15 % noise), frozen code-model embeddings (mean-pool +
+whitening). The "diff" = an older code model vs a newer code LLM, identical task:
+
+| code model                         | routing | librarian clean / novel / ids | naive clean / ids |
+| ---------------------------------- | ------- | ----------------------------- | ----------------- |
+| **CodeBERT** (2020, 125M encoder)  | 0.92    | 0.96 / 0.93 / 230             | 0.85 / 2700       |
+| **Qwen2.5-Coder-0.5B** (2024 LLM)  | **1.00**| **0.99 / 1.00** / 273         | 0.81 / 2700       |
+
+- **The diff is real**: the newer code LLM separates languages *perfectly*
+  (routing 0.92 → 1.00), which lifts librarian retention (clean 0.96 → 0.99, novel
+  0.93 → 1.00) — the representation lever, on code.
+- On **both** models the librarian beats `naive` decisively: clean 0.96–0.99 vs
+  0.81–0.85 (naive's noise-prototypes mislead), with **~250 ids vs 2700** (≈10×
+  leaner) and full ambiguity deferral.
+- Bigger coders (Qwen2.5-Coder-7B etc.) need a GPU — the Colab version is
+  [`notebooks/librarian_code_colab.ipynb`](../notebooks/librarian_code_colab.ipynb).
 
 ### Limitations — what this does NOT show
 
