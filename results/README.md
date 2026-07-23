@@ -527,3 +527,35 @@ still label-free at test.
   sophistication on these features buys nothing — granularity does.)
 - What is left (61 vs 77) is genuine class overlap (sci ↔ comp ↔ talk) that only a
   better representation resolves — the standing open lever.
+
+### Separable benchmark: DBpedia-14 — modular memory hits oracle
+
+The 20NG residual was the *benchmark's* intrinsic overlap, not a method flaw, so
+we tested on a benchmark whose tasks are genuinely separable: **DBpedia-14**
+ontology types grouped by super-type — org, people, place, nature, works. These
+are cleanly distinguishable (a company vs an athlete vs a river vs a film), so
+per-class prototype routing hits **~0.95** (vs 0.75 on 20NG). Same MiniLM +
+per-region LoRA + proto routing; only the data changes (`--dataset dbpedia`).
+
+3 seeds:
+
+| after all 5 tasks           | task 0: peak → final | forgetting | all-tasks final |
+| --------------------------- | -------------------- | ---------- | --------------- |
+| **`per_region`** (proto)    | 98 % → **92 %**      | **+6 pp**  | **94 %**        |
+| **`per_region`**, *oracle*  | —                    | —          | 97 %            |
+| **`shared`** LoRA           | 98 % → 0 %           | +98 pp     | 7 %             |
+| **`full_ft`**               | 82 % → 0 %           | +82 pp     | 22 %            |
+
+- **Realized 94 % vs oracle 97 % — the gap closes to 3 pp.** When routing works,
+  modular memory retains *near-perfectly* (+6 pp forgetting) on a real pretrained
+  transformer, while a shared LoRA and full fine-tuning are wiped out (→ 0 %).
+- This is the whole arc's thesis, end to end: **catastrophic forgetting is a
+  parameter-sharing artifact.** Give each task its own frozen expert and route
+  correctly, and the model just *keeps* what it learned. The only thing between
+  the toy and this is pattern-separation quality — set by the representation and
+  the benchmark, not by the memory mechanism, which was never the problem.
+
+**Whole series in one line:** modularity removes the forgetting (every step);
+routing quality sets how much you realize of it (≈100 % when tasks separate,
+~80 % when they overlap); no learned router beats per-class prototypes on frozen
+features — the leverage is separable representations, not a cleverer router.

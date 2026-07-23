@@ -34,6 +34,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from sklearn.datasets import fetch_20newsgroups
+from datasets import load_dataset
 from transformers import AutoModel, AutoTokenizer
 from peft import LoraConfig, get_peft_model
 
@@ -47,11 +48,34 @@ PER_CLASS_TR, PER_CLASS_TE = 40, 20
 MAXLEN, BATCH = 128, 32
 ROUTER_REPLAY = 32                               # cached feats/region for the router
 
-# Coherent super-topic tasks (comp / rec / sci / talk / misc): arbitrary index
-# grouping made task centroids a blur of unrelated newsgroups — unroutable even
-# with a perfect embedder. Real continual tasks are coherent, so we group that way.
-GROUPS = [[1, 2, 3, 4], [7, 8, 9, 10], [11, 12, 13, 14], [16, 17, 18, 19], [0, 5, 6, 15]]
+# Task groupings per dataset. 20NG super-topics (comp/rec/sci/talk/misc) still
+# overlap in feature space (routing tops out ~0.75). DBpedia-14 ontology types
+# (org / people / place / nature / works) are genuinely separable (~0.95) — the
+# clean benchmark where routing is no longer the bottleneck.
+NG_GROUPS = [[1, 2, 3, 4], [7, 8, 9, 10], [11, 12, 13, 14], [16, 17, 18, 19], [0, 5, 6, 15]]
+DBPEDIA_GROUPS = [[0, 1], [2, 3, 4], [5, 6, 7, 8], [9, 10], [11, 12, 13]]
+
+DATASET = "20ng"                                 # set by set_dataset()
+GROUPS = NG_GROUPS
 CLS2TASK = {c: ti for ti, cs in enumerate(GROUPS) for c in cs}
+
+
+def set_dataset(name: str):
+    """Select the benchmark; updates the active grouping + class count."""
+    global DATASET, GROUPS, CLS2TASK, N_CLASSES
+    DATASET = name
+    GROUPS = DBPEDIA_GROUPS if name == "dbpedia" else NG_GROUPS
+    CLS2TASK = {c: ti for ti, cs in enumerate(GROUPS) for c in cs}
+    N_CLASSES = max(CLS2TASK) + 1
+
+
+def _load_raw(split: str):
+    """(texts, labels) for the active dataset."""
+    if DATASET == "dbpedia":
+        ds = load_dataset("fancyzhx/dbpedia_14", split=split)
+        return ds["content"], torch.tensor(ds["label"])
+    raw = fetch_20newsgroups(subset=split, remove=("headers", "footers", "quotes"))
+    return raw.data, torch.tensor(raw.target)
 
 _TOK = None
 
@@ -64,17 +88,16 @@ def tok():
 
 
 def load_tasks(seed: int):
-    """20NG → 5 coherent super-topic tasks; subsample per class per seed."""
+    """Active dataset → 5 coherent tasks; subsample per class per seed."""
     g = torch.Generator().manual_seed(seed)
     out = {"train": [], "test": []}
     for split, per_class in (("train", PER_CLASS_TR), ("test", PER_CLASS_TE)):
-        raw = fetch_20newsgroups(subset=split, remove=("headers", "footers", "quotes"))
+        data, y = _load_raw(split)
         texts, ys = [], []
-        y = torch.tensor(raw.target)
         for c in CLS2TASK:
             idx = (y == c).nonzero().flatten()
             idx = idx[torch.randperm(len(idx), generator=g)[:per_class]]
-            texts += [raw.data[i] for i in idx.tolist()]
+            texts += [data[int(i)] for i in idx]
             ys += [c] * len(idx)
         enc = tok()(texts, return_tensors="pt", padding="max_length",
                     truncation=True, max_length=MAXLEN)
@@ -382,8 +405,14 @@ def main():
     ap.add_argument("--seeds", type=int, default=3)
     ap.add_argument("--epochs", type=int, default=12)
     ap.add_argument("--smoke", action="store_true", help="1 seed, quick sanity")
-    ap.add_argument("--out", default="results/pretrained_cls.json")
+    ap.add_argument("--dataset", choices=["20ng", "dbpedia"], default="20ng")
+    ap.add_argument("--out", default=None)
     args = ap.parse_args()
+
+    set_dataset(args.dataset)
+    if args.out is None:
+        args.out = ("results/pretrained_cls.json" if args.dataset == "20ng"
+                    else f"results/pretrained_cls_{args.dataset}.json")
 
     seeds = [0] if args.smoke else list(range(args.seeds))
     res = {k: summarize([run_stream(k, s, args.epochs) for s in seeds])
