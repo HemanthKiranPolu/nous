@@ -381,6 +381,75 @@ class MLPStream:
             return self.net(x.unsqueeze(0)).argmax(-1).item()
 
 
+class ConsolidatingLearner:
+    """
+    Evidence-based memory consolidation. A surprise does NOT immediately carve a
+    permanent basin; it creates (or reinforces) a PROVISIONAL candidate that
+    accumulates evidence — hit frequency and label agreement — across repeated
+    observations. A candidate is consolidated into a permanent basin only once it
+    has been seen ≥ k times with ≥ `consistency` of its observations agreeing on a
+    label (the majority label wins). One-off label noise never reaches the bar, so
+    it never becomes structure. Provisional candidates do not drive prediction
+    (they are labile), so noise cannot corrupt outputs before it is filtered.
+
+    This is the scientific-replication principle for structure growth: a single
+    observation is provisional; only consistent, repeated evidence consolidates.
+    """
+
+    def __init__(self, field: BasinField, radius: float = 1.0, k: int = 4,
+                 consistency: float = 0.6, budget: int = None):
+        self.f, self.R, self.k, self.c, self.budget = field, radius, k, consistency, budget
+        self.t = 0
+        self.n_alloc = self.n_reuse = 0
+        self.cands = []                          # {center, counts: {label:n}, hits}
+
+    def _nearest(self, items, q):
+        if not items:
+            return None
+        d = [((c["center"] if isinstance(c, dict) else c) - q).pow(2).sum().item()
+             for c in items]
+        j = min(range(len(d)), key=lambda i: d[i])
+        return j if d[j] ** 0.5 <= self.R else None
+
+    def observe(self, x: torch.Tensor, y: int, op: str):
+        self.t += 1
+        q = self.f.relax(x)
+        if self.f.mu:                            # consolidated basins predict + reinforce
+            w = int(self.f.pull(q).argmax())
+            if self.f.label[w] == y:
+                self.f.deepen(w, step=0.1)
+                self.f.touch(w, self.t)
+                return
+            near = min(range(len(self.f.mu)), key=lambda i: (self.f.mu[i] - q).pow(2).sum().item())
+            if ((self.f.mu[near] - q) ** 2).sum().sqrt().item() <= self.R:
+                return                           # input already consolidated → ignore labile obs
+        j = self._nearest(self.cands, q)         # accumulate provisional evidence
+        if j is None:
+            self.cands.append({"center": q.clone(), "counts": {y: 1}, "hits": 1})
+            j = len(self.cands) - 1
+        else:
+            c = self.cands[j]
+            c["hits"] += 1
+            c["counts"][y] = c["counts"].get(y, 0) + 1
+            c["center"] = c["center"] + 0.5 * (q - c["center"])
+        c = self.cands[j]                         # consolidate on sufficient, consistent evidence
+        if c["hits"] >= self.k and max(c["counts"].values()) / c["hits"] >= self.c:
+            label = max(c["counts"], key=c["counts"].get)
+            if self.budget is not None and self.f.scope_count("_") >= self.budget:
+                self.f.reuse(self.f.lru_in_scope("_"), c["center"], label, self.t)
+                self.n_reuse += 1
+            else:
+                self.f.add_basin(c["center"], label, "_", t=self.t)
+                self.n_alloc += 1
+            self.cands.pop(j)
+
+    def train_phase(self, data, op: str, epochs: int):
+        for _ in range(epochs):
+            for j in torch.randperm(len(data)):
+                x, y = data[j]
+                self.observe(x, y, op)
+
+
 def accuracy(model, op: str) -> float:
     predict = model.predict if hasattr(model, "predict") else model.f.predict
     data = op_dataset(op)
@@ -529,12 +598,47 @@ def selfcheck():
     # into the shared-encoder drift. (It contains drift; it does not beat frozen.)
     assert cap_a["forgetting_mean"] < cap_u["forgetting_mean"], \
         "per-region adapters did not contain drift / retain vs op-blind"
+
+    # (7) EVIDENCE-BASED CONSOLIDATION is noise-robust where immediate spawn is not:
+    # under label noise, consolidate keeps clean accuracy AND fewer basins (it never
+    # consolidates one-off noise), while immediate spawns noise-basins that evict
+    # good structure under the budget.
+    imm = [run_noisy("immediate", s, 15, 0.2, D, budget=30) for s in range(3)]
+    con = [run_noisy("consolidate", s, 15, 0.2, D, budget=30) for s in range(3)]
+    imm_acc, con_acc = _mean([r["acc"] for r in imm]), _mean([r["acc"] for r in con])
+    print(f"noisy(0.2) immediate acc {imm_acc:.2f}  consolidate acc {con_acc:.2f}")
+    assert con_acc > imm_acc + 0.1, "consolidation not more noise-robust than immediate spawn"
+    assert _mean([r["n_basins"] for r in con]) <= _mean([r["n_basins"] for r in imm]), \
+        "consolidation did not use fewer/equal basins"
     print("selfcheck OK")
+
+
+def run_noisy(kind: str, seed: int, epochs: int, noise: float,
+              state_dim: int = 16, budget: int = None):
+    """Learn one op ('add') from a stream with per-observation label noise.
+    immediate = spawn a permanent basin on every surprise; consolidate = evidence-
+    gated. Returns clean-label test accuracy + permanent-basin count."""
+    torch.manual_seed(seed)
+    field = new_field(state_dim, seed)
+    model = (ConsolidatingLearner(field, budget=budget) if kind == "consolidate"
+             else NOUSLearner(field, op_aware=False, gate=True, evict="geom", budget=budget))
+    data = op_dataset("add")
+    g = torch.Generator().manual_seed(seed + 1000)
+    for _ in range(epochs):
+        for j in torch.randperm(len(data)):
+            x, y = data[j]
+            if torch.rand(1, generator=g).item() < noise:
+                y = int(torch.randint(0, VALS, (1,), generator=g).item())
+            model.observe(x, y, "add")
+    acc = sum(field.predict(x) == yt for x, yt in data) / len(data)
+    return {"acc": acc, "n_basins": len(field.mu)}
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selfcheck", action="store_true")
+    ap.add_argument("--noisy", action="store_true",
+                    help="evidence-based consolidation vs immediate spawn under label noise")
     ap.add_argument("--seeds", type=int, default=5)
     ap.add_argument("--epochs", type=int, default=15)
     ap.add_argument("--state-dim", type=int, default=16)
@@ -545,6 +649,29 @@ def main():
 
     if args.selfcheck:
         selfcheck()
+        return
+
+    if args.noisy:
+        budget = args.budget if args.budget is not None else 30
+        noises = [0.0, 0.1, 0.2, 0.3]
+        seeds = list(range(args.seeds))
+        out = {"config": {"op": "add", "seeds": seeds, "epochs": args.epochs,
+                          "budget": budget, "noises": noises}, "sweep": {}}
+        for noise in noises:
+            row = {}
+            for kind in ("immediate", "consolidate"):
+                res = [run_noisy(kind, s, args.epochs, noise, args.state_dim, budget)
+                       for s in seeds]
+                row[kind] = {"acc": _mean([r["acc"] for r in res]),
+                             "basins": _mean([r["n_basins"] for r in res])}
+            out["sweep"][f"{noise:.1f}"] = row
+            print(f"noise {noise:.1f}  immediate acc {row['immediate']['acc']:.2f} "
+                  f"basins {row['immediate']['basins']:.0f}   "
+                  f"consolidate acc {row['consolidate']['acc']:.2f} "
+                  f"basins {row['consolidate']['basins']:.0f}")
+        with open("results/continual_ops_noisy.json", "w") as fh:
+            json.dump(out, fh, indent=2)
+        print("wrote results/continual_ops_noisy.json")
         return
 
     ops = ["add", "mul", "sub"]

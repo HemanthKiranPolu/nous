@@ -263,6 +263,45 @@ Budget 60, at `adapt_lr = 0.3` — a rate where the *shared* encoder drifts:
   i.e. a real gradient-trained backbone. That is the transformer + per-region
   LoRA step, now motivated by three toy results instead of a hunch.
 
+### Evidence-based consolidation (`--noisy`)
+
+Reproduce:
+
+```bash
+python -m nous.train_continual_ops --noisy --seeds 5   # → results/continual_ops_noisy.json
+```
+
+Growing structure on a *single* surprise is fragile: a mislabeled observation
+becomes a permanent basin. Evidence-based consolidation applies the
+scientific-replication principle to structure growth — a surprise creates a
+**provisional** candidate that accumulates evidence (hit frequency + label
+agreement) across repeated observations, and is **consolidated** into a permanent
+basin only after ≥ k hits with ≥ 60 % label agreement (majority label wins).
+Provisional candidates do not drive prediction, so noise cannot corrupt outputs
+before it is filtered. (`ConsolidatingLearner`.)
+
+Learn one op from a stream with **per-observation label noise** (each draw's label
+is flipped with prob `p`); basin budget 30, 5 seeds:
+
+| noise `p` | immediate: acc / basins | **consolidate: acc / basins** |
+| --------- | ----------------------- | ----------------------------- |
+| 0.0       | 1.00 / 25               | 1.00 / 25                     |
+| 0.1       | 0.90 / 30               | **1.00 / 25**                 |
+| 0.2       | 0.74 / 30               | **0.99 / 25**                 |
+| 0.3       | 0.74 / 30               | **0.98 / 24**                 |
+
+- **Immediate spawn** carves a basin for every noise surprise → basin count
+  balloons to the budget cap → those spurious basins evict good structure →
+  clean-label accuracy collapses to ~0.74.
+- **Consolidation** never promotes a one-off: transient noise is out-voted by the
+  majority of an input's repeated observations, so only the ~25 true concepts
+  become basins and clean accuracy stays ~0.98–1.00. **Zero cost when clean**
+  (identical at `p = 0`).
+
+The principle: a single observation is provisional; only consistent, repeated
+evidence should change structure. It is the frequency-and-consistency half of
+consolidation — a held-out prediction-gain gate is the heavier upgrade.
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*
