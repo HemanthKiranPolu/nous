@@ -1,0 +1,32 @@
+{
+  "config": {
+    "model": "gpt2",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "epochs": 10,
+    "n_tasks": 5
+  },
+  "summary": {
+    "modular": {
+      "final_avg": 0.6972222208976745,
+      "forgetting": 0.16388888657093048,
+      "task0_final": 0.600000003973643,
+      "n_regions": 5.0
+    },
+    "seq_lora": {
+      "final_avg": 0.20555555485188962,
+      "forgetting": 0.9381944479731222,
+      "task0_final": 0.0,
+      "n_regions": 0.0
+    },
+    "full_ft": {
+      "final_avg": 0.27777777413527166,
+      "forgetting": 0.8232638947665691,
+      "task0_final": 0.0,
+      "n_regions": 0.0
+    }
+  }
+}

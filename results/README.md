@@ -587,3 +587,54 @@ forgetting stays solved as tasks multiply; the only slowly-moving part is routin
 and it degrades gently on a separable benchmark. The untested frontier remains a
 genuinely *large* model and hundreds of tasks — out of reach on this hardware
 (MPS, no CUDA), but the curve here points the right way.
+
+---
+
+# Results — Sequential fine-tuning of a small LLM (`llm_cl.json`)
+
+Reproduce (downloads gpt2 ~0.5GB + DBpedia once, cached):
+
+```bash
+python -m nous.train_llm_cl --seeds 3      # → results/llm_cl.json
+python -m nous.train_llm_cl --smoke        # 1-seed sanity
+```
+
+Source: [`nous/train_llm_cl.py`](../nous/train_llm_cl.py).
+A **real pretrained decoder LLM** — `gpt2` (125M) — fine-tuned on a stream of
+DBpedia super-topic classification tasks (5 tasks, in phases), comparing standard
+sequential fine-tuning against the modular per-task-expert mechanism. After each
+phase we measure accuracy on every task so far and report **average forgetting**
+(mean drop from each task's peak to its final).
+
+- **`seq_lora`** — one shared LoRA adapter (+ growing head) fine-tuned on each task
+  in turn: the canonical continual-fine-tuning baseline.
+- **`full_ft`** — unfreeze the whole backbone + growing head, sequentially.
+- **`modular`** — one frozen-backbone LoRA expert + head per task, routed by
+  geometry on the frozen mean-pooled feature (per-class prototype, no task id).
+
+3 seeds:
+
+| method                                | final avg acc | **avg forgetting** | task 0 final |
+| ------------------------------------- | ------------- | ------------------ | ------------ |
+| **`modular`** (per-task experts)      | **70 %**      | **+16 pp**         | **60 %**     |
+| **`seq_lora`** (standard sequential)  | 21 %          | +94 pp             | 0 %          |
+| **`full_ft`** (standard sequential)   | 28 %          | +82 pp             | 0 %          |
+
+- On a **real LLM**, standard sequential fine-tuning — LoRA *or* full — forgets
+  catastrophically: task 0 → **0 %**, average forgetting **+82–94 pp**. The
+  modular mechanism keeps retention high (70 %) with **+16 pp** forgetting.
+- Modular's residual +16 pp is again **routing**, not overwriting (its experts are
+  frozen): gpt2's features are a weaker router than a trained sentence embedder
+  (per-class proto routing ~0.71 vs MiniLM's ~0.95), and gpt2's *last-token* state
+  routes even worse (~0.38) — mean-pool is used for that reason. Better routing
+  features would lift the 70 % toward the ~100 % the separable-benchmark encoder
+  runs reached.
+
+### Honest scope
+
+- Small LLM (gpt2 125M), 5 tasks, 40 train / 20 test per class, LoRA on `c_attn`,
+  2–3 seeds — a real-LLM existence proof, not a benchmark number. Large models and
+  long task streams remain out of reach on MPS (no CUDA).
+- The baselines' collapse to 0 % on task 0 is the standard class-incremental,
+  no-replay setting — the point is the *contrast* with modular under identical
+  data and budget.
