@@ -444,6 +444,15 @@ whitening). The "diff" = an older code model vs a newer code LLM, identical task
   language). Bigger coders (Qwen2.5-Coder-7B+) on a GPU: the Colab version is
   [`notebooks/librarian_code_colab.ipynb`](../notebooks/librarian_code_colab.ipynb).
 
+**Can the old model be made to route like the new? No.** Enriching CodeBERT's
+embedding — all-layer average (0.85), CLS (0.81), concat last-4 layers (0.64),
+mean+max pool (0.63) — is all *worse* than plain last-layer mean-pool (0.90); the
+richer poolings dilute the discriminative signal. CodeBERT caps ~0.90; the 10 pp
+gap to Qwen (1.00) is intrinsic representation quality. The librarian already lifts
+CodeBERT's *realized* accuracy above its routing (0.90 → 0.96 via multi-prototype +
+evidence gating), but the raw feature ceiling is fixed — one more confirmation that
+**you cannot route or pool your way past a weaker representation.**
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*
