@@ -419,3 +419,37 @@ above per-example surprise-spawn.
   never a deployable predictor.
 - Baselines' class-incremental head has no replay; they hit 0 % on task 0 by the
   end, which is the standard strong-forgetting setting.
+
+### Router step — a learned router does not help; the representation is the ceiling
+
+The pretrained step blamed routing for the 28→70 % oracle gap, so the obvious next
+move is a better router. Built one (`route="disc"`): a **modular discriminative
+router** — each region keeps a small **feature-replay buffer** (32 cached pooled
+features), and all region rows are refit jointly as a regularized multinomial
+logistic on the buffer at each spawn (the buffer, not frozen rows, is what keeps
+it from forgetting). It routes on unit-norm features. Compared head-to-head with
+the nearest-centroid router and the oracle, 3 seeds:
+
+| per_region, all-tasks final | learned router (`disc`) | nearest centroid | oracle |
+| --------------------------- | ----------------------- | ---------------- | ------ |
+| accuracy                    | **43 %**                | 43 %             | 76 %   |
+
+**The learned router ties the centroid — zero gain.** And it is not the router's
+fault: a logistic trained on *all* region features (not just the 32-vector replay)
+reaches only **61 %** task-routing vs the centroid's **58 %**. The ceiling is the
+**frozen representation** — 20NG tasks are unions of unrelated newsgroups that
+overlap in distilbert's frozen feature space, and *no* linear router on those
+features can separate them. You cannot route your way out of a bad representation.
+
+**Reframe (the real open problem).** The series now closes a loop:
+
+- Modular memory removes *overwriting* (oracle → +0 pp forgetting).
+- On real overlapping tasks the bottleneck is *pattern separation* (routing).
+- But routing is capped by the *representation*, not the router algorithm.
+- Separable representations require *learning the features* — and step 2 showed
+  that unfreezing a **shared** encoder drifts and forgets.
+
+So the genuine next problem is **task-conditioned representation learning that
+yields separable routing features without shared-encoder drift** — the recursion
+this whole progression keeps hitting. A smarter router on frozen features is a
+dead end; the leverage is in the features.

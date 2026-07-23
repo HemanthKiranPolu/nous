@@ -13,12 +13,14 @@
   "summary": {
     "per_region": {
       "task0_peak": 0.699999988079071,
-      "task0_final": 0.27500000099341076,
-      "forgetting": 0.4249999870856603,
-      "all_final": 0.42500000099341073,
+      "task0_final": 0.3166666626930237,
+      "forgetting": 0.38333332538604736,
+      "all_final": 0.4299999972184499,
       "n_regions": 5.0,
+      "task0_centroid": 0.27500000099341076,
+      "all_centroid": 0.42833333512147265,
       "task0_oracle": 0.699999988079071,
-      "all_final_oracle": 0.746666665871938
+      "all_oracle": 0.756666664282481
     },
     "shared": {
       "task0_peak": 0.699999988079071,
@@ -31,7 +33,7 @@
       "task0_peak": 0.712499996026357,
       "task0_final": 0.0,
       "forgetting": 0.712499996026357,
-      "all_final": 0.1358333362887303,
+      "all_final": 0.13666666882733502,
       "n_regions": 0.0
     }
   }

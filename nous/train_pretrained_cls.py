@@ -41,6 +41,7 @@ N_TASKS, CLS_PER_TASK = 5, 4
 N_CLASSES = N_TASKS * CLS_PER_TASK
 PER_CLASS_TR, PER_CLASS_TE = 40, 20
 MAXLEN, BATCH = 64, 32
+ROUTER_REPLAY = 32                               # cached feats/region for the router
 
 _TOK = None
 
@@ -113,6 +114,42 @@ class RegionLoRA:
         j = int(d.argmin())
         return j if d[j].sqrt() <= self.radius else None
 
+    def _nearest_centroid(self, h):
+        return int(torch.stack([((r["c"] - h) ** 2).sum() for r in self.regions]).argmin())
+
+    def _route_disc(self, h):
+        """Argmax of the per-region linear rows — the learned router."""
+        W = torch.stack([r["w"] for r in self.regions])
+        b = torch.stack([r["b"] for r in self.regions])
+        return int((W @ F.normalize(h, dim=0) + b).argmax())
+
+    def _fit_router(self, iters: int = 300, lr: float = 0.05, wd: float = 5e-3):
+        """Refit ALL region rows jointly on the whole replay buffer (regularized
+        multinomial logistic on unit-norm features). Refitting does not forget —
+        the replay buffer retains every region's features; the buffer IS the
+        anti-forgetting device. Frozen-per-row gave incomparable, miscalibrated
+        boundaries, so we refit jointly instead."""
+        feats, labels = [], []
+        for k, rr in enumerate(self.regions):
+            if rr["replay"] is not None:
+                feats.append(F.normalize(rr["replay"], dim=-1))
+                labels.append(torch.full((len(rr["replay"]),), k, dtype=torch.long))
+        X, y = torch.cat(feats), torch.cat(labels)
+        for rr in self.regions:
+            rr["w"].requires_grad_(True)
+            rr["b"].requires_grad_(True)
+        params = [p for rr in self.regions for p in (rr["w"], rr["b"])]
+        opt = torch.optim.Adam(params, lr=lr, weight_decay=wd)
+        for _ in range(iters):
+            W = torch.stack([rr["w"] for rr in self.regions])
+            b = torch.stack([rr["b"] for rr in self.regions])
+            opt.zero_grad()
+            F.cross_entropy(X @ W.T + b, y).backward()
+            opt.step()
+        for rr in self.regions:
+            rr["w"].requires_grad_(False)
+            rr["b"].requires_grad_(False)
+
     def _spawn(self, c):
         name = f"r{len(self.regions)}"
         if self.pm is None:
@@ -124,7 +161,8 @@ class RegionLoRA:
         lora_params = [p for p in self.pm.parameters() if p.requires_grad]
         opt = torch.optim.Adam(lora_params + list(head.parameters()), lr=self.lr)
         self.regions.append({"c": c.detach().clone(), "name": name,
-                             "head": head, "opt": opt, "classes": set()})
+                             "head": head, "opt": opt, "classes": set(),
+                             "replay": None, "w": torch.zeros(768), "b": torch.zeros(())})
         return len(self.regions) - 1
 
     def train_phase(self, task):
@@ -135,7 +173,9 @@ class RegionLoRA:
             r = self._spawn(hbase.mean(0))
         reg = self.regions[r]
         reg["classes"] |= set(d["y"].tolist())
-        self.pm.set_adapter(reg["name"])         # activate this region's LoRA
+        reg["replay"] = hbase[torch.randperm(len(hbase))[:ROUTER_REPLAY]].clone()
+        self._fit_router()                        # refit all router rows on the buffer
+        self.pm.set_adapter(reg["name"])          # activate this region's LoRA
         for _ in range(self.epochs):
             for i in range(0, len(d["y"]), BATCH):
                 ids, mask = d["ids"][i:i + BATCH].to(DEVICE), d["mask"][i:i + BATCH].to(DEVICE)
@@ -146,22 +186,23 @@ class RegionLoRA:
                 reg["opt"].step()
 
     @torch.no_grad()
-    def predict(self, task, oracle: bool = False):
-        """oracle=True routes each test doc to the region that owns its true label —
-        an upper bound that isolates expert/memory quality from routing quality."""
+    def predict(self, task, route: str = "disc"):
+        """route: "disc" learned modular router | "centroid" nearest centroid |
+        "oracle" true-label region (upper bound isolating memory from routing)."""
         d = task["test"]
         hbase = self.feat(d["ids"], d["mask"])
         out = torch.full((len(d["y"]),), -1)
         by_region = {}
         for i in range(len(d["y"])):
-            if oracle:
+            if route == "oracle":
                 j = next((k for k, r in enumerate(self.regions)
                           if int(d["y"][i]) in r["classes"]), None)
+            elif route == "disc":
+                j = self._route_disc(hbase[i])
             else:
-                j = self._route(hbase[i])
+                j = self._nearest_centroid(hbase[i])
             if j is None:
-                j = int(torch.stack([((r["c"] - hbase[i]) ** 2).sum()
-                                     for r in self.regions]).argmin())
+                j = self._nearest_centroid(hbase[i])
             by_region.setdefault(j, []).append(i)
         for j, idxs in by_region.items():
             reg = self.regions[j]
@@ -280,14 +321,16 @@ def run_stream(kind: str, seed: int, epochs: int):
         model.train_phase(tasks[phase])
         rows.append([accuracy(model, tasks[t]) for t in range(phase + 1)])
     n_regions = len(model.regions) if hasattr(model, "regions") else 0
-    oracle = None
-    if hasattr(model, "regions"):                # upper bound: perfect routing
-        oc = [(model.predict(tasks[t], oracle=True) == tasks[t]["test"]["y"]).float().mean().item()
-              for t in range(N_TASKS)]
-        oracle = {"task0": oc[0], "all": sum(oc) / len(oc)}
+    routing = None
+    if hasattr(model, "regions"):                # decompose realized vs routing
+        def finals(mode):
+            a = [(model.predict(tasks[t], route=mode) == tasks[t]["test"]["y"]).float().mean().item()
+                 for t in range(N_TASKS)]
+            return {"task0": a[0], "all": sum(a) / len(a)}
+        routing = {mode: finals(mode) for mode in ("disc", "centroid", "oracle")}
     del model
     gc.collect()
-    return {"acc_matrix": rows, "n_regions": n_regions, "oracle": oracle}
+    return {"acc_matrix": rows, "n_regions": n_regions, "routing": routing}
 
 
 def summarize(results):
@@ -298,9 +341,10 @@ def summarize(results):
     s = {"task0_peak": m(peak), "task0_final": m(final),
          "forgetting": m([p - f for p, f in zip(peak, final)]),
          "all_final": m(all_final), "n_regions": m([r["n_regions"] for r in results])}
-    if results[0]["oracle"] is not None:         # perfect-routing upper bound
-        s["task0_oracle"] = m([r["oracle"]["task0"] for r in results])
-        s["all_final_oracle"] = m([r["oracle"]["all"] for r in results])
+    if results[0]["routing"] is not None:        # centroid baseline + oracle bound
+        for mode in ("centroid", "oracle"):
+            s[f"task0_{mode}"] = m([r["routing"][mode]["task0"] for r in results])
+            s[f"all_{mode}"] = m([r["routing"][mode]["all"] for r in results])
     return s
 
 
@@ -309,9 +353,9 @@ def report(res):
         line = (f"{k:11s} task0 {r['task0_peak']:.2f}→{r['task0_final']:.2f}  "
                 f"forget {r['forgetting']:+.2f}  all_final {r['all_final']:.2f}  "
                 f"regions {r['n_regions']:.1f}")
-        if "task0_oracle" in r:
-            line += (f"  | oracle-route: task0 {r['task0_oracle']:.2f}  "
-                     f"all {r['all_final_oracle']:.2f}")
+        if "all_oracle" in r:                    # per_region: disc | centroid | oracle
+            line += (f"  | all: disc {r['all_final']:.2f}  "
+                     f"centroid {r['all_centroid']:.2f}  oracle {r['all_oracle']:.2f}")
         print(line)
 
 
