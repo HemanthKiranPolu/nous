@@ -621,6 +621,14 @@ def selfcheck():
     print(f"discovery  id_store {id_cl:.2f}acc/{id_ids:.0f}ids  similarity {sim_cl:.2f}acc/{sim_ids:.0f}ids")
     assert id_ids < sim_ids, "semantic-ID store did not use fewer (earned) addresses"
     assert id_cl >= sim_cl, "semantic-ID store not at least as accurate as similarity"
+
+    # (9) DEFER GATE says "I don't know" selectively: a distance/entropy gate abstains
+    # on ambiguous inputs (midpoints between ids) but not on clean concepts — the
+    # calibrated "park it in provisional" signal that miscalibrated softmax could not give.
+    dfr = [run_defer(s) for s in range(3)]
+    ca, aa = _mean([r["clean_abstain"] for r in dfr]), _mean([r["amb_abstain"] for r in dfr])
+    print(f"defer      clean abstain {ca:.2f}  ambiguous abstain {aa:.2f}")
+    assert ca < 0.1 and aa > 0.5, "defer gate did not abstain selectively on ambiguous inputs"
     print("selfcheck OK")
 
 
@@ -676,6 +684,46 @@ def run_discovery(kind: str, seed: int, waves: int = 5, per_wave_epochs: int = 6
     return {"wave0_curve": curve, "clean_acc": clean, "n_ids": len(field.mu)}
 
 
+def _route_entropy(field: BasinField, q: torch.Tensor, temp: float = 0.2) -> float:
+    """Entropy of the routing distribution softmax(−dist²/temp) over consolidated
+    ids. Sharp distance-softmax (not raw pull, whose near-zero tail over many ids
+    inflates entropy): low = one id dominates (confident), high = split between
+    ids (ambiguous). Distance is the calibrated signal — not miscalibrated softmax."""
+    d2 = ((torch.stack(field.mu) - q) ** 2).sum(-1)
+    p = torch.softmax(-d2 / temp, dim=-1)
+    return float(-(p * (p + 1e-12).log()).sum())
+
+
+def run_defer(seed: int, tau: float = 0.35, state_dim: int = 16):
+    """The librarian's 'I don't know'. Train ids on clean concepts, then query with
+    (a) the clean concepts and (b) AMBIGUOUS probes — midpoints between two ids.
+    hard routing always argmax-decides; the defer gate abstains when the routing
+    entropy exceeds `tau`. A good gate abstains on the ambiguous probes but NOT on
+    the clean ones — the distance/entropy signal, not miscalibrated softmax."""
+    torch.manual_seed(seed)
+    field = new_field(state_dim, seed)
+    model = ConsolidatingLearner(field)
+    data = op_dataset("add")
+    for _ in range(8):                            # clean stream → one id per concept
+        for j in torch.randperm(len(data)):
+            x, y = data[j]
+            model.observe(x, y, "add")
+    clean_q = [(field.relax(x), yt) for x, yt in data]
+    g = torch.Generator().manual_seed(seed + 7)
+    probes = []                                   # midpoints of random id pairs
+    for _ in range(60):
+        i, j = torch.randint(0, len(field.mu), (2,), generator=g).tolist()
+        if i != j:
+            probes.append((field.mu[i] + field.mu[j]) / 2)
+    def hard(q):
+        return field.label[int(field.pull(q).argmax())]
+    clean_acc = sum(hard(q) == yt for q, yt in clean_q) / len(clean_q)
+    clean_abstain = _mean([_route_entropy(field, q) > tau for q, _ in clean_q])
+    amb_abstain = _mean([_route_entropy(field, q) > tau for q in probes])
+    return {"clean_acc": clean_acc, "clean_abstain": clean_abstain,
+            "amb_abstain": amb_abstain, "n_ids": len(field.mu)}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selfcheck", action="store_true")
@@ -683,6 +731,8 @@ def main():
                     help="evidence-based consolidation vs immediate spawn under label noise")
     ap.add_argument("--discovery", action="store_true",
                     help="semantic-ID store vs drifting similarity on a task-free discovery stream")
+    ap.add_argument("--defer", action="store_true",
+                    help="distance/entropy defer gate: abstain ('I don't know') on ambiguous inputs")
     ap.add_argument("--seeds", type=int, default=5)
     ap.add_argument("--epochs", type=int, default=15)
     ap.add_argument("--state-dim", type=int, default=16)
@@ -693,6 +743,21 @@ def main():
 
     if args.selfcheck:
         selfcheck()
+        return
+
+    if args.defer:
+        seeds = list(range(args.seeds))
+        res = [run_defer(s) for s in seeds]
+        out = {"config": {"op": "add", "seeds": seeds, "tau": 0.35},
+               "summary": {"clean_acc": _mean([r["clean_acc"] for r in res]),
+                           "clean_abstain": _mean([r["clean_abstain"] for r in res]),
+                           "amb_abstain": _mean([r["amb_abstain"] for r in res])}}
+        s = out["summary"]
+        print(f"defer gate: clean acc {s['clean_acc']:.2f}  clean abstain {s['clean_abstain']:.2f}  "
+              f"ambiguous abstain {s['amb_abstain']:.2f}")
+        with open("results/continual_ops_defer.json", "w") as fh:
+            json.dump(out, fh, indent=2)
+        print("wrote results/continual_ops_defer.json")
         return
 
     if args.noisy:

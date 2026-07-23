@@ -1,0 +1,18 @@
+{
+  "config": {
+    "op": "add",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tau": 0.35
+  },
+  "summary": {
+    "clean_acc": 1.0,
+    "clean_abstain": 0.0,
+    "amb_abstain": 0.8559607083166713
+  }
+}

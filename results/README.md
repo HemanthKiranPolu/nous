@@ -337,6 +337,33 @@ is in. Note: on a *frozen* representation a learned/id router cannot beat neares
 prototype on raw accuracy (shown earlier); the id's payoff is stability and earned,
 noise-free structure, not higher routing accuracy.
 
+### The defer gate — "I don't know" (`--defer`)
+
+The confidence-routing negative (on the pretrained side) showed *softmax*
+confidence is miscalibrated: a wrong expert is overconfident, so it can't flag its
+own errors. The fix is to gate on **distance**, not confidence, and route
+uncertain inputs to the provisional buffer instead of forcing a placement — the
+"librarian's *I don't know*". Gate signal = entropy of `softmax(−dist²/T)` over the
+consolidated ids: low when one id dominates (confident), high when the input sits
+between ids (ambiguous).
+
+Trained on the clean concepts, then queried with the concepts themselves **and**
+with ambiguous probes (midpoints between two ids). 5 seeds:
+
+| query          | hard routing | **defer gate** |
+| -------------- | ------------ | -------------- |
+| clean concepts | routes all (100 % acc) | **abstains 0 %** (routes all) |
+| ambiguous mid-points | confidently assigns all | **abstains 86 %** |
+
+The gate abstains **selectively** — never on clean concepts, on 86 % of the
+genuinely ambiguous ones — so it *only* says "I don't know" when it should. That
+un-routable 86 % is exactly what the provisional/consolidation machinery is built
+to hold: park it, wait for corroborating evidence, mint an id only if it recurs.
+The reason this works where the pretrained confidence gate (B) failed: **distance
+to a prototype is calibrated; a classifier's softmax is not.** Uncertainty
+estimation is a real remaining piece of the puzzle — and the cheap distance/entropy
+version already does the load-bearing job.
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*
