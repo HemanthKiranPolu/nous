@@ -572,6 +572,26 @@ give **+59–70 pp**. Catastrophic forgetting is removed by *modularity*; the
 residual is *pattern-separation* quality, set by the representation — exactly the
 neuroscience split the series set out to test.
 
+### Does a stronger embedder fix 20NG? Only up to intrinsic separability
+
+If the representation is the ceiling, a *better* embedder should raise it. It
+barely does — 20NG per-class-proto routing across embedder quality:
+
+| embedder     | params | 20NG routing |
+| ------------ | ------ | ------------ |
+| MiniLM-L6    | 22 M   | 0.760        |
+| bge-small    | 33 M   | 0.780        |
+| mpnet-base   | 110 M  | 0.783        |
+
+A **5× larger, stronger** embedder buys **+2 pp**. So on 20NG the residual is
+**intrinsic task overlap, not embedding quality** — the concepts genuinely aren't
+separable, and no better "address" fixes an ambiguous destination. Contrast the
+*other* regime: a weak embedder on separable tasks (DBpedia: distilbert 0.6 →
+MiniLM 0.95) — there, better embeddings lift routing enormously. So **"improve the
+embeddings" helps only up to the tasks' intrinsic separability**; past that, the
+leverage is task/concept design, not a bigger encoder. (Retention tracks routing
+throughout, so 20NG retention is capped the same way regardless of encoder.)
+
 ### Sharper routing: per-class prototypes (`route="proto"`)
 
 The residual gap (realized 53 % vs oracle 77 %) is pure routing, so we looked at
@@ -601,6 +621,31 @@ still label-free at test.
   sophistication on these features buys nothing — granularity does.)
 - What is left (61 vs 77) is genuine class overlap (sci ↔ comp ↔ talk) that only a
   better representation resolves — the standing open lever.
+
+### Confidence-gated top-k routing — a negative (`route="confident"`)
+
+The 61 vs 77 gap is misrouting, and the correct region is in the **top-3** nearest
+prototypes **96 %** of the time (top-1 only 76 %). So the obvious "postal
+redundancy" fix: consult the top-3 candidate experts and trust the most confident
+one (max softmax over its classes). It **doesn't work** — 3 seeds, 20NG:
+
+| routing            | all-tasks final |
+| ------------------ | --------------- |
+| **proto** (top-1)  | **61 %**        |
+| confident (top-3)  | 49 %            |
+| centroid           | 53 %            |
+| oracle             | 77 %            |
+
+Consulting top-3 *lowers* accuracy (61 → 49 %). The reason is a well-known
+failure: **neural-net confidence is miscalibrated out-of-distribution** — a wrong
+expert, shown an input from another task, is *overconfident* on its own classes,
+so "trust the most confident" lets the wrong expert out-shout the right one. The
+routing information is there (top-3 recall 0.96), but a raw softmax can't extract
+it. The signal that *does* work is prototype **distance** — which is exactly why
+nearest-prototype (`proto`) already wins. Exploiting the top-k recall would need a
+calibrated out-of-distribution / reject score, not raw confidence — an open
+problem, and a reminder that uncertainty is its own unsolved piece alongside
+representation quality.
 
 ### Separable benchmark: DBpedia-14 — modular memory hits oracle
 

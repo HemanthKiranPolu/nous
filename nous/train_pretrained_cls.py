@@ -162,6 +162,23 @@ class RegionLoRA:
         P = torch.cat(protos)
         return regmap[int(((P - h) ** 2).sum(-1).argmin())]
 
+    def _route_topk(self, h, k):
+        """Top-k distinct regions by nearest per-class prototype — the candidate
+        experts to consult when top-1 routing is uncertain (postal redundancy)."""
+        protos, regmap = [], []
+        for ri, r in enumerate(self.regions):
+            protos.append(r["protos"])
+            regmap += [ri] * len(r["protos"])
+        P, rm = torch.cat(protos), torch.tensor(regmap)
+        seen = []
+        for j in ((P - h) ** 2).sum(-1).argsort():
+            ri = int(rm[j])
+            if ri not in seen:
+                seen.append(ri)
+            if len(seen) == k:
+                break
+        return seen
+
     def _route_disc(self, h):
         """Argmax of the per-region linear rows — the learned router."""
         W = torch.stack([r["w"] for r in self.regions])
@@ -238,6 +255,24 @@ class RegionLoRA:
         d = task["test"]
         hbase = self.feat(d["ids"], d["mask"])
         out = torch.full((len(d["y"]),), -1)
+        if route == "confident":                     # consult top-3 experts, trust the most confident
+            for i in range(len(d["y"])):
+                ids = d["ids"][i:i + 1].to(DEVICE)
+                mask = d["mask"][i:i + 1].to(DEVICE)
+                best_conf, best_pred = -1.0, -1
+                for ri in self._route_topk(hbase[i], 3):
+                    reg = self.regions[ri]
+                    self.pm.set_adapter(reg["name"])
+                    mv = torch.full((N_CLASSES,), float("-inf"), device=DEVICE)
+                    for c in reg["classes"]:
+                        mv[c] = 0.0
+                    h = self.pm(input_ids=ids, attention_mask=mask).last_hidden_state[:, 0]
+                    prob = torch.softmax(reg["head"](h)[0] + mv, -1)
+                    conf, cls = prob.max(-1)
+                    if conf.item() > best_conf:
+                        best_conf, best_pred = conf.item(), int(cls)
+                out[i] = best_pred
+            return out
         by_region = {}
         for i in range(len(d["y"])):
             if route == "oracle":
@@ -375,7 +410,7 @@ def run_stream(kind: str, seed: int, epochs: int):
             a = [(model.predict(tasks[t], route=mode) == tasks[t]["test"]["y"]).float().mean().item()
                  for t in range(N_TASKS)]
             return {"task0": a[0], "all": sum(a) / len(a)}
-        routing = {mode: finals(mode) for mode in ("proto", "centroid", "disc", "oracle")}
+        routing = {mode: finals(mode) for mode in ("proto", "confident", "centroid", "disc", "oracle")}
     del model
     gc.collect()
     return {"acc_matrix": rows, "n_regions": n_regions, "routing": routing}
@@ -390,7 +425,7 @@ def summarize(results):
          "forgetting": m([p - f for p, f in zip(peak, final)]),
          "all_final": m(all_final), "n_regions": m([r["n_regions"] for r in results])}
     if results[0]["routing"] is not None:        # proto is the default all_final
-        for mode in ("centroid", "disc", "oracle"):
+        for mode in ("confident", "centroid", "disc", "oracle"):
             s[f"task0_{mode}"] = m([r["routing"][mode]["task0"] for r in results])
             s[f"all_{mode}"] = m([r["routing"][mode]["all"] for r in results])
     return s
@@ -402,8 +437,8 @@ def report(res):
                 f"forget {r['forgetting']:+.2f}  all_final {r['all_final']:.2f}  "
                 f"regions {r['n_regions']:.1f}")
         if "all_oracle" in r:                    # per_region routing decomposition
-            line += (f"  | all: proto {r['all_final']:.2f}  centroid {r['all_centroid']:.2f}"
-                     f"  disc {r['all_disc']:.2f}  oracle {r['all_oracle']:.2f}")
+            line += (f"  | all: proto {r['all_final']:.2f}  confident {r['all_confident']:.2f}"
+                     f"  centroid {r['all_centroid']:.2f}  oracle {r['all_oracle']:.2f}")
         print(line)
 
 
