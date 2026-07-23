@@ -610,6 +610,17 @@ def selfcheck():
     assert con_acc > imm_acc + 0.1, "consolidation not more noise-robust than immediate spawn"
     assert _mean([r["n_basins"] for r in con]) <= _mean([r["n_basins"] for r in imm]), \
         "consolidation did not use fewer/equal basins"
+
+    # (8) SEMANTIC-ID STORE earns stable addresses: on a task-free discovery stream
+    # with noise, the id store assigns one permanent id per true concept and stays
+    # accurate, while drifting similarity proliferates spurious structures.
+    dis_id = [run_discovery("id_store", s) for s in range(3)]
+    dis_sim = [run_discovery("similarity", s) for s in range(3)]
+    id_ids, sim_ids = _mean([r["n_ids"] for r in dis_id]), _mean([r["n_ids"] for r in dis_sim])
+    id_cl, sim_cl = _mean([r["clean_acc"] for r in dis_id]), _mean([r["clean_acc"] for r in dis_sim])
+    print(f"discovery  id_store {id_cl:.2f}acc/{id_ids:.0f}ids  similarity {sim_cl:.2f}acc/{sim_ids:.0f}ids")
+    assert id_ids < sim_ids, "semantic-ID store did not use fewer (earned) addresses"
+    assert id_cl >= sim_cl, "semantic-ID store not at least as accurate as similarity"
     print("selfcheck OK")
 
 
@@ -634,11 +645,44 @@ def run_noisy(kind: str, seed: int, epochs: int, noise: float,
     return {"acc": acc, "n_basins": len(field.mu)}
 
 
+def run_discovery(kind: str, seed: int, waves: int = 5, per_wave_epochs: int = 6,
+                  noise: float = 0.2, state_dim: int = 16):
+    """Task-free concept discovery: 25 concepts are introduced in `waves` (5 at a
+    time, no task labels), each recurring — with per-observation noise — in every
+    later wave. `id_store` = evidence-based consolidation → PERMANENT frozen id
+    (a stable address); `similarity` = immediate spawn with drifting prototypes.
+
+    Returns the accuracy on the EARLIEST wave (wave 0) measured after each wave —
+    the identity-persistence curve — plus final clean accuracy and #structures."""
+    torch.manual_seed(seed)
+    field = new_field(state_dim, seed)
+    model = (ConsolidatingLearner(field) if kind == "id_store"
+             else NOUSLearner(field, op_aware=False, gate=True, evict="geom"))
+    data = op_dataset("add")
+    per_wave = len(data) // waves
+    wave0 = data[:per_wave]
+    g = torch.Generator().manual_seed(seed + 1000)
+    seen, curve = [], []
+    for w in range(waves):
+        seen += data[w * per_wave:(w + 1) * per_wave]      # introduce novel concepts
+        for _ in range(per_wave_epochs):
+            for j in torch.randperm(len(seen)):
+                x, y = seen[j]
+                if torch.rand(1, generator=g).item() < noise:
+                    y = int(torch.randint(0, VALS, (1,), generator=g).item())
+                model.observe(x, y, "add")
+        curve.append(sum(field.predict(x) == yt for x, yt in wave0) / len(wave0))
+    clean = sum(field.predict(x) == yt for x, yt in data) / len(data)
+    return {"wave0_curve": curve, "clean_acc": clean, "n_ids": len(field.mu)}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selfcheck", action="store_true")
     ap.add_argument("--noisy", action="store_true",
                     help="evidence-based consolidation vs immediate spawn under label noise")
+    ap.add_argument("--discovery", action="store_true",
+                    help="semantic-ID store vs drifting similarity on a task-free discovery stream")
     ap.add_argument("--seeds", type=int, default=5)
     ap.add_argument("--epochs", type=int, default=15)
     ap.add_argument("--state-dim", type=int, default=16)
@@ -672,6 +716,25 @@ def main():
         with open("results/continual_ops_noisy.json", "w") as fh:
             json.dump(out, fh, indent=2)
         print("wrote results/continual_ops_noisy.json")
+        return
+
+    if args.discovery:
+        seeds = list(range(args.seeds))
+        out = {"config": {"op": "add", "seeds": seeds, "waves": 5, "noise": 0.2},
+               "summary": {}}
+        for kind in ("id_store", "similarity"):
+            res = [run_discovery(kind, s) for s in seeds]
+            curve = [_mean([r["wave0_curve"][w] for r in res]) for w in range(5)]
+            out["summary"][kind] = {
+                "wave0_curve": curve,
+                "clean_acc": _mean([r["clean_acc"] for r in res]),
+                "n_ids": _mean([r["n_ids"] for r in res])}
+            s = out["summary"][kind]
+            print(f"{kind:10s} wave0 retention {[f'{c:.2f}' for c in curve]}  "
+                  f"clean {s['clean_acc']:.2f}  ids {s['n_ids']:.0f}")
+        with open("results/continual_ops_discovery.json", "w") as fh:
+            json.dump(out, fh, indent=2)
+        print("wrote results/continual_ops_discovery.json")
         return
 
     ops = ["add", "mul", "sub"]

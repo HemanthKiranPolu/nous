@@ -302,6 +302,41 @@ The principle: a single observation is provisional; only consistent, repeated
 evidence should change structure. It is the frequency-and-consistency half of
 consolidation — a held-out prediction-gain gate is the heavier upgrade.
 
+### Semantic-ID store (`--discovery`)
+
+Consolidation decides *when* a concept is real; the natural next move is to give a
+consolidated concept a **permanent semantic ID** — a stable, frozen address — and
+route by that id rather than re-deriving a region by similarity every time. Full
+pipeline: provisional candidate → evidence → consolidate → **assign a frozen id**.
+
+Tested on a **task-free discovery stream**: 25 concepts are introduced in 5 waves
+(5 at a time, no task labels), and every concept recurs — with 20 % per-observation
+label noise — in all later waves. `id_store` runs the pipeline (frozen id per
+consolidated concept, route to nearest id); `similarity` spawns/updates prototypes
+immediately and lets them drift. 5 seeds:
+
+| metric                          | **`id_store`** | `similarity` |
+| ------------------------------- | -------------- | ------------ |
+| structures for 25 concepts      | **25 ids**     | 87 basins    |
+| clean accuracy                  | **99 %**       | 94 %         |
+| wave-0 retention (after each wave) | 0.96→1.00→1.00→1.00→1.00 | 0.88→0.88→0.92→0.92→0.96 |
+
+- **Addresses are earned.** The id store assigns **exactly one id per true concept**
+  (25 for 25) and stays accurate; drifting similarity proliferates **87** spurious
+  structures for the same 25 concepts — noise gets its own prototypes because
+  nothing gates promotion.
+- **Identity persists.** The earliest concepts' accuracy sits flat at 1.00 once
+  their ids are frozen. (Honest: similarity's wave-0 curve *rises* rather than
+  collapses — repeated correct observations eventually out-vote noise — so the win
+  here is structure efficiency + accuracy + stable ids, not a similarity collapse.)
+
+This is where the arc's threads meet: geometric routing (pattern separation) +
+evidence-based consolidation (when to promote) + a frozen semantic id (a stable
+address) — provisional memory that earns a permanent handle only once the evidence
+is in. Note: on a *frozen* representation a learned/id router cannot beat nearest
+prototype on raw accuracy (shown earlier); the id's payoff is stability and earned,
+noise-free structure, not higher routing accuracy.
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*
