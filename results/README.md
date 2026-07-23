@@ -497,3 +497,33 @@ coherent tasks give **+10 pp** forgetting where shared-LoRA and full fine-tuning
 give **+59–70 pp**. Catastrophic forgetting is removed by *modularity*; the
 residual is *pattern-separation* quality, set by the representation — exactly the
 neuroscience split the series set out to test.
+
+### Sharper routing: per-class prototypes (`route="proto"`)
+
+The residual gap (realized 53 % vs oracle 77 %) is pure routing, so we looked at
+*where* it fails. Per-task routing accuracy:
+
+| comp | rec | sci | talk | **misc** |
+| ---- | --- | --- | ---- | -------- |
+| 0.89 | 0.74 | 0.60 | 0.62 | **0.46** |
+
+The **incoherent "misc" task** (atheism + windows.x + forsale + christian) drags
+routing down: its task-centroid is a blur of unrelated classes, so nothing routes
+to it. Fix — route to the **nearest per-CLASS prototype**, then to its region,
+instead of the task-centroid. Even a blurry task keeps sharp per-class prototypes.
+It stays modular: each region caches its class prototypes (frozen), and routing is
+still label-free at test.
+
+3 seeds, `all-tasks final` by routing method:
+
+| **per-class proto** | task-centroid | learned `disc` | oracle |
+| ------------------- | ------------- | -------------- | ------ |
+| **61 %**            | 53 %          | 51 %           | 77 %   |
+
+- Per-class prototype routing lifts realized retention **53 % → 61 %** (+8 pp),
+  closing most of the remaining gap to the oracle (77 %) — routing accuracy rises
+  from ~0.68 to ~0.79. Finer-grained pattern separation, no new training, no
+  drift. (The learned `disc` router still trails, a third confirmation that
+  sophistication on these features buys nothing — granularity does.)
+- What is left (61 vs 77) is genuine class overlap (sci ↔ comp ↔ talk) that only a
+  better representation resolves — the standing open lever.
