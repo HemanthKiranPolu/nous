@@ -48,6 +48,8 @@
       "forgetting": 0.10000000397364299,
       "all_final": 0.6125000099341075,
       "n_regions": 5.0,
+      "task0_confident": 0.2666666607062022,
+      "all_confident": 0.4899999976158142,
       "task0_centroid": 0.6041666666666666,
       "all_centroid": 0.5333333313465118,
       "task0_disc": 0.5791666805744171,
