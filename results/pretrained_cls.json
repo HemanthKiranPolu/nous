@@ -1,0 +1,38 @@
+{
+  "config": {
+    "model": "distilbert-base-uncased",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "epochs": 12,
+    "n_tasks": 5,
+    "cls_per_task": 4
+  },
+  "summary": {
+    "per_region": {
+      "task0_peak": 0.699999988079071,
+      "task0_final": 0.27500000099341076,
+      "forgetting": 0.4249999870856603,
+      "all_final": 0.42500000099341073,
+      "n_regions": 5.0,
+      "task0_oracle": 0.699999988079071,
+      "all_final_oracle": 0.746666665871938
+    },
+    "shared": {
+      "task0_peak": 0.699999988079071,
+      "task0_final": 0.0,
+      "forgetting": 0.699999988079071,
+      "all_final": 0.05666666626930237,
+      "n_regions": 0.0
+    },
+    "full_ft": {
+      "task0_peak": 0.712499996026357,
+      "task0_final": 0.0,
+      "forgetting": 0.712499996026357,
+      "all_final": 0.1358333362887303,
+      "n_regions": 0.0
+    }
+  }
+}

@@ -360,3 +360,62 @@ phase, accuracy on all tasks so far.
   Routing quality — not memory — is the ceiling here, and it degrades as regions
   crowd. The next step (pretrained model, real task, surprise-spawn) stresses
   exactly that.
+
+---
+
+# Results — Continual Learning on a Pretrained Transformer (`pretrained_cls.json`)
+
+Reproduce (downloads distilbert ~270MB + 20NG ~14MB once, then cached):
+
+```bash
+python -m nous.train_pretrained_cls --seeds 3     # → results/pretrained_cls.json
+python -m nous.train_pretrained_cls --smoke        # 1-seed sanity
+```
+
+Source: [`nous/train_pretrained_cls.py`](../nous/train_pretrained_cls.py).
+A **real pretrained** `distilbert-base-uncased`, frozen, with **real `peft` LoRA**
+(on `q_lin`,`v_lin`): one LoRA adapter + head per geometrically-routed region, vs
+a single shared LoRA and full fine-tuning. Task stream = **20 Newsgroups** →
+5 tasks of 4 classes, in phases. This is the first rung with a genuinely
+pretrained model and real, *overlapping* tasks.
+
+3 seeds:
+
+| after all 5 tasks                     | task 0: peak → final | forgetting | all-tasks final |
+| ------------------------------------- | -------------------- | ---------- | --------------- |
+| **`per_region`** (geometric routing)  | 70 % → 28 %          | +42 pp     | 43 %            |
+| **`per_region`**, *oracle routing*    | 70 % → **70 %**      | **+0 pp**  | **75 %**        |
+| **`shared`** LoRA                     | 70 % → 0 %           | +70 pp     | 6 %             |
+| **`full_ft`**                         | 71 % → 0 %           | +71 pp     | 14 %            |
+
+The result splits cleanly into a solved half and an open half:
+
+- **Modular memory works — even here.** With *oracle* routing (each doc sent to
+  the region that owns its label) the per-region experts retain **perfectly**:
+  task 0 stays at 70 %, zero forgetting, on a real pretrained transformer where
+  a shared LoRA and full fine-tuning both collapse task 0 to **0 %**. Localizing
+  the plasticity is, again, the whole game.
+- **Routing is now the bottleneck.** Realized retention (28 %) falls far below the
+  oracle (70 %) — the **entire +42 pp gap is routing error**, not memory.
+  Unsupervised nearest-centroid routing on frozen distilbert features is only
+  ~60 % accurate on 20NG, because real topics overlap in feature space (the
+  frozen features *carry* topic info — a trained linear probe gets ~72 % — but
+  centroids don't separate them). On the clean-separated digits tasks routing was
+  near-perfect; on real overlapping text it is not.
+
+**Reading.** As tasks become real and overlapping, the hard problem *moves*: from
+"don't overwrite old parameters" (solved by modular experts — oracle shows +0 pp)
+to "send each input to the right expert" — **pattern separation**, the dentate-gyrus
+function the neuroscience analogy names. A nearest-centroid is a poor stand-in for
+it. That — a router that separates overlapping tasks — is the next real problem,
+above per-example surprise-spawn.
+
+### Honest scope
+
+- Small subset (40 train / 20 test per class), `max_len` 64, 3 seeds, LoRA on
+  `q_lin`,`v_lin` only — enough to show the gap, not a benchmark number.
+- Experts still **spawn at task boundaries**; test-time routing is label-free.
+- **Oracle routing uses test labels** — it is an upper bound to attribute the gap,
+  never a deployable predictor.
+- Baselines' class-incremental head has no replay; they hit 0 % on task 0 by the
+  end, which is the standard strong-forgetting setting.
