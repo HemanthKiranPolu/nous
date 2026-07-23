@@ -295,6 +295,68 @@ loads are bearing that will not survive scale:
   for safe representation plasticity* — the hypothesis that step would test.
 
 Claim ladder: *(shown)* structured memory reduces interference at equal capacity
-→ *(untested)* it survives learned, moving representations → *(open)* it helps a
-large model learn continually. Each rung is a separate experiment; this repo is
-on the first.
+→ *(shown, small)* it survives a real gradient-trained transformer (below) →
+*(open)* it helps a *large* model on a real task. The first two rungs are done;
+the third is the pretrained-model step.
+
+---
+
+# Results — Continual Learning on a Transformer (`transformer_cls.json`)
+
+Reproduce:
+
+```bash
+python -m nous.train_transformer_cls --seeds 5      # → results/transformer_cls.json
+python -m nous.train_transformer_cls --selfcheck
+```
+
+Source: [`nous/train_transformer_cls.py`](../nous/train_transformer_cls.py).
+Moves the mod-5 result onto a **real gradient-trained net**: a small transformer
+(2 layers, d=32) is briefly pretrained on all digits and then **frozen** (the
+"use a pretrained backbone" analog). Task stream = **Split-digits** (`sklearn`,
+8×8, zero download): 5 binary tasks `{0,1},{2,3},…,{8,9}` in phases; after each
+phase, accuracy on all tasks so far.
+
+- **`per_region`** — one low-rank adapter + head per discovered region, routed by
+  geometry on the frozen pooled feature (nearest centroid). Only the routed
+  region trains; **test-time routing uses no task id**. The step-3 mechanism.
+- **`shared`** — one adapter + one growing head trained through the whole stream.
+- **`full_ft`** — unfreeze the backbone + one growing head (upper-bound forget).
+
+5 seeds:
+
+| after all 5 tasks           | task 0: peak → final | forgetting | all-tasks final |
+| --------------------------- | -------------------- | ---------- | --------------- |
+| **`per_region`** (routed)   | 100.0 % → **97.8 %** | **+2.2 pp**  | 89.3 %        |
+| **`shared`** adapter        | 100.0 % → 0.0 %      | +100 pp    | 39.3 %          |
+| **`full_ft`**               | 100.0 % → 0.0 %      | +100 pp    | 14.4 %          |
+
+- On a real transformer, a shared head/adapter and full fine-tuning **completely
+  overwrite** task 0 (→ 0 %) by the end of the stream — textbook catastrophic
+  forgetting. Task-conditioned experts forget **+2 pp**.
+- Geometric routing spawned **~4.6 regions** for the 5 tasks with no task label —
+  the router rediscovers task structure from the frozen features and, at test
+  time, sends most inputs to the right expert.
+- This is the payoff the mod-5 toy could *not* show (there the co-adaptive memory
+  left the adapter nothing to do): with a real backbone whose head and features
+  genuinely interfere, localizing the plasticity is the difference between 98 %
+  and 0 % retention.
+
+### Honest scope
+
+- **Small and pretrained-then-frozen.** The backbone saw all digit classes during
+  its brief pretrain (standard for pretrained backbones, but it means the frozen
+  features are already good). Adapters do representation *refinement*, not
+  from-scratch feature learning.
+- **Adapter is a low-rank residual on the pooled feature**, not LoRA injected into
+  the attention matrices — same local-vs-shared plasticity test, less plumbing.
+- **Experts spawn at task boundaries** (one per phase); test routing is label-free
+  but training still uses the phase boundary. Per-example surprise-spawn (as in
+  the toy) is the remaining crutch to remove.
+- **Baselines collapse to exactly 0 %** partly because the shared *growing head*
+  is class-incremental with no replay — a strong (but standard) forgetting
+  setting. The comparison isolates modular vs shared parameters, not replay.
+- `all_final` is 89 %, not 100 %: some test inputs route to the wrong expert.
+  Routing quality — not memory — is the ceiling here, and it degrades as regions
+  crowd. The next step (pretrained model, real task, surprise-spawn) stresses
+  exactly that.
