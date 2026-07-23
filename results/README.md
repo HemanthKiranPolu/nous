@@ -559,3 +559,31 @@ per-region LoRA + proto routing; only the data changes (`--dataset dbpedia`).
 routing quality sets how much you realize of it (≈100 % when tasks separate,
 ~80 % when they overlap); no learned router beats per-class prototypes on frozen
 features — the leverage is separable representations, not a cleverer router.
+
+### Does it scale? Task count 5 → 14 (`--tasks`)
+
+Everything above uses 5 tasks. The open question is whether retention holds as
+tasks *multiply* — more experts spawn, more prototypes crowd the routing space.
+DBpedia-14 chunked into `n` contiguous tasks (`--dataset dbpedia --tasks n`),
+3 seeds:
+
+| tasks | **`per_region` all-final** | oracle | routing (proto) | `shared` | `full_ft` | regions |
+| ----- | -------------------------- | ------ | --------------- | -------- | --------- | ------- |
+| 5     | **94 %**                   | 97 %   | 0.943           | 7 %      | 22 %      | 5       |
+| 7     | **94 %**                   | 99 %   | 0.929           | 7 %      | 7 %       | 7       |
+| 14    | **93 %**                   | 100 %  | 0.918           | 7 %      | 7 %       | 14      |
+
+- **Retention is flat and near-oracle — 94 → 94 → 93 % — from 5 to 14 tasks.**
+  The modular advantage does not decay as tasks scale; if anything the gap to the
+  baselines *widens*, since a shared head collapses harder the more classes it must
+  cram (`full_ft` 22 % → 7 % as tasks go 5 → 14, i.e. toward 1/14 chance).
+- Routing degrades only **gracefully** (0.94 → 0.92), so the earliest task's
+  per-task forgetting rises just +6 → +12 pp while all-tasks retention holds.
+- Cost grows exactly linearly — one frozen expert per task (5 / 7 / 14 regions),
+  no shared state to interfere.
+
+So within the scale runnable here, **the mechanism holds up**: catastrophic
+forgetting stays solved as tasks multiply; the only slowly-moving part is routing,
+and it degrades gently on a separable benchmark. The untested frontier remains a
+genuinely *large* model and hundreds of tasks — out of reach on this hardware
+(MPS, no CUDA), but the curve here points the right way.

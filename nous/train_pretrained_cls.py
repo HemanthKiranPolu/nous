@@ -60,13 +60,20 @@ GROUPS = NG_GROUPS
 CLS2TASK = {c: ti for ti, cs in enumerate(GROUPS) for c in cs}
 
 
-def set_dataset(name: str):
-    """Select the benchmark; updates the active grouping + class count."""
-    global DATASET, GROUPS, CLS2TASK, N_CLASSES
+def set_dataset(name: str, n_tasks: int = 5):
+    """Select the benchmark; updates the active grouping, task count, class count.
+    For DBpedia the 14 classes are chunked into `n_tasks` contiguous groups — the
+    knob for the scaling test (does retention/routing hold as tasks multiply?)."""
+    global DATASET, GROUPS, CLS2TASK, N_CLASSES, N_TASKS
     DATASET = name
-    GROUPS = DBPEDIA_GROUPS if name == "dbpedia" else NG_GROUPS
+    if name == "dbpedia":
+        per = 14 / n_tasks
+        GROUPS = [[c for c in range(14) if int(c / per) == t] for t in range(n_tasks)]
+    else:
+        GROUPS = NG_GROUPS
     CLS2TASK = {c: ti for ti, cs in enumerate(GROUPS) for c in cs}
     N_CLASSES = max(CLS2TASK) + 1
+    N_TASKS = len(GROUPS)
 
 
 def _load_raw(split: str):
@@ -406,13 +413,18 @@ def main():
     ap.add_argument("--epochs", type=int, default=12)
     ap.add_argument("--smoke", action="store_true", help="1 seed, quick sanity")
     ap.add_argument("--dataset", choices=["20ng", "dbpedia"], default="20ng")
+    ap.add_argument("--tasks", type=int, default=5, help="dbpedia: #tasks (5..14)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
-    set_dataset(args.dataset)
+    set_dataset(args.dataset, args.tasks)
     if args.out is None:
-        args.out = ("results/pretrained_cls.json" if args.dataset == "20ng"
-                    else f"results/pretrained_cls_{args.dataset}.json")
+        if args.dataset == "20ng":
+            args.out = "results/pretrained_cls.json"
+        elif args.tasks == 5:
+            args.out = "results/pretrained_cls_dbpedia.json"
+        else:
+            args.out = f"results/pretrained_cls_dbpedia_{args.tasks}t.json"
 
     seeds = [0] if args.smoke else list(range(args.seeds))
     res = {k: summarize([run_stream(k, s, args.epochs) for s in seeds])
