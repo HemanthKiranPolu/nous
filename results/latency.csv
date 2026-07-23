@@ -1,0 +1,4 @@
+model,early_exit,params,p50_ms,p95_ms,queries
+nous,early_exit_on,22918,8.503,8.677,200
+nous,early_exit_off,22918,8.499,9.801,200
+transformer,n/a,19989,0.145,0.176,200
