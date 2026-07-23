@@ -421,6 +421,13 @@ stats) lifts DBpedia nearest-class-mean routing **0.52 → 0.91** — near a rea
 sentence embedder. Decoder-LM hidden states need that fix to be usable as concept
 addresses; encoders (MiniLM) are already isotropic (`--model minilm`).
 
+**On code models (Colab):** [`notebooks/librarian_code_colab.ipynb`](../notebooks/librarian_code_colab.ipynb)
+runs the same librarian on a **programming-language** continual stream
+(CodeSearchNet: Python → Java → Go → …) using real code-model embeddings, and
+compares an **older** code model (CodeBERT, 2020) vs a **newer** code LLM
+(Qwen2.5-Coder-1.5B) — routing + librarian retention per model, on Colab GPU.
+(Not run here — needs a GPU + large-model downloads.)
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*
