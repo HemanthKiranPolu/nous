@@ -159,3 +159,32 @@ total — still LRU-evicts old ops:
 Reproduce any row with `--budget <N>`. The op-aware column is the knob the
 question asked for: **more per-op capacity buys peak accuracy without trading
 away retention** — the reserved-slot locality holds at every budget.
+
+### Limitations — what this does NOT show
+
+This is a controlled existence proof that *partitioned* memory beats *shared*
+parameters for interference, on a 75-point toy where capacity, separability, and
+the eviction rule are all hand-set. It is **not** an unfrozen LLM, and several
+loads are bearing that will not survive scale:
+
+- **Locality is handed to the model, not discovered.** The op id is a model
+  input and slots are reserved per op. The real problem — task-free continual
+  learning, where the model must *infer* when a surprise is a new region vs a
+  known one — is sidestepped. The surprise/curvature gate does no routing work
+  here; the label does.
+- **No representation learning.** `W_in` is a frozen random projection, so inputs
+  sit at fixed, separable positions and the field just *memorizes* each op in a
+  disjoint region. The "zero forgetting" is partly *because* of that disjointness.
+  Whether locality survives a `W_in` that moves under training is untested.
+- **Retention, not generalization.** With ≈ one basin per input region there is
+  no compositional transfer (SCAN-mini above is the generalization probe, not
+  this). A growing labeled memory trivially avoids forgetting in the limit — the
+  informative comparison is only the *equal-capacity, capped* one.
+- **No gradient backbone.** Nothing here touches a transformer or backprop, so it
+  says nothing yet about interference where it actually costs (e.g. adapters /
+  LoRA-per-region on a trained model).
+
+Claim ladder: *(shown)* structured memory reduces interference at equal capacity
+→ *(untested)* it survives learned, moving representations → *(open)* it helps a
+large model learn continually. Each rung is a separate experiment; this repo is
+on the first.
