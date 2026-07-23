@@ -140,9 +140,13 @@ class BasinField:
         s2 = torch.tensor(self.sig2)                     # (K,)
         return mu, amp, s2
 
-    def force(self, x: torch.Tensor, q: torch.Tensor) -> torch.Tensor:
-        """−∂E/∂q = −q + W_in x + Σ_k 2·amp_k·exp(−d²/σ²)/σ²·(μ_k − q)."""
-        f = -q + self.W_in.detach() @ x               # relax never needs ∂/∂W_in
+    def force(self, x: torch.Tensor, q: torch.Tensor,
+              drive: torch.Tensor = None) -> torch.Tensor:
+        """−∂E/∂q = −q + drive + Σ_k 2·amp_k·exp(−d²/σ²)/σ²·(μ_k − q).
+        `drive` is the (constant) input pull; defaults to W_in·x but an adapter
+        can pass an alternative encoding. relax never needs ∂/∂W_in."""
+        d = self.W_in.detach() @ x if drive is None else drive
+        f = -q + d
         if self.mu:
             mu, amp, s2 = self._stack()
             diff = mu - q                                # (K, D)
@@ -151,10 +155,13 @@ class BasinField:
             f = f + (w.unsqueeze(-1) * diff).sum(0)
         return f
 
-    def relax(self, x: torch.Tensor, steps: int = 50, dt: float = 0.1) -> torch.Tensor:
+    def relax(self, x: torch.Tensor, drive: torch.Tensor = None,
+              steps: int = 50, dt: float = 0.1) -> torch.Tensor:
+        if drive is None:
+            drive = self.W_in.detach() @ x               # compute once, constant in q
         q = torch.zeros(self.D)
         for _ in range(steps):
-            q = q + dt * self.force(x, q)
+            q = q + dt * self.force(x, q, drive)
         return q
 
     def pull(self, q: torch.Tensor) -> torch.Tensor:
@@ -240,35 +247,113 @@ class NOUSLearner:
                 x, y = data[j]
                 self.observe(x, y, op)
 
-    def observe(self, x: torch.Tensor, y: int, op: str):
-        self.t += 1
-        scope = op if self.op_aware else "_"
-        q = self.f.relax(x)
+    def _sculpt(self, q: torch.Tensor, y: int, scope: str):
+        """Label-free basin sculpting at equilibrium q: correct→deepen winner,
+        wrong→refine near same-label basin, else allocate, else evict-and-reuse."""
         correct = self.f.mu and self.f.label[int(self.f.pull(q).argmax())] == y
-
         if correct and self.gate:
             i = self.f.nearest(q, y, scope, self.R)      # reinforce the winner, local
             if i is not None:
                 self.f.deepen(i, step=0.1)
                 self.f.touch(i, self.t)
-        else:
-            i = self.f.nearest(q, y, scope, self.R)
-            if i is not None:                            # refine an existing basin
-                self.f.recenter(i, q)
-                self.f.deepen(i)
-                self.f.touch(i, self.t)
-            elif self.f.scope_count(scope) < self._cap():  # room left → allocate
-                self.f.add_basin(q, y, scope, t=self.t)
-                self.n_alloc += 1
-            else:                                        # full → evict a basin in scope
-                j = (self.f.nearest_in_scope(scope, q) if self.evict == "geom"
-                     else self.f.lru_in_scope(scope))
-                if j is not None:
-                    self.f.reuse(j, q, y, self.t)
-                    self.n_reuse += 1
+            return
+        i = self.f.nearest(q, y, scope, self.R)
+        if i is not None:                                # refine an existing basin
+            self.f.recenter(i, q)
+            self.f.deepen(i)
+            self.f.touch(i, self.t)
+        elif self.f.scope_count(scope) < self._cap():    # room left → allocate
+            self.f.add_basin(q, y, scope, t=self.t)
+            self.n_alloc += 1
+        else:                                            # full → evict a basin in scope
+            j = (self.f.nearest_in_scope(scope, q) if self.evict == "geom"
+                 else self.f.lru_in_scope(scope))
+            if j is not None:
+                self.f.reuse(j, q, y, self.t)
+                self.n_reuse += 1
 
+    def observe(self, x: torch.Tensor, y: int, op: str):
+        self.t += 1
+        scope = op if self.op_aware else "_"
+        q = self.f.relax(x)
+        self._sculpt(q, y, scope)
         if self.plastic:                                 # step 2: shape the encoder
             self._encoder_step(x, y)
+
+
+class AdapterNOUS(NOUSLearner):
+    """
+    Step 3: task-conditioned plasticity. The encoder is base `W_in` (frozen) plus
+    a per-REGION low-rank adapter ΔW_r = B_r·A_r. Regions are discovered by the
+    same label-free geometry as the memory: route the base embedding e0 = W_in·x
+    to the nearest region centroid; if none is within `region_radius`, spawn one.
+
+    Training only updates the *routed* region's adapter, so learning a new task
+    can move at most that region's embeddings — it cannot drift other regions'
+    inputs off their basins. Localizing the plasticity CONTAINS the drift that
+    the single shared encoder (step 2) spread across every op.
+    """
+
+    def __init__(self, field: BasinField, budget: int = None, n_ops: int = 1,
+                 rank: int = 2, region_radius: float = 4.0, adapt_lr: float = 0.3):
+        super().__init__(field, op_aware=False, gate=True, budget=budget,
+                         n_ops=n_ops, evict="geom")
+        self.rank, self.region_radius, self.adapt_lr = rank, region_radius, adapt_lr
+        self.regions = []                                # each: {c, A, B, opt}
+
+    def _spawn(self, e0: torch.Tensor) -> int:
+        A = torch.randn(self.rank, IN_DIM) * 0.1
+        B = torch.zeros(self.f.D, self.rank)             # B=0 → ΔW=0 at spawn (identity)
+        A.requires_grad_(True)
+        B.requires_grad_(True)
+        self.regions.append({"c": e0.detach().clone(), "A": A, "B": B,
+                             "opt": torch.optim.SGD([A, B], lr=self.adapt_lr)})
+        return len(self.regions) - 1
+
+    def _route(self, e0: torch.Tensor) -> int:
+        if not self.regions:
+            return self._spawn(e0)
+        d = [((r["c"] - e0) ** 2).sum().item() for r in self.regions]
+        j = min(range(len(d)), key=lambda k: d[k])
+        return j if d[j] ** 0.5 <= self.region_radius else self._spawn(e0)
+
+    def _embed(self, r: int, x: torch.Tensor, grad: bool):
+        """Adapted encoding e = W_in·x + B_r·(A_r·x)."""
+        reg = self.regions[r]
+        e = self.f.W_in.detach() @ x + reg["B"] @ (reg["A"] @ x)
+        return e if grad else e.detach()
+
+    def _adapter_step(self, r: int, x: torch.Tensor, y: int):
+        if len(self.f.mu) < 2:
+            return
+        classes = sorted(set(self.f.label))
+        if y not in classes or len(classes) < 2:
+            return
+        e = self._embed(r, x, grad=True)
+        mu = torch.stack([m.detach() for m in self.f.mu])
+        neg_d2 = -((mu - e) ** 2).sum(-1)
+        class_logit = torch.stack([
+            neg_d2[[i for i, c in enumerate(self.f.label) if c == cl]].max()
+            for cl in classes])
+        loss = F.cross_entropy(class_logit.unsqueeze(0),
+                               torch.tensor([classes.index(y)]))
+        self.regions[r]["opt"].zero_grad()
+        loss.backward()
+        self.regions[r]["opt"].step()
+
+    def predict(self, x: torch.Tensor) -> int:
+        if not self.f.mu:
+            return -1
+        r = self._route(self.f.W_in.detach() @ x)
+        q = self.f.relax(x, drive=self._embed(r, x, grad=False))
+        return self.f.label[int(self.f.pull(q).argmax())]
+
+    def observe(self, x: torch.Tensor, y: int, op: str):
+        self.t += 1
+        r = self._route(self.f.W_in.detach() @ x)
+        q = self.f.relax(x, drive=self._embed(r, x, grad=False))
+        self._sculpt(q, y, "_")                          # label-free, shared pool
+        self._adapter_step(r, x, y)                      # local plasticity: region r only
 
 
 class MLPStream:
@@ -297,10 +382,9 @@ class MLPStream:
 
 
 def accuracy(model, op: str) -> float:
-    field = getattr(model, "f", None)
+    predict = model.predict if hasattr(model, "predict") else model.f.predict
     data = op_dataset(op)
-    ok = sum((field.predict(x) if field is not None else model.predict(x)) == y
-             for x, y in data)
+    ok = sum(predict(x) == y for x, y in data)
     return ok / len(data)
 
 
@@ -332,6 +416,11 @@ def make_model(kind: str, state_dim: int, seed: int, budget: int = None, n_ops: 
         return NOUSLearner(new_field(state_dim, seed, plastic=True), op_aware=False,
                            gate=True, budget=budget, n_ops=n_ops, evict="geom",
                            plastic=True)
+    if kind == "adapter":
+        # step 3: task-conditioned plasticity — per-region low-rank encoder
+        # adapters, routed by the same label-free geometry. Localizes drift.
+        return AdapterNOUS(new_field(state_dim, seed), budget=budget, n_ops=n_ops,
+                           region_radius=6.0, adapt_lr=0.3)
     if kind == "mlp":
         return MLPStream()
     raise ValueError(kind)
@@ -429,9 +518,17 @@ def selfcheck():
     # label-driven encoder objective can't separate tasks, only drift. So plastic
     # still forgets clearly more than op-aware.
     cap_p = summarize([run_stream("taskfree_plastic", ops, s, 15, D, budget=20) for s in range(3)], ops)
-    print(f"         taskfree_plastic forget {cap_p['forgetting_mean']:+.2f}")
+    cap_a = summarize([run_stream("adapter", ops, s, 15, D, budget=20) for s in range(3)], ops)
+    print(f"         taskfree_plastic forget {cap_p['forgetting_mean']:+.2f}  "
+          f"adapter forget {cap_a['forgetting_mean']:+.2f}")
     assert cap_p["forgetting_mean"] > cap_g["forgetting_mean"] + 0.2, \
         "plastic encoder unexpectedly matched op-aware retention"
+
+    # (6) TASK-CONDITIONED PLASTICITY CONTAINS DRIFT (step 3): per-region adapters
+    # retain far better than op-blind LRU, i.e. local plasticity does not regress
+    # into the shared-encoder drift. (It contains drift; it does not beat frozen.)
+    assert cap_a["forgetting_mean"] < cap_u["forgetting_mean"], \
+        "per-region adapters did not contain drift / retain vs op-blind"
     print("selfcheck OK")
 
 
@@ -457,7 +554,7 @@ def main():
     out = {"config": {"ops": ops, "seeds": seeds, "epochs": args.epochs,
                       "state_dim": args.state_dim, "vals": VALS, "budget": args.budget},
            "per_seed": {}, "summary": {}}
-    for kind in ("gated", "ungated", "taskfree", "taskfree_plastic", "mlp"):
+    for kind in ("gated", "ungated", "taskfree", "taskfree_plastic", "adapter", "mlp"):
         res = [run_stream(kind, ops, s, args.epochs, args.state_dim, budget=args.budget)
                for s in seeds]
         out["per_seed"][kind] = res

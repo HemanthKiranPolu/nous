@@ -221,6 +221,48 @@ label signal.** Representation plasticity has to be *task-conditioned* — which
 precisely what step 3 (per-region / LoRA-style adapters) supplies: new-task
 updates that do not move old tasks' representations.
 
+### Task-conditioned plasticity — step 3: per-region adapters (`adapter`)
+
+Step 2 failed because the plastic encoder was *shared*. Step 3 makes it **local**:
+base `W_in` stays frozen, and each discovered **region** owns a small low-rank
+adapter `ΔW_r = B_r·A_r`. Regions are found by the *same* label-free geometry as
+the memory — route the base embedding to the nearest region centroid, spawn a new
+one past `region_radius`. Training updates **only the routed region's adapter**,
+so learning a new task can move at most that region's embeddings. This is the
+neuroscience recipe: pattern separation (routing) + sparse local updates + old
+regions left intact.
+
+Budget 60, at `adapt_lr = 0.3` — a rate where the *shared* encoder drifts:
+
+| method                              | forgetting | note |
+| ----------------------------------- | ---------- | ---- |
+| step 1 — frozen (`taskfree`)        | +9.6 pp    | baseline |
+| step 2 — shared plastic encoder     | +19 pp     | drift |
+| **step 3 — per-region adapters**    | **+9–10 pp** | **drift contained** |
+
+- Localizing the plasticity **removes the step-2 regression**: forgetting drops
+  back to the frozen baseline even though the encoder is now trainable. And it is
+  robust to region granularity — `region_radius` from 2 to 8 gives ~75 down to
+  **~3 regions**, all at ≈+10 pp. At the coarse end the ~3 emergent regions line
+  up with the 3 ops: the routing *rediscovers the task structure* from geometry,
+  with no label.
+
+**Honest — what step 3 does NOT do:**
+
+- **It contains drift; it does not beat frozen.** Retention returns to the
+  step-1 level, no better. The memory co-adapts (basins sit at the embeddings),
+  so the adapter — like step 2 — gets a near-zero gradient and has little to
+  actually learn.
+- **No help under capacity pressure.** At budget 30 the adapter forgets +60–66 pp,
+  same as frozen: there the forgetting is *capacity*-bound (basin eviction), a
+  different axis that a representation adapter cannot touch.
+- **Reading:** task-conditioning is what makes representation plasticity *safe*
+  (non-forgetting), which shared plasticity was not — a necessary property. The
+  *payoff* (plasticity that actually improves retention) should appear where
+  representation learning genuinely matters and forgetting isn't just capacity —
+  i.e. a real gradient-trained backbone. That is the transformer + per-region
+  LoRA step, now motivated by three toy results instead of a hunch.
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*
@@ -245,9 +287,12 @@ loads are bearing that will not survive scale:
   no compositional transfer (SCAN-mini above is the generalization probe, not
   this). A growing labeled memory trivially avoids forgetting in the limit — the
   informative comparison is only the *equal-capacity, capped* one.
-- **No gradient backbone.** Nothing here touches a transformer or backprop, so it
-  says nothing yet about interference where it actually costs (e.g. adapters /
-  LoRA-per-region on a trained model).
+- **No gradient backbone.** Step 3 adds per-region low-rank adapters (a real
+  gradient mechanism) but on a linear encoder over a frozen random projection —
+  not a learned feature hierarchy. It says nothing yet about interference where
+  it actually costs: per-region LoRA on a trained transformer, on a real task.
+  That is the next step, and the toy now predicts *task-conditioning is necessary
+  for safe representation plasticity* — the hypothesis that step would test.
 
 Claim ladder: *(shown)* structured memory reduces interference at equal capacity
 → *(untested)* it survives learned, moving representations → *(open)* it helps a
