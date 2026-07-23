@@ -391,6 +391,36 @@ uncertainty handling. That is the whole thesis in one run: **modular, evidence-g
 addressed, calibrated memory — clean structure and honest "I don't know," not just
 a bigger pile of parameters.**
 
+### The librarian on a real LLM (`train_llm_librarian.py`)
+
+The same loop, ported off the toy's random projection onto frozen **`gpt2`** (125M)
+embeddings on a DBpedia class stream (clean + 15 % noise + novel-halfway). The
+librarian is a memory policy over prototypes, so it runs directly on the embeddings
+— no LoRA, no relaxation. `naive` = one prototype per observation. 3 seeds:
+
+| metric               | **`librarian`** | `naive` |
+| -------------------- | --------------- | ------- |
+| clean accuracy       | **0.85**        | 0.74    |
+| novel accuracy       | **0.81**        | 0.77    |
+| ids                  | **448**         | 2880    |
+| ambiguous defer      | **1.00**        | 0.00    |
+
+On real, noisy data the librarian wins on **every** axis — including *accuracy*
+(0.85 vs 0.74), unlike the well-separated toy where `naive` matched it. The reason:
+`naive`'s noise-prototypes actively *mislead* nearest-neighbour, while evidence
+gating throws them out. It uses **6.4× fewer ids** (448 vs 2880). The 448 (~32 per
+class) is honest — real classes are **multi-modal**, so a concept consolidates into
+several prototypes, not the toy's one; still an order of magnitude leaner than
+one-per-observation, and the multi-prototype-per-concept regime is the realistic one.
+
+**Bonus finding (representation, again):** raw `gpt2` mean-pooled embeddings are
+badly **anisotropic** — every input collapses into a tiny cone (within-class ≈
+cross-class distance ≈ 0.05), which flattens prototype memory (0 consolidations). A
+one-line **whitening** (mean-centre + per-dim standardise + renormalise, from train
+stats) lifts DBpedia nearest-class-mean routing **0.52 → 0.91** — near a real
+sentence embedder. Decoder-LM hidden states need that fix to be usable as concept
+addresses; encoders (MiniLM) are already isotropic (`--model minilm`).
+
 ### Limitations — what this does NOT show
 
 This is a controlled existence proof that *partitioned* memory beats *shared*

@@ -1,0 +1,25 @@
+{
+  "config": {
+    "model": "gpt2",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "n_classes": 14
+  },
+  "summary": {
+    "librarian": {
+      "clean_acc": 0.8476190368334452,
+      "novel_acc": 0.8083333373069763,
+      "n_ids": 448.0,
+      "amb_defer": 1.0
+    },
+    "naive": {
+      "clean_acc": 0.7357142766316732,
+      "novel_acc": 0.7666666706403097,
+      "n_ids": 2880.0,
+      "amb_defer": 0.0
+    }
+  }
+}
