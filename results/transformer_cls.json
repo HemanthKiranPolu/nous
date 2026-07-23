@@ -1,0 +1,38 @@
+{
+  "config": {
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "epochs": 60,
+    "n_tasks": 5,
+    "d_model": 32,
+    "layers": 2
+  },
+  "summary": {
+    "per_region": {
+      "task0_peak": 1.0,
+      "task0_final": 0.9783098936080933,
+      "forgetting": 0.021690106391906737,
+      "all_final": 0.8931049001216887,
+      "n_regions": 4.6
+    },
+    "shared": {
+      "task0_peak": 1.0,
+      "task0_final": 0.0,
+      "forgetting": 1.0,
+      "all_final": 0.3934097556769848,
+      "n_regions": 0.0
+    },
+    "full_ft": {
+      "task0_peak": 1.0,
+      "task0_final": 0.0,
+      "forgetting": 1.0,
+      "all_final": 0.1440840482711792,
+      "n_regions": 0.0
+    }
+  }
+}

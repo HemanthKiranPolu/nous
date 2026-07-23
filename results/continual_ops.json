@@ -1,0 +1,624 @@
+{
+  "config": {
+    "ops": [
+      "add",
+      "mul",
+      "sub"
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "epochs": 15,
+    "state_dim": 16,
+    "vals": 5,
+    "budget": null
+  },
+  "per_seed": {
+    "gated": [
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 0.96,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      }
+    ],
+    "ungated": [
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 79,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 78,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 80,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 80,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 82,
+        "n_reuse": 0
+      }
+    ],
+    "taskfree": [
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 0.96,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      }
+    ],
+    "taskfree_plastic": [
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 0.96,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 71,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      }
+    ],
+    "adapter": [
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 0.96,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0
+          },
+          {
+            "add": 1.0,
+            "mul": 1.0,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 72,
+        "n_reuse": 0
+      }
+    ],
+    "mlp": [
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 0.24,
+            "mul": 1.0
+          },
+          {
+            "add": 0.2,
+            "mul": 0.16,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 0,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 0.2,
+            "mul": 1.0
+          },
+          {
+            "add": 0.2,
+            "mul": 0.16,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 0,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 0.24,
+            "mul": 1.0
+          },
+          {
+            "add": 0.2,
+            "mul": 0.2,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 0,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 0.28,
+            "mul": 1.0
+          },
+          {
+            "add": 0.2,
+            "mul": 0.2,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 0,
+        "n_reuse": 0
+      },
+      {
+        "acc_matrix": [
+          {
+            "add": 1.0
+          },
+          {
+            "add": 0.24,
+            "mul": 1.0
+          },
+          {
+            "add": 0.2,
+            "mul": 0.16,
+            "sub": 1.0
+          }
+        ],
+        "n_basins": 0,
+        "n_reuse": 0
+      }
+    ]
+  },
+  "summary": {
+    "gated": {
+      "op0_peak_mean": 1.0,
+      "op0_final_mean": 1.0,
+      "forgetting_mean": 0.0,
+      "forgetting_std": 0.0,
+      "all_ops_final_mean": 0.9973333333333333,
+      "n_basins_mean": 72.0
+    },
+    "ungated": {
+      "op0_peak_mean": 1.0,
+      "op0_final_mean": 1.0,
+      "forgetting_mean": 0.0,
+      "forgetting_std": 0.0,
+      "all_ops_final_mean": 1.0,
+      "n_basins_mean": 79.8
+    },
+    "taskfree": {
+      "op0_peak_mean": 1.0,
+      "op0_final_mean": 1.0,
+      "forgetting_mean": 0.0,
+      "forgetting_std": 0.0,
+      "all_ops_final_mean": 0.9973333333333333,
+      "n_basins_mean": 72.0
+    },
+    "taskfree_plastic": {
+      "op0_peak_mean": 1.0,
+      "op0_final_mean": 1.0,
+      "forgetting_mean": 0.0,
+      "forgetting_std": 0.0,
+      "all_ops_final_mean": 0.9973333333333333,
+      "n_basins_mean": 71.8
+    },
+    "adapter": {
+      "op0_peak_mean": 1.0,
+      "op0_final_mean": 1.0,
+      "forgetting_mean": 0.0,
+      "forgetting_std": 0.0,
+      "all_ops_final_mean": 0.9973333333333333,
+      "n_basins_mean": 72.0
+    },
+    "mlp": {
+      "op0_peak_mean": 1.0,
+      "op0_final_mean": 0.2,
+      "forgetting_mean": 0.8,
+      "forgetting_std": 0.0,
+      "all_ops_final_mean": 0.45866666666666667,
+      "n_basins_mean": 0.0
+    }
+  }
+}
