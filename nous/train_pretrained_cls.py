@@ -120,6 +120,18 @@ class RegionLoRA:
     def _nearest_centroid(self, h):
         return int(torch.stack([((r["c"] - h) ** 2).sum() for r in self.regions]).argmin())
 
+    def _route_proto(self, h):
+        """Nearest per-CLASS prototype → its region. Finer-grained pattern
+        separation than the task-centroid: an incoherent task (a blurry mean of
+        unrelated classes) still has sharp per-class prototypes to route to."""
+        protos, regmap = [], []
+        for k, r in enumerate(self.regions):
+            if r["protos"] is not None:
+                protos.append(r["protos"])
+                regmap += [k] * len(r["protos"])
+        P = torch.cat(protos)
+        return regmap[int(((P - h) ** 2).sum(-1).argmin())]
+
     def _route_disc(self, h):
         """Argmax of the per-region linear rows — the learned router."""
         W = torch.stack([r["w"] for r in self.regions])
@@ -165,7 +177,8 @@ class RegionLoRA:
         opt = torch.optim.Adam(lora_params + list(head.parameters()), lr=self.lr)
         self.regions.append({"c": c.detach().clone(), "name": name,
                              "head": head, "opt": opt, "classes": set(),
-                             "replay": None, "w": torch.zeros(D_FEAT), "b": torch.zeros(())})
+                             "replay": None, "protos": None,
+                             "w": torch.zeros(D_FEAT), "b": torch.zeros(())})
         return len(self.regions) - 1
 
     def train_phase(self, task):
@@ -175,6 +188,8 @@ class RegionLoRA:
         reg = self.regions[r]
         reg["classes"] |= set(d["y"].tolist())
         reg["replay"] = hbase[torch.randperm(len(hbase))[:ROUTER_REPLAY]].clone()
+        cls = sorted(set(d["y"].tolist()))
+        reg["protos"] = torch.stack([hbase[d["y"] == c].mean(0) for c in cls])
         self._fit_router()                        # refit all router rows on the buffer
         self.pm.set_adapter(reg["name"])          # activate this region's LoRA
         for _ in range(self.epochs):
@@ -187,9 +202,9 @@ class RegionLoRA:
                 reg["opt"].step()
 
     @torch.no_grad()
-    def predict(self, task, route: str = "centroid"):
-        """route: "centroid" nearest centroid (headline — beats the learned row) |
-        "disc" learned modular router | "oracle" true-label region (upper bound)."""
+    def predict(self, task, route: str = "proto"):
+        """route: "proto" nearest per-class prototype (headline) | "centroid" task
+        centroid | "disc" learned row | "oracle" true-label region (upper bound)."""
         d = task["test"]
         hbase = self.feat(d["ids"], d["mask"])
         out = torch.full((len(d["y"]),), -1)
@@ -198,6 +213,8 @@ class RegionLoRA:
             if route == "oracle":
                 j = next((k for k, r in enumerate(self.regions)
                           if int(d["y"][i]) in r["classes"]), None)
+            elif route == "proto":
+                j = self._route_proto(hbase[i])
             elif route == "disc":
                 j = self._route_disc(hbase[i])
             else:
@@ -328,7 +345,7 @@ def run_stream(kind: str, seed: int, epochs: int):
             a = [(model.predict(tasks[t], route=mode) == tasks[t]["test"]["y"]).float().mean().item()
                  for t in range(N_TASKS)]
             return {"task0": a[0], "all": sum(a) / len(a)}
-        routing = {mode: finals(mode) for mode in ("disc", "centroid", "oracle")}
+        routing = {mode: finals(mode) for mode in ("proto", "centroid", "disc", "oracle")}
     del model
     gc.collect()
     return {"acc_matrix": rows, "n_regions": n_regions, "routing": routing}
@@ -342,8 +359,8 @@ def summarize(results):
     s = {"task0_peak": m(peak), "task0_final": m(final),
          "forgetting": m([p - f for p, f in zip(peak, final)]),
          "all_final": m(all_final), "n_regions": m([r["n_regions"] for r in results])}
-    if results[0]["routing"] is not None:        # centroid baseline + oracle bound
-        for mode in ("centroid", "oracle"):
+    if results[0]["routing"] is not None:        # proto is the default all_final
+        for mode in ("centroid", "disc", "oracle"):
             s[f"task0_{mode}"] = m([r["routing"][mode]["task0"] for r in results])
             s[f"all_{mode}"] = m([r["routing"][mode]["all"] for r in results])
     return s
@@ -354,9 +371,9 @@ def report(res):
         line = (f"{k:11s} task0 {r['task0_peak']:.2f}→{r['task0_final']:.2f}  "
                 f"forget {r['forgetting']:+.2f}  all_final {r['all_final']:.2f}  "
                 f"regions {r['n_regions']:.1f}")
-        if "all_oracle" in r:                    # per_region: disc | centroid | oracle
-            line += (f"  | all: disc {r['all_final']:.2f}  "
-                     f"centroid {r['all_centroid']:.2f}  oracle {r['all_oracle']:.2f}")
+        if "all_oracle" in r:                    # per_region routing decomposition
+            line += (f"  | all: proto {r['all_final']:.2f}  centroid {r['all_centroid']:.2f}"
+                     f"  disc {r['all_disc']:.2f}  oracle {r['all_oracle']:.2f}")
         print(line)
 
 
