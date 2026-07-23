@@ -23,7 +23,8 @@ DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
 LANGS = ["python", "java", "go", "javascript", "php"]     # last = novel (introduced late)
 PER, TEST = 100, 40
 MODELS = {"codebert-2020": "microsoft/codebert-base",
-          "qwen2.5-coder-0.5b-2024": "Qwen/Qwen2.5-Coder-0.5B"}
+          "qwen2.5-coder-0.5b-2024": "Qwen/Qwen2.5-Coder-0.5B",
+          "qwen2.5-coder-1.5b-2024": "Qwen/Qwen2.5-Coder-1.5B"}
 
 
 def load_code(seed=0):
